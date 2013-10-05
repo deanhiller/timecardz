@@ -3,11 +3,7 @@
 # Package Files #
 tmp/
 /eclipse/
-play*/*/*/*.pyc
-play*/*/*/*/*.pyc
-play*/*/*/*/*/*.pyc
-play*/*/*/*/*/*/*.pyc
-play*/*/*/*/*/*/*/*.pyc
+**/*.pyc
 /.project
 /.settings
 *.bak
