@@ -21,6 +21,9 @@ GET     /employee							    OtherStuff.employee
 GET     /usercards								OtherStuff.userCards
 GET     /detail/{timeCard}					    OtherStuff.detail
 GET     /detailEmployee/{timeCard}	            OtherStuff.detailEmployee 
+GET     /addedittimecardrender/{timeCardId}		OtherStuff.addEditTimeCardRender
+GET     /deleteTimeCardRender/{timeCardId}	    OtherStuff.deleteTimeCardRender
+
 GET     /usersignup                        		Register.userRegister
 GET     /usersignup2/{token}                    Register.userRegister2
 

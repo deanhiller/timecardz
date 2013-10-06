@@ -1,41 +1,26 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import models.CompanyDbo;
 import models.DayCardDbo;
 import models.EmailToUserDbo;
 import models.StatusEnum;
 import models.TimeCardDbo;
 import models.Token;
-
 import models.UserDbo;
 
-import models.CompanyDbo;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import controllers.auth.Check;
-import controllers.auth.Secure;
-import controllers.auth.Secure.Security;
-import play.Play;
-import play.data.validation.Required;
 import play.db.jpa.JPA;
-import play.libs.Crypto;
-import play.libs.Time;
 import play.mvc.Controller;
 import play.mvc.With;
 import play.mvc.Scope.Session;
+import controllers.auth.Secure;
 
 @With(Secure.class)
 public class OtherStuff extends Controller {
@@ -60,6 +45,7 @@ public class OtherStuff extends Controller {
 	public static void addCompany() {
 		render();
 	}
+
 
 	public static void companyDetails() {
 		UserDbo user = Utility.fetchUser();
@@ -219,7 +205,6 @@ public class OtherStuff extends Controller {
 			render(timeCards, beginOfWeek, email, currentWeek, employee, dayCards, noofhours, details);
 		
 		} else {
-			String view = "view";
 			TimeCardDbo timeCard = JPA.em().find(TimeCardDbo.class, id);
 			StatusEnum status = timeCard.getStatus();
 			boolean readOnly;
@@ -236,14 +221,55 @@ public class OtherStuff extends Controller {
 				details[i] = dayCard.getDetail();
 				i++;
 			}
-			render(view, timeCard, timeCards, dayCardDbo, noofhours, details,
+			render(timeCard, timeCards, dayCardDbo, noofhours, details,beginOfWeek,
 					readOnly, status);
 		}
+	}
+	
+	public static void addEditTimeCardRender(Integer timeCardId){
+		StatusEnum status = null;
+		TimeCardDbo timeCard = null;
+		DayCardDbo dayC=null; 
+		boolean readOnly=false;
+		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
+		if(timeCardId==null){
+			 timeCard = new TimeCardDbo();
+			 timeCard.setBeginOfWeek(Utility.calculateBeginningOfTheWeek());
+			 for (int i = 0; i < 7; i++) {
+					 dayC = new DayCardDbo();
+					 timeCard.getDaycards().add(dayC);
+					 dayC.setDate(beginOfWeek.plusDays(i));
+			 }
+		}else{
+			timeCard = JPA.em().find(TimeCardDbo.class, timeCardId);
+			 status = timeCard.getStatus();
+				if (status == StatusEnum.APPROVED)
+					readOnly = true;
+				else
+					readOnly = false;
+		}
+		render(readOnly,timeCard,beginOfWeek);
+	}
+	
+	public static void deleteTimeCardRender(Integer timeCardId){
+		Integer id=timeCardId;
+		render(id);
+	}
+	public static void postDeleteTimeCard(Integer timeCardId){
+		Integer id = null;
+		String userName = Session.current().get("username");
+		EmailToUserDbo emailToUserDbo= JPA.em().find(EmailToUserDbo.class, userName);
+		TimeCardDbo timeCard = JPA.em().find(TimeCardDbo.class, timeCardId);
+		UserDbo user = JPA.em().find(UserDbo.class, emailToUserDbo.getValue());
+		user.deleteTimeCard(timeCard);
+		JPA.em().persist(user);
+		JPA.em().flush();
+		employee(id);
 	}
 
 	public static void postTimeAddition2(Integer timeCardId,Integer[] dayCardsid, int[] noofhours, String[] details) throws Throwable {
 		Integer id = null;
-		if (timeCardId == null || dayCardsid == null) {
+		if (timeCardId ==null||timeCardId==0) {
 			UserDbo user = Utility.fetchUser();
 			CompanyDbo company = user.getCompany();
 			UserDbo manager = user.getManager();

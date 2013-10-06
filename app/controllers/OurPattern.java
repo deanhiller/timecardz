@@ -69,10 +69,10 @@ public class OurPattern extends Controller {
 		ourUsers.add(user);
 	}
 
-	private static UserDbo callDatabaseGetUser(Integer id) {
+	private static UserDbo callDatabaseGetUser(int id) {
 		//normally we would call into database for the purposes of this patter, it does not matter
 		for(UserDbo user : ourUsers) {
-			if(user.getId().equals(id))
+			if(user.getId() == id)
 				return user;
 		}
 		return null;
