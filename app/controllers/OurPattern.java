@@ -68,9 +68,16 @@ public class OurPattern extends Controller {
 	public static void postUser(UserDbo user) {
 		//let's make sure validation works here
 		
-		if(emailExistsAlready(user.getEmail()))
+		if(emailExistsAlready(user.getEmail())) {
+			//this puts a message under the actual field and causes the label to turn red and the input border turns
+			//red, etc. etc. (at least when done correctly)
 			validation.addError("user.email", "This email is already in use");
+			//this puts a message at the top of the form!!!!
+			flash.error("Your form has errors");
+		}
 		
+		//we always allow errors to queue up to show all errors at once for the user in case they have a few errors on
+		//their form
 		if(validation.hasErrors()) {
 			flash.put("showPopup", "true");
 			listUsers();
