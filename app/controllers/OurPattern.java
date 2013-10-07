@@ -41,6 +41,8 @@ public class OurPattern extends Controller {
 
 	private static final Logger log = LoggerFactory.getLogger(OurPattern.class);
 	
+	//NOTE: Some of the patterns I use in here are horrible.....like looping over a List instead of just using
+	//a HashMap.....bleck, but for now, we are just demonstrating the ajax pattern we want to copy 1000 times.
 	//This is what we list in the web page..
 	private static List<UserDbo> ourUsers = new ArrayList<UserDbo>();
 	
