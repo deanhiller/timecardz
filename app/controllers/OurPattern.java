@@ -66,6 +66,9 @@ public class OurPattern extends Controller {
 	public static void postUser(UserDbo user) {
 		//let's make sure validation works here
 		
+		if(emailExistsAlready(user.getEmail()))
+			validation.addError("user.email", "This email is already in use");
+		
 		if(validation.hasErrors()) {
 			flash.put("showPopup", "true");
 			listUsers();
@@ -75,6 +78,14 @@ public class OurPattern extends Controller {
 		listUsers();
 	}
 	
+	private static boolean emailExistsAlready(String email) {
+		for(UserDbo user : ourUsers) {
+			if(email.equals(user.getEmail()))
+				return true;
+		}
+		return false;
+	}
+
 	private static void postUserToDatabase(UserDbo user) {
 		//normally we would post to the database but here just add to the list
 		ourUsers.add(user);
