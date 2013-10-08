@@ -28,10 +28,9 @@
                                 1. make ajax call
                                 2. in the return ajax call(the one that is passed the data from server), we then popup modal and fill in
                          }*
-                        <a href="#" data-toggle="modal" class="btn btn-primary" id="editLink_${user_index-1}">
+                        <a href="#" data-toggle="modal" class="btn" id="editLink_${user_index-1}">
                             Edit
                         </a>
-                        <p style="clear: both;">
                            <script type="text/javascript">
                             var getAddEditPattern= #{jsAction @ajaxAddEdit(':id') /}
                              $(document).ready(function() {	
@@ -42,8 +41,7 @@
                                  });
                        	    });
                             </script>
-</p>
-                        <a href="#deleteModal_${user.id}" data-toggle="modal">
+                        <a href="#deleteModal_${user.id}" data-toggle="modal" class="btn">
                             Delete
                         </a>
                 </td>

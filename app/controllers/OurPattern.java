@@ -80,13 +80,7 @@ public class OurPattern extends Controller {
 			listUsers();
 		}
 		
-		//in Hibernate old school, this was never needed as using "Integer" you could 
-		//call session.saveOrUpdate....dang JPA
-		if(user.getId()==null) {
-			JPA.em().persist(user);
-		}
-		
-		//This should work for when someone changes and email I think
+		user = JPA.em().merge(user);
 		JPA.em().flush();
 		
 		listUsers();
