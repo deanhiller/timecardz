@@ -27,7 +27,10 @@ GET     /deleteTimeCardRender/{timeCardId}	    OtherStuff.deleteTimeCardRender
 GET     /usersignup                        		Register.userRegister
 GET     /usersignup2/{token}                    Register.userRegister2
 
-GET     /ourpattern                    			OurPattern.listUsers
+
+GET     /ourpattern                   			OurPattern.listUsers
+GET     /ajaxUser/{id}                    		OurPattern.ajaxUser
+
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

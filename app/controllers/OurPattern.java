@@ -60,14 +60,16 @@ public class OurPattern extends Controller {
 			//use user?.name, user?.email, etc. etc. since user==null
 			render();
 		}
-		
 		UserDbo user = callDatabaseGetUser(id);
 		render(user);
 	}
 
-	public static void postUser(UserDbo user) {
-		//let's make sure validation works here
+	public static void postUser(UserDbo user,Integer id) {
 		
+		if(user.getEmail().equals("")){
+			validation.addError("user.email", "Please enter an email id");
+		flash.error("Your form has errors");
+		}
 		if(emailExistsAlready(user.getEmail())) {
 			//this puts a message under the actual field and causes the label to turn red and the input border turns
 			//red, etc. etc. (at least when done correctly)
@@ -79,11 +81,15 @@ public class OurPattern extends Controller {
 		//we always allow errors to queue up to show all errors at once for the user in case they have a few errors on
 		//their form
 		if(validation.hasErrors()) {
-			flash.put("showPopup", "true");
+			params.flash(); // add http parameters to the flash scope
+			validation.keep();
+			//flash.put("showPopup", "true");
 			listUsers();
 		}
-		
-		postUserToDatabase(user);
+		if(id==null){
+		JPA.em().persist(user);
+		JPA.em().flush();}
+		postUserToDatabase(user,id);
 		listUsers();
 	}
 	
@@ -95,16 +101,27 @@ public class OurPattern extends Controller {
 		return false;
 	}
 
-	private static void postUserToDatabase(UserDbo user) {
-		//normally we would post to the database but here just add to the list
-		ourUsers.add(user);
+	private static void postUserToDatabase(UserDbo user, Integer id) {
+		if (id == null) {
+			ourUsers.add(user);
+		} else {
+			for (UserDbo  ourUser: ourUsers) {
+				if (ourUser.getId() == id) {
+					ourUser.setId(id);
+					ourUser.setEmail(user.getEmail());
+				}
+			}
+			listUsers();
+		}
 	}
 
 	private static UserDbo callDatabaseGetUser(int id) {
-		//normally we would call into database for the purposes of this patter, it does not matter
-		for(UserDbo user : ourUsers) {
-			if(user.getId() == id)
+		// normally we would call into database for the purposes of this patter,
+		// it does not matter
+		for (UserDbo user : ourUsers) {
+			if (user.getId() == id) {
 				return user;
+			}
 		}
 		return null;
 	}
