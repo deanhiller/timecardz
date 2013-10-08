@@ -1,7 +1,9 @@
 #{extends './userTemplate.html' /}
 
 <h4>Users</h4>
+
 <div id="addEditPatternDiv">  </div>
+
 <table class="table">
     <thead>
         <tr>
@@ -22,21 +24,20 @@
                                 1. make ajax call
                                 2. in the return ajax call(the one that is passed the data from server), we then popup modal and fill in
                          }*
-                        <a href="#myAddEditPattern" data-toggle="modal" class="btn btn-primary" id="myEditPattern_${user_index-1}">
+                        <a href="#" data-toggle="modal" class="btn btn-primary" id="editLink_${user_index-1}">
                             Edit
                         </a>
                         <p style="clear: both;">
-   	                       <script type="text/javascript">
-   	                        var getEditPattern= #{jsAction @OurPattern.ajaxUser(':id') /}
-   	                         $(document).ready(function() {	
-   	                        $("#myEditPattern_${user_index-1}").click(function(e){
-                      		$('#addEditPatternDiv').load(getEditPattern({id:${user.id}}),function(){
-  		                 	$("#myAddEditPatternModal").modal('show');	
-  	                     	});
-  		                     	});
-                       	});
-  	
-  	</script>
+                           <script type="text/javascript">
+                            var getAddEditPattern= #{jsAction @OurPattern.ajaxUser(':id') /}
+                             $(document).ready(function() {	
+                                 $("#editLink_${user_index-1}").click(function(e){
+                                     $('#addEditPatternDiv').load(getAddEditPattern({id:${user.id}}),function(){
+                                         $("#addEditPatternModal").modal('show');	
+                                      });
+                                 });
+                       	    });
+                            </script>
 </p>
                         <a href="#deleteModal_${user.id}" data-toggle="modal">
                             Delete
@@ -58,18 +59,16 @@
                                 1. make ajax call
                                 2. in the return ajax call(the one that is passed the data from server), we then popup modal and fill in
                          }*
-<a href="#myAddEditPattern" data-toggle="modal" class="btn btn-primary" id="myAddPattern">Add User</a>
+<a href="#" class="btn btn-primary" id="addLink">Add User</a>
 <p style="clear: both;">
-   	<script type="text/javascript">
-   	var getAddPattern= #{jsAction @OurPattern.ajaxUser(':id') /}
-   	$(document).ready(function() {	
-  	$("#myAddPattern").click(function(e){
-  		$('#addEditPatternDiv').load(getAddPattern(),function(){
-  			$("#myAddEditPatternModal").modal('show');	
-  		});
-  		
+    <script type="text/javascript">
+    var getAddEditPattern= #{jsAction @ajaxAddEdit(':id') /}
+    $(document).ready(function() {	
+        $("#addLink").click(function(e){
+            $('#addEditPatternDiv').load(getAddEditPattern(),function(){
+                 $("#addEditPatternModal").modal('show');	
+            });
+        });
   	});
-  	});
-  	
   	</script>
 </p>

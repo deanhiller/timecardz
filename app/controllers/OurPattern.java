@@ -55,7 +55,7 @@ public class OurPattern extends Controller {
 		render(users, showPopup);
 	}
 
-	public static void ajaxUser(Integer id) {
+	public static void ajaxAddEdit(Integer id) {
 		if(id == null) { //this is a new user(ie. user add
 			//use user?.name, user?.email, etc. etc. since user==null
 			render();
