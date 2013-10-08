@@ -2,9 +2,15 @@
 
 <h4>Users</h4>
 
-<div id="addEditPatternDiv">
+
+<div id="addEditPatternModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
     #{if showPopup}
-        #{include ajaxAddEdit/}
+        #{include './ajaxAddEdit.html'/}
+        <script type="text/javascript">
+           $(document).ready(function() { 
+               $("#addEditPatternModal").modal('show');   
+           });
+        </script>
     #{/if}
 </div>
 
@@ -35,7 +41,7 @@
                             var getAddEditPattern= #{jsAction @ajaxAddEdit(':id') /}
                              $(document).ready(function() {	
                                  $("#editLink_${user_index-1}").click(function(e){
-                                     $('#addEditPatternDiv').load(getAddEditPattern({id:${user.id}}),function(){
+                                     $('#addEditPatternModal').load(getAddEditPattern({id:${user.id}}),function(){
                                          $("#addEditPatternModal").modal('show');	
                                       });
                                  });
@@ -67,7 +73,7 @@
     var getAddEditPattern= #{jsAction @ajaxAddEdit(':id') /}
     $(document).ready(function() {	
         $("#addLink").click(function(e){
-            $('#addEditPatternDiv').load(getAddEditPattern(),function(){
+            $('#addEditPatternModal').load(getAddEditPattern(),function(){
                  $("#addEditPatternModal").modal('show');	
             });
         });

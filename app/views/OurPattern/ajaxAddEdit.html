@@ -2,8 +2,16 @@
    perhaps we can push it down into this file }*
 
 #{form @OurPattern.postUser()}
-<div id="addEditPatternModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
     <div class="modal-body">
+        #{if flash.error}
+        <div class="row-fluid">
+            <div class="offset3 span6 alert alert-error">
+                <h4>Oops....</h4>
+                ${flash.error}
+            </div>
+        </div>
+        #{/} 
+    
         <input type="hidden" name="user.id" value="${user?.id}"/>  
         
         #{field 'user.email'}
@@ -17,8 +25,7 @@
         #{/field}
     </div>
     <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         <input type="submit" name="submit" value="Save" class="btn btn-primary" />
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     </div>
-</div>
 #{/form}

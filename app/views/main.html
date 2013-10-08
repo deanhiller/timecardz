@@ -84,17 +84,6 @@
       </div>
     </div>
 
-	#{ifErrors}
-		<div class="row-fluid">
-			<div class="offset3 span6 alert alert-error">
-				<h4>Oops....</h4>
-				<ul>
-					#{errors}
-					<li>${error}</li> #{/errors}
-				</ul>
-			</div>
-		</div>
-	#{/ifErrors} 
 	#{if flash.error}
 		<div class="row-fluid">
 			<div class="offset3 span6 alert alert-error">

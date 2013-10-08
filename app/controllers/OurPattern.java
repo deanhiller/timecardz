@@ -44,6 +44,7 @@ public class OurPattern extends Controller {
 	public static void listUsers() {
 		List<UserDbo> users = UserDbo.findAll(JPA.em());
 		String val = flash.get("showPopup");
+		
 		boolean showPopup = false;
 		if("true".equals(val))
 			showPopup = true;
