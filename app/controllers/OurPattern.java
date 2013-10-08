@@ -41,13 +41,8 @@ public class OurPattern extends Controller {
 
 	private static final Logger log = LoggerFactory.getLogger(OurPattern.class);
 	
-	//NOTE: Some of the patterns I use in here are horrible.....like looping over a List instead of just using
-	//a HashMap.....bleck, but for now, we are just demonstrating the ajax pattern we want to copy 1000 times.
-	//This is what we list in the web page..
-	private static List<UserDbo> ourUsers = new ArrayList<UserDbo>();
-	
 	public static void listUsers() {
-		List<UserDbo> users = ourUsers;
+		List<UserDbo> users = UserDbo.findAll(JPA.em());
 		String val = flash.get("showPopup");
 		boolean showPopup = false;
 		if("true".equals(val))
@@ -60,7 +55,7 @@ public class OurPattern extends Controller {
 			//use user?.name, user?.email, etc. etc. since user==null
 			render();
 		}
-		UserDbo user = callDatabaseGetUser(id);
+		UserDbo user = JPA.em().find(UserDbo.class, id);
 		render(user);
 	}
 
@@ -69,7 +64,7 @@ public class OurPattern extends Controller {
 		if(user.getEmail().equals(""))
 			validation.addError("user.email", "Please enter an email id");
 		
-		if(emailExistsAlready(user.getEmail())) {
+		if(emailExistsAlready(user)) {
 			//this puts a message under the actual field and causes the label to turn red and the input border turns
 			//red, etc. etc. (at least when done correctly)
 			validation.addError("user.email", "This email is already in use");
@@ -89,43 +84,19 @@ public class OurPattern extends Controller {
 		//call session.saveOrUpdate....dang JPA
 		if(user.getId()==null) {
 			JPA.em().persist(user);
-			JPA.em().flush();}
+		}
 		
-		postUserToDatabase(user);
+		//This should work for when someone changes and email I think
+		JPA.em().flush();
+		
 		listUsers();
 	}
 	
-	private static boolean emailExistsAlready(String email) {
-		for(UserDbo user : ourUsers) {
-			if(email.equals(user.getEmail()))
-				return true;
-		}
-		return false;
+	private static boolean emailExistsAlready(UserDbo user) {
+		UserDbo otherUser = UserDbo.findByEmail(JPA.em(), user.getEmail());
+		if(otherUser == null || otherUser.getId() == user.getId())
+			return false;
+		return true;
 	}
 
-	private static void postUserToDatabase(UserDbo user) {
-		if (user.getId() == null) {
-			ourUsers.add(user);
-		} else {
-			for (UserDbo  ourUser: ourUsers) {
-				if (ourUser.getId() == user.getId()) {
-					ourUser.setEmail(user.getEmail());
-				}
-			}
-			listUsers();
-		}
-	}
-
-	private static UserDbo callDatabaseGetUser(int id) {
-		// normally we would call into database for the purposes of this patter,
-		// it does not matter
-		for (UserDbo user : ourUsers) {
-			if (user.getId() == id) {
-				return user;
-			}
-		}
-		return null;
-	}
-	
-	
 }

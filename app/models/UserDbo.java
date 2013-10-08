@@ -6,18 +6,26 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.Query;
 
 import play.db.jpa.Model;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="findAll", query="select u from UserDbo as u"),
+	@NamedQuery(name="findByEmail", query="select u from UserDbo as u where u.email=:email")
+})
 public class UserDbo {
 
 	@Id
@@ -150,5 +158,16 @@ public class UserDbo {
 
 	public void addTimecards(TimeCardDbo timecard) {
 		this.timecards.add(timecard);
+	}
+	
+	public static List<UserDbo> findAll(EntityManager mgr) {
+		Query query = mgr.createNamedQuery("findAll");
+		return query.getResultList();
+	}
+
+	public static UserDbo findByEmail(EntityManager mgr, String email) {
+		Query query = mgr.createNamedQuery("findAll");
+		query.setParameter("email", email);
+		return (UserDbo) query.getSingleResult();
 	}
 }
