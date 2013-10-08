@@ -84,11 +84,10 @@
       </div>
     </div>
 
-	#{if flash.error}
+	#{if flash.success}
 		<div class="row-fluid">
 			<div class="offset3 span6 alert alert-error">
-				<h4>Oops....</h4>
-				${flash.error}
+				${flash.success}
 			</div>
 		</div>
 	#{/} 
