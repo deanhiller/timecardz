@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NoResultException;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -166,8 +167,12 @@ public class UserDbo {
 	}
 
 	public static UserDbo findByEmail(EntityManager mgr, String email) {
-		Query query = mgr.createNamedQuery("findAll");
+		Query query = mgr.createNamedQuery("findByEmail");
 		query.setParameter("email", email);
-		return (UserDbo) query.getSingleResult();
+		try {
+			return (UserDbo) query.getSingleResult();
+		} catch(NoResultException e) {
+			return null;
+		}
 	}
 }
