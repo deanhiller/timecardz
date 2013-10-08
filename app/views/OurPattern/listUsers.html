@@ -29,7 +29,7 @@
                         </a>
                         <p style="clear: both;">
                            <script type="text/javascript">
-                            var getAddEditPattern= #{jsAction @OurPattern.ajaxUser(':id') /}
+                            var getAddEditPattern= #{jsAction @ajaxAddEdit(':id') /}
                              $(document).ready(function() {	
                                  $("#editLink_${user_index-1}").click(function(e){
                                      $('#addEditPatternDiv').load(getAddEditPattern({id:${user.id}}),function(){
