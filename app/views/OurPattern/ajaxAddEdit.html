@@ -2,8 +2,8 @@
    perhaps we can push it down into this file }*
 
 #{form @OurPattern.postUser()}
-<div id="myAddEditPatternModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
-    <div id="dbAddEditModal_content" class="modal-body">
+<div id="addEditPatternModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
+    <div class="modal-body">
         <input type="hidden" name="user.id" value="${user?.id}"/>  
         
         #{field 'user.email'}
