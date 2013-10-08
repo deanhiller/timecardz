@@ -2,8 +2,10 @@
 
 <h4>Users</h4>
 
-
-<div id="addEditPatternModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
+<div id="addEditPatternModal" class="modal hide #{if showPopup}in#{/if}" tabindex="-1" 
+     role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" 
+     aria-hidden="#{if showPopup}false#{/if}#{else}true#{/else}"
+     #{if showPopup}style="display: block;"#{/if}>
     #{if showPopup}
         #{include './ajaxAddEdit.html'/}
         <script type="text/javascript">
