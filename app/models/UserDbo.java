@@ -22,7 +22,7 @@ public class UserDbo {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 
 	@Column(unique = true)
 	private String email;
@@ -57,7 +57,7 @@ public class UserDbo {
 	@OneToMany
 	private List<TimeCardDbo> timecards = new ArrayList<TimeCardDbo>();
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -80,7 +80,7 @@ public class UserDbo {
 		this.timecards.remove(timecards);
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

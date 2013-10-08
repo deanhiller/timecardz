@@ -2,8 +2,7 @@
    perhaps we can push it down into this file }*
 
 #{form @OurPattern.postUser()}
-	<input id="addEditPatternId" type="hidden" name="id" value="${user?.id}">
-	<input id="addEditPatternId" type="hidden" name="userid" value="${user}">
+	<input id="addEditPatternId" type="hidden" name="user.id" value="${user?.id}">
 	<div id="myAddEditPatternModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
 	<div id="dbAddEditModal_content" class="modal-body">
     *{ We hope this single form will be used for adds and edits so we don't have to do double the work as

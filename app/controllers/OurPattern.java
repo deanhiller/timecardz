@@ -64,32 +64,34 @@ public class OurPattern extends Controller {
 		render(user);
 	}
 
-	public static void postUser(UserDbo user,Integer id) {
+	public static void postUser(UserDbo user) {
 		
-		if(user.getEmail().equals("")){
+		if(user.getEmail().equals(""))
 			validation.addError("user.email", "Please enter an email id");
-		flash.error("Your form has errors");
-		}
+		
 		if(emailExistsAlready(user.getEmail())) {
 			//this puts a message under the actual field and causes the label to turn red and the input border turns
 			//red, etc. etc. (at least when done correctly)
 			validation.addError("user.email", "This email is already in use");
-			//this puts a message at the top of the form!!!!
-			flash.error("Your form has errors");
 		}
-		
+
 		//we always allow errors to queue up to show all errors at once for the user in case they have a few errors on
 		//their form
 		if(validation.hasErrors()) {
 			params.flash(); // add http parameters to the flash scope
 			validation.keep();
-			//flash.put("showPopup", "true");
+			flash.error("Your form has errors");
+			flash.put("showPopup", "true");
 			listUsers();
 		}
-		if(id==null){
-		JPA.em().persist(user);
-		JPA.em().flush();}
-		postUserToDatabase(user,id);
+		
+		//in Hibernate old school, this was never needed as using "Integer" you could 
+		//call session.saveOrUpdate....dang JPA
+		if(user.getId()==null) {
+			JPA.em().persist(user);
+			JPA.em().flush();}
+		
+		postUserToDatabase(user);
 		listUsers();
 	}
 	
@@ -101,13 +103,12 @@ public class OurPattern extends Controller {
 		return false;
 	}
 
-	private static void postUserToDatabase(UserDbo user, Integer id) {
-		if (id == null) {
+	private static void postUserToDatabase(UserDbo user) {
+		if (user.getId() == null) {
 			ourUsers.add(user);
 		} else {
 			for (UserDbo  ourUser: ourUsers) {
-				if (ourUser.getId() == id) {
-					ourUser.setId(id);
+				if (ourUser.getId() == user.getId()) {
 					ourUser.setEmail(user.getEmail());
 				}
 			}
