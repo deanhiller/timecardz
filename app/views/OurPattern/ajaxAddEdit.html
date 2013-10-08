@@ -2,30 +2,23 @@
    perhaps we can push it down into this file }*
 
 #{form @OurPattern.postUser()}
-	<input id="addEditPatternId" type="hidden" name="user.id" value="${user?.id}">
-	<div id="myAddEditPatternModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
-	<div id="dbAddEditModal_content" class="modal-body">
-    *{ We hope this single form will be used for adds and edits so we don't have to do double the work as
-       we always end up with at least 8 List/Add/Edit/Delete pages and want to be efficient at creating each one }*
-
-    *{ NOTE: The very nice thing about this is user?.id is null when we are adding and
-       it is NOT null when we are editing }*
-      <input type="hidden" value="jhahs"/>
-  
-    #{field 'user.email'}
-    <div class="control-group ${field.errorClass}">
-        <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>email</label>
-        <div class="controls">
-            <input id="entityTable" type="text" name="${field.name}" value="${user?.email}" class="input-xlarge">
-            <span class="help-block">${field.error}</span>
-        </div>
-	   
-    </div>
-    #{/field}
-    
+<div id="myAddEditPatternModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
+    <div id="dbAddEditModal_content" class="modal-body">
+        <input type="hidden" name="user.id" value="${user?.id}"/>  
         
+        #{field 'user.email'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>email</label>
+            <div class="controls">
+                <input id="entityTable" type="text" name="${field.name}" value="${user?.email}" class="input-xlarge">
+                <span class="help-block">${field.error}</span>
+            </div>
+        </div>
+        #{/field}
+    </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         <input type="submit" name="submit" value="Save" class="btn btn-primary" />
     </div>
+</div>
 #{/form}

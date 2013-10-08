@@ -2,7 +2,11 @@
 
 <h4>Users</h4>
 
-<div id="addEditPatternDiv">  </div>
+<div id="addEditPatternDiv">
+    #{if showPopup}
+        #{include ajaxAddEdit/}
+    #{/if}
+</div>
 
 <table class="table">
     <thead>
