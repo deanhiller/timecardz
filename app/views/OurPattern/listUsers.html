@@ -19,18 +19,18 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Id</th>
+            <th>FirstName</th>
+            <th>LastName</th>
             <th>Email</th>
-            <th>SomethingElse</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         #{list users, as:'user'}
             <tr>
-                <td> ${user.id}</td>
+                <td>${user.firstName}</td>
+                <td>${user.lastName}</td>
                 <td>${user.email}</td>
-                <td></td>
                 <td>
                         *{ TODO: We need to add javascript to 
                                 1. make ajax call

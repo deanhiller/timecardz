@@ -23,10 +23,6 @@ import javax.persistence.Query;
 import play.db.jpa.Model;
 
 @Entity
-@NamedQueries({
-	@NamedQuery(name="findAll", query="select u from UserDbo as u"),
-	@NamedQuery(name="findByEmail", query="select u from UserDbo as u where u.email=:email")
-})
 public class UserDbo {
 
 	@Id
@@ -161,18 +157,4 @@ public class UserDbo {
 		this.timecards.add(timecard);
 	}
 	
-	public static List<UserDbo> findAll(EntityManager mgr) {
-		Query query = mgr.createNamedQuery("findAll");
-		return query.getResultList();
-	}
-
-	public static UserDbo findByEmail(EntityManager mgr, String email) {
-		Query query = mgr.createNamedQuery("findByEmail");
-		query.setParameter("email", email);
-		try {
-			return (UserDbo) query.getSingleResult();
-		} catch(NoResultException e) {
-			return null;
-		}
-	}
 }

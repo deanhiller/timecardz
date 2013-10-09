@@ -21,7 +21,7 @@ import models.StatusEnum;
 import models.TimeCardDbo;
 import models.Token;
 
-import models.UserDbo;
+import models.EntityDbo;
 
 import models.CompanyDbo;
 
@@ -42,7 +42,7 @@ public class OurPattern extends Controller {
 	private static final Logger log = LoggerFactory.getLogger(OurPattern.class);
 	
 	public static void listUsers() {
-		List<UserDbo> users = UserDbo.findAll(JPA.em());
+		List<EntityDbo> users = EntityDbo.findAll(JPA.em());
 		String val = flash.get("showPopup");
 		
 		boolean showPopup = false;
@@ -56,16 +56,22 @@ public class OurPattern extends Controller {
 			//use user?.name, user?.email, etc. etc. since user==null
 			render();
 		}
-		UserDbo user = JPA.em().find(UserDbo.class, id);
+		EntityDbo user = JPA.em().find(EntityDbo.class, id);
 		render(user);
 	}
 
-	public static void postUser(UserDbo user) {
+	public static void postUser(EntityDbo user) {
+
+		if (user.getFirstName().equals(""))
+			validation.addError("user.firstName", "Please enter firstName");
+
+		if (user.getLastName().equals(""))
+			validation.addError("user.lasttName", "Please enter lastName");
 		
 		if(user.getEmail().equals(""))
 			validation.addError("user.email", "Please enter an email id");
-		
-		if(emailExistsAlready(user)) {
+
+		if (emailExistsAlready(user)) {
 			//this puts a message under the actual field and causes the label to turn red and the input border turns
 			//red, etc. etc. (at least when done correctly)
 			validation.addError("user.email", "This email is already in use");
@@ -87,8 +93,8 @@ public class OurPattern extends Controller {
 		listUsers();
 	}
 	
-	private static boolean emailExistsAlready(UserDbo user) {
-		UserDbo otherUser = UserDbo.findByEmail(JPA.em(), user.getEmail());
+	private static boolean emailExistsAlready(EntityDbo user) {
+		EntityDbo otherUser = EntityDbo.findByEmail(JPA.em(), user.getEmail());
 		if(otherUser == null || otherUser.getId() == user.getId())
 			return false;
 		return true;
