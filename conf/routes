@@ -29,7 +29,7 @@ GET     /usersignup2/{token}                    Register.userRegister2
 
 
 GET     /ourpattern                   			OurPattern.listUsers
-GET     /ajaxUser/{id}                    		OurPattern.ajaxAddEdit
+GET     /ajaxAddEdit/{id}                 		OurPattern.ajaxAddEdit
 GET     /ajaxDelete/{id}                    	OurPattern.ajaxDelete
 
 

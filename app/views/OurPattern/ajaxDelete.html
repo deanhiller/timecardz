@@ -1,11 +1,10 @@
 #{form @postDelete(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
 	
-	<input   type="hidden" name="userid" value="${id}"/>  
+	<input   type="hidden" name="userid" value="${user.id}"/>  
 	<div id="myDeletePattern" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
 	<div id="deletePattern_content" class="modal-body">
 	    <p>
-        The action of deleting an entire detail of this user. It is
-        a very invasive change to the system. ${user}
+        Are you sure you want to delete ${user.email}
     </p>
 	</div>
 		<div class="modal-footer">

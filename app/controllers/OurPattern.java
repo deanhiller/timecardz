@@ -61,7 +61,8 @@ public class OurPattern extends Controller {
 	}
 
 	public static void ajaxDelete(Integer id) {
-		render(id);
+		EntityDbo user = JPA.em().find(EntityDbo.class, id);
+		render(user);
 	}
 
 	public static void postDelete(Integer userid) {
