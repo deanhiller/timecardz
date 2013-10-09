@@ -60,6 +60,17 @@ public class OurPattern extends Controller {
 		render(user);
 	}
 
+	public static void ajaxDelete(Integer id) {
+		render(id);
+	}
+
+	public static void postDelete(Integer userid) {
+		EntityDbo user = JPA.em().find(EntityDbo.class, userid);
+		JPA.em().remove(user);
+		JPA.em().flush();
+		listUsers();
+	}
+
 	public static void postUser(EntityDbo user) {
 
 		if (user.getFirstName().equals(""))
