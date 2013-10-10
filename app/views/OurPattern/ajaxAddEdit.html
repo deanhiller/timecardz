@@ -1,7 +1,7 @@
 *{ I believe this form will go in two different modal popups OR maybe just one...not sure yet...if one modal popup,
    perhaps we can push it down into this file }*
 
-#{form @OurPattern.postUser()}
+#{form @OurPattern.postUser(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
     <div class="modal-body">
         #{if flash.error}
         <div class="row-fluid">
