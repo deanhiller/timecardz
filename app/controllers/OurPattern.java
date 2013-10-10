@@ -44,11 +44,14 @@ public class OurPattern extends Controller {
 	public static void listUsers() {
 		List<EntityDbo> users = EntityDbo.findAll(JPA.em());
 		String val = flash.get("showPopup");
-		
+		String valForDelete = flash.get("showPopupForDelete");
 		boolean showPopup = false;
+		boolean showPopupForDelete = false;
 		if("true".equals(val))
 			showPopup = true;
-		render(users, showPopup);
+		if("true".equals(valForDelete))
+			showPopup = true;
+		render(users, showPopup,showPopupForDelete);
 	}
 
 	public static void ajaxAddEdit(Integer id) {

@@ -15,7 +15,18 @@
         </script>
     #{/if}
 </div>
-<div id="deletePatternModal"></div>
+<div id="deletePatternModal" class="modal hide fade="${showPopupForDelete}" tabindex="-1"  role="dialog" data-backdrop="true" aria-labelledby="deleteModalLabel" 
+     aria-hidden=" #{if showPopupForDelete}false#{/if}#{else}true#{/else}"
+     style="#{if showPopupForDelete}display: block;#{/if}#{else}display: none;#{/else}">
+     #{if showPopupForDelete}
+       #{include './ajaxDelete.html'/}
+        <script type="text/javascript">
+           $(document).ready(function() { 
+               $("#deletePatternModal").modal('show');   
+           });
+        </script>
+     #{/if} 
+ </div>
 
 <table class="table">
     <thead>
@@ -44,19 +55,19 @@
                             var getAddEditPattern= #{jsAction @ajaxAddEdit(':id') /}
                              $(document).ready(function() {	
                                  $("#editLink_${user_index-1}").click(function(e){
-                                     $('#addEditPatternModal').load(getAddEditPattern({id:${user.id}}),function(){
-                                         $("#addEditPatternModal").modal('show');	
+                                     $('#deletePatternModal').load(getAddEditPattern({id:${user.id}}),function(){
+                                         $("#deletePatternModal").modal('show');	
                                       });
                                  });
                        	    });
                             </script>
-                        <a href="#deletePattern" data-toggle="modal" class="btn" id="deletePattern_${user_index-1}"> Delete </a>
+                        <a href="#" data-toggle="modal" class="btn" id="deletePattern_${user_index-1}"> Delete </a>
                            <script type="text/javascript">
-							    var getDeletePattern= #{jsAction @OurPattern.ajaxDelete(':id') /}
+							    var getDeletePattern= #{jsAction @ajaxDelete(':id') /}
 							    $(document).ready(function() {	
 							        $("#deletePattern_${user_index-1}").click(function(e){
 							            $('#deletePatternModal').load(getDeletePattern({id:'${user.id}'}),function(){
-							                 $("#myDeletePattern").modal('show');	
+							                 $("#deletePatternModal").modal('show');	
 							            });
 							        });
 							  	});
