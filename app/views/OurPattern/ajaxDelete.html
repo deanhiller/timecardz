@@ -1,7 +1,8 @@
-#{form @OurPattern.postDelete(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
-	<div class="modal-body">
-	<input   type="hidden" name="userid" value="${user?.id}"/>  
-	    <p>
+#{form @postDelete(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
+  
+  <input   type="hidden" name="userid" value="${user.id}"/>  
+  <div id="myDeletePattern" class="modal hide" data-backdrop="true" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div id="deletePattern_content" class="modal-body">	    <p>
         Are you sure you want to delete ${user?.email}
     </p>
 	</div>
