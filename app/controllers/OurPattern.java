@@ -81,7 +81,7 @@ public class OurPattern extends Controller {
 			validation.addError("user.firstName", "Please enter firstName");
 
 		if (user.getLastName().equals(""))
-			validation.addError("user.lasttName", "Please enter lastName");
+			validation.addError("user.lastName", "Please enter lastName");
 		
 		if(user.getEmail().equals(""))
 			validation.addError("user.email", "Please enter an email id");
