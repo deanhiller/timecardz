@@ -29,15 +29,16 @@ GET     /usersignup2/{token}                    Register.userRegister2
 
 
 GET     /ourpattern                   			OurPattern.listUsers
-GET     /ajaxAddEdit/{id}                 		OurPattern.ajaxAddEdit
-GET     /ajaxDelete/{id}                    	OurPattern.ajaxDelete
-
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
+
+# Routes for all ajaxAddEdit and delete stuff
+GET     /{controller}/ajaxAddEdit/{id}          {controller}.ajaxAddEdit
+GET     /{controller}/ajaxDelete/{id}           {controller}.ajaxDelete
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
