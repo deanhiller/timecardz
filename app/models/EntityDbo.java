@@ -12,6 +12,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.hibernate.annotations.Index;
+
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "findAll", query = "select u from EntityDbo as u"),
@@ -22,6 +24,7 @@ public class EntityDbo {
 	@GeneratedValue
 	private Integer id;
 
+	@Index(name="entityIndex")
 	@Column(unique = true)
 	private String email;
 
