@@ -49,7 +49,7 @@ public class UserDbo {
 	private boolean isAdmin;
 	private String endOfWeek;
 
-	private String beginOfWeek;
+	private String beginDayOfWeek;
 
 	private String getEmailYesOrNo;
 
@@ -61,12 +61,12 @@ public class UserDbo {
 		this.endOfWeek = endOfWeek;
 	}
 
-	public String getBeginOfWeek() {
-		return beginOfWeek;
+	public String getBeginDayOfWeek() {
+		return beginDayOfWeek;
 	}
 
-	public void setBeginOfWeek(String beginOfWeek) {
-		this.beginOfWeek = beginOfWeek;
+	public void setBeginDayOfWeek(String beginDayOfWeek) {
+		this.beginDayOfWeek = beginDayOfWeek;
 	}
 
 	public String isGetEmailYesOrNo() {

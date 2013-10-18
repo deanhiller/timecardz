@@ -31,10 +31,10 @@ public class OtherStuff extends Controller {
 		render();
 	}
 
-	public static void adminSetup(String begionOfWeek, String endOfWeek,
+	public static void adminSetup(String beginDayOfWeek, String endOfWeek,
 			String emailSend) {
 		UserDbo admin = Utility.fetchUser();
-		admin.setBeginOfWeek(begionOfWeek);
+		admin.setBeginDayOfWeek(beginDayOfWeek);
 		admin.setEndOfWeek(endOfWeek);
 		admin.setGetEmailYesOrNo(emailSend);
 		JPA.em().persist(admin);
@@ -54,9 +54,16 @@ public class OtherStuff extends Controller {
 
 	public static void home(Integer id) {
 		UserDbo employee = Utility.fetchUser();
+		UserDbo manager=employee.getManager();
 		List<UserDbo> employees = employee.getEmployees();
 		List<TimeCardDbo> timeCards = employee.getTimecards();
 		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
+		if(manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")){
+			beginOfWeek=beginOfWeek.minusDays(2);
+		}
+		if(manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
+			beginOfWeek=beginOfWeek.minusDays(1);
+		}
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd");
 		if (id == null) {
 			String email = employee.getEmail();

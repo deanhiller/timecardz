@@ -25,10 +25,15 @@ public class TimeCardAddition extends Controller {
 		UserDbo user = Utility.fetchUser();
 		CompanyDbo company = user.getCompany();
 		UserDbo manager = user.getManager();
-
-		TimeCardDbo timeCardDbo = new TimeCardDbo();
-		timeCardDbo.setBeginOfWeek(Utility.calculateBeginningOfTheWeek());
 		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
+		if (manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")) {
+			beginOfWeek = beginOfWeek.minusDays(2);
+		}
+		if (manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")) {
+			beginOfWeek = beginOfWeek.minusDays(1);
+		}
+		TimeCardDbo timeCardDbo = new TimeCardDbo();
+		timeCardDbo.setBeginOfWeek(beginOfWeek);
 		int totalhours = 0;
 		for (int i = 0; i < 7; i++) {
 			DayCardDbo dayC = new DayCardDbo();
@@ -58,17 +63,28 @@ public class TimeCardAddition extends Controller {
 		JPA.em().persist(timeCardDbo);
 		JPA.em().persist(user);
 		JPA.em().flush();
-		Utility.sendEmailForApproval(manager.getEmail(), company.getName(),
-				user.getEmail());
+		if (manager.isGetEmailYesOrNo().equalsIgnoreCase("yes")) {
+			System.out.println("sending mail");
+			Utility.sendEmailForApproval(manager.getEmail(), company.getName(),
+					user.getEmail());
+		}
 		OtherStuff.home(id);
 	}
 
 	public static void addEditTimeCardRender(Integer timeCardId) {
+		UserDbo user = Utility.fetchUser();
+		UserDbo manager = user.getManager();
 		StatusEnum status = null;
 		TimeCardDbo timeCard = null;
 		DayCardDbo dayC = null;
 		boolean readOnly = false;
 		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
+		if(manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")){
+			beginOfWeek=beginOfWeek.minusDays(2);
+		}
+		if(manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
+			beginOfWeek=beginOfWeek.minusDays(1);
+		}
 		if (timeCardId == null) {
 			timeCard = new TimeCardDbo();
 			timeCard.setBeginOfWeek(Utility.calculateBeginningOfTheWeek());
