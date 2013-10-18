@@ -26,10 +26,10 @@ public class TimeCardAddition extends Controller {
 		CompanyDbo company = user.getCompany();
 		UserDbo manager = user.getManager();
 		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
-		if (manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")) {
+		if (manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")) {
 			beginOfWeek = beginOfWeek.minusDays(2);
 		}
-		if (manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")) {
+		if (manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")) {
 			beginOfWeek = beginOfWeek.minusDays(1);
 		}
 		TimeCardDbo timeCardDbo = new TimeCardDbo();
@@ -63,8 +63,7 @@ public class TimeCardAddition extends Controller {
 		JPA.em().persist(timeCardDbo);
 		JPA.em().persist(user);
 		JPA.em().flush();
-		if (manager.isGetEmailYesOrNo().equalsIgnoreCase("yes")) {
-			System.out.println("sending mail");
+		if (manager.isGetEmailYesOrNo() !=null && manager.isGetEmailYesOrNo().equalsIgnoreCase("yes")) {
 			Utility.sendEmailForApproval(manager.getEmail(), company.getName(),
 					user.getEmail());
 		}
@@ -79,10 +78,10 @@ public class TimeCardAddition extends Controller {
 		DayCardDbo dayC = null;
 		boolean readOnly = false;
 		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
-		if(manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")){
+		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")){
 			beginOfWeek=beginOfWeek.minusDays(2);
 		}
-		if(manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
+		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
 			beginOfWeek=beginOfWeek.minusDays(1);
 		}
 		if (timeCardId == null) {

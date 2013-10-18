@@ -95,6 +95,7 @@ public class Secure extends Controller {
 		log.info("trying to login with username=" + username);
 		// Check tokens
 		Integer id = null;
+		validation.required(username);
 		Boolean allowed = (Boolean) Security.invoke("authenticate", username,password);
 		if (!allowed) {
 			flash.error("Login access is denied(username or password is incorrect)");
@@ -103,7 +104,7 @@ public class Secure extends Controller {
         	flash.keep("url");
             params.flash(); // add http parameters to the flash scope
 	        validation.keep(); // keep the errors for the next request
-            login();
+            Application.login();
         }
 
         //Session temp = session;
@@ -174,9 +175,12 @@ public class Secure extends Controller {
         static boolean authenticate(String username, String password) {
 			EntityManager em = JPA.em();
 			UserDbo user = UserDbo.findByEmailId(JPA.em(), username);
-			if (user != null && user.getPassword().equals(password))
+			if (user != null && user.getPassword().equals(password)) {
 				return true;
-			return false;
+			} else {
+				validation.addError("password",	"The username or password is invalid");
+				return false;
+			}
         }
 
         /**

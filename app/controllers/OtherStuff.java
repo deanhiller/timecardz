@@ -58,10 +58,10 @@ public class OtherStuff extends Controller {
 		List<UserDbo> employees = employee.getEmployees();
 		List<TimeCardDbo> timeCards = employee.getTimecards();
 		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
-		if(manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")){
+		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")){
 			beginOfWeek=beginOfWeek.minusDays(2);
 		}
-		if(manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
+		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
 			beginOfWeek=beginOfWeek.minusDays(1);
 		}
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd");
