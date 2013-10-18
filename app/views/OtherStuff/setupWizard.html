@@ -1,0 +1,37 @@
+#{extends './userTemplate.html' /}
+#{form @OtherStuff.adminSetup()}
+<input id="add" type="hidden" name="user" value="${user}">
+<h3>SetUp Wizard </h3>
+
+<h4><strong>Begin of Week</strong></h4>
+<div class="input-prepend">
+<span class="add-on"><input type="radio" name="beginOfWeek" value="Saturady"></span>
+<input type="text" value="Saturady" readonly="true"></input>
+<span class="add-on" style="margin-left:10px;"><input type="radio" name="beginOfWeek" value="Sunday"></span>
+<input type="text" value="Sunday" readonly="true"></input>
+<span class="add-on" style="margin-left:10px;"><input type="radio" name="beginOfWeek" value="Monday"></span>
+<input type="text" value="Monday" readonly="true"></input>
+</div>
+
+<h4><strong>End of Week</strong></h4>
+<div class="input-prepend">
+<span class="add-on"><input type="radio" name="endOfWeek" value="Thrusday"></span>
+<input type="text" value="Thrusday" readonly="true"></input>
+<span class="add-on" style="margin-left:10px;"><input type="radio" name="endOfWeek" value="Friday"></span>
+<input type="text" value="Friday" readonly="true"></input>
+<span class="add-on" style="margin-left:10px;"><input type="radio" name="endOfWeek" value="Saturday"></span>
+<input type="text" value="Saturday" readonly="true"></input>
+</div>
+
+<h4><strong>Send Email reminder to fill out TimeCard</strong></h4>
+<div class="input-prepend">
+<span class="add-on"><input type="radio" name="emailSend" value="Yes"></span>
+<input type="text" value="Yes" readonly="true"></input>
+<span class="add-on" style="margin-left:10px;"><input type="radio" name="emailSend" value="No"></span>
+<input type="text" value="No" readonly="true"></input>
+</div>
+<input type="submit" name="submit" value="submit" class="btn434 btn-primary" />
+#{/form}
+
+
+

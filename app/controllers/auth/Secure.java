@@ -88,18 +88,19 @@ public class Secure extends Controller {
         
         log.info("hitting login page");
         flash.keep("url");
-        Application.signin();
+        Application.login();
     }
 
     public static void authenticate(@Required String username, String password, boolean remember) throws Throwable {
-    	log.info("trying to login with username="+username);
-        // Check tokens
-        Boolean allowed = (Boolean)Security.invoke("authenticate", username, password);
-        if(!allowed) {
-        	flash.error("Login access is denied(username or password is incorrect)");
-        }
+		log.info("trying to login with username=" + username);
+		// Check tokens
+		Integer id = null;
+		Boolean allowed = (Boolean) Security.invoke("authenticate", username,password);
+		if (!allowed) {
+			flash.error("Login access is denied(username or password is incorrect)");
+		}
         if(validation.hasErrors() || !allowed) {
-            flash.keep("url");
+        	flash.keep("url");
             params.flash(); // add http parameters to the flash scope
 	        validation.keep(); // keep the errors for the next request
             login();
@@ -109,7 +110,6 @@ public class Secure extends Controller {
         
         // Mark user as connected
         addUserToSession(username);
-        
         // Remember if needed
         if(remember) {
             Date expiration = new Date();
@@ -117,8 +117,7 @@ public class Secure extends Controller {
             expiration.setTime(expiration.getTime() + Time.parseDuration(duration));
             response.setCookie("rememberme", Crypto.sign(username + "-" + expiration.getTime()) + "-" + username + "-" + expiration.getTime(), duration);
         }
-        
-      OtherStuff.dashboard();
+        OtherStuff.home(id);
     }
 
     @Util
@@ -173,15 +172,11 @@ public class Secure extends Controller {
          * @return true if the authentication process succeeded
          */
         static boolean authenticate(String username, String password) {
-        	EntityManager em = JPA.em();
-        	EmailToUserDbo email = em.find(EmailToUserDbo.class, username);
-        	if(email != null) {
-        		UserDbo user = em.find(UserDbo.class, email.getValue());
-        		if(user != null && user.getPassword().equals(password))
-        			return true;
-        	}
-        	
-            return false;
+			EntityManager em = JPA.em();
+			UserDbo user = UserDbo.findByEmailId(JPA.em(), username);
+			if (user != null && user.getPassword().equals(password))
+				return true;
+			return false;
         }
 
         /**
@@ -243,7 +238,7 @@ public class Secure extends Controller {
         private static Object invoke(String m, Object... args) throws Throwable {
 
             try {
-                return Java.invokeChildOrStatic(Security.class, m, args);       
+            	return Java.invokeChildOrStatic(Security.class, m, args);       
             } catch(InvocationTargetException e) {
                 throw e.getTargetException();
             }

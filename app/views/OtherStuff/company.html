@@ -1,67 +1,39 @@
 #{extends './userTemplate.html' /}
+<div id="addUserModalDiv"></div>
+<h3> Employees of ${company?.name}</h3>
+<table class="table table-striped table-bordered table-condensed">
+<thead>
+     <tr>
+           <th>email </th>
+           <th> FirstName</th>
+           <th> lastName </th>
+           <th>admin</th>
+           <th>manager</th>
+     </tr>
+   </thead>  
+   <tbody>
+   #{list users, as:'user'}
+      <tr>
+           <td>${user.email}</td>
+           <td>${user.firstName}</td>
+           <td> ${user.lastName}</td>
+           <td>${user.isAdmin}</td>
+           <td>${user.manager.email}</td>
+     </tr>
+     #{/list}
+     </tbody>
+</table>
 
-<div class="container">
-<h3>My Company</h3>
-</div>
- 
-    #{if company == null}
-       					<a href="/addcompany"><span style="color: blue;">Register a new Company</span></a>
-    #{/if}
-				
-    #{else}
-		<table class="table table-striped table-bordered table-condensed">
-			<thead>
-			    <tr>
-		            <th>Company Name</th> 
-		            <th>Address</th>
-		            <th>Detail</th>
-			    </tr>
-			</thead>
-			<tbody>
-	       		<tr>
-	          		  <td>
-	       				<a href="/companydetails"><span style="color: blue;">${company.name}</span></a>
-	      		      </td>
-			          <td>
-	            		${company.address}
-			          </td>
-			          <td>
-						${company.description}
-			          </td>
-		        </tr> 
-			</tbody>
-		</table>
-	#{/else}
-
-<div class="container">
-<h3>My Team</h3>
-</div>
-    #{ifnot employees}
-       	<span style="color: blue;"> There is no member in your team</span>
-    #{/ifnot}
-    #{else}
-		<table class="table table-striped table-bordered table-condensed">
-			<thead>
-			    <tr>
-		            <th>Employee Id</th> 
-		            <th>Name</th>
-		            <th>Detail</th>
-			    </tr>
-			</thead>
-			<tbody>
-				#{list employees, as:'employee'}
-	       		  <tr>
-	          		  <td>
-	       				<a href="@{OtherStuff.userCards(employee.email)}"> ${employee.email} </a>
-	      		      </td>
-			          <td>
-	            		${employee.firstName} ${employee.lastName}
-			          </td>
-			          <td>
-						TBD
-			          </td>
-		          </tr>
-		        #{/list} 
-			</tbody>
-		</table>
-	#{/else}
+<a href="#" class="btn btn-primary" id="addUser">Add User</a>
+<p style="clear: both;">
+    <script type="text/javascript">
+    var getUser= #{jsAction @UserAddition.AddUser() /}
+    $(document).ready(function() {	
+        $("#addUser").click(function(e){
+            $('#addUserModalDiv').load(getUser(),function(){
+                 $("#addUserModal").modal('show');	
+            });
+        });
+  	});
+  	</script>
+</p>

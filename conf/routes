@@ -4,28 +4,24 @@
 
 # Home page
 GET     /                                         Application.index
-GET		/signin                                   Application.signin
-GET     /signup                                   Application.signup
+GET		/login                                    Application.login
+GET     /register                                 Application.register
 GET     /contact                                  Application.contact
 GET     /about                                    Application.about
 GET     /blog                                     Application.blog
 GET     /pricing                                  Application.pricing
 
+ 
+GET     /{TimeCardAddition}/addedittimecardrender/{timeCardId}		{TimeCardAddition}.addEditTimeCardRender
 
-GET     /admindashboard                         OtherStuff.company
-GET     /addcompany                             OtherStuff.addCompany
-GET     /companydetails                         OtherStuff.companyDetails
-GET     /adduser                         		OtherStuff.addUser
-GET     /dashboard								OtherStuff.dashboard
-GET     /employee							    OtherStuff.employee
-GET     /usercards								OtherStuff.userCards
-GET     /detail/{timeCard}					    OtherStuff.detail
-GET     /detailEmployee/{timeCard}	            OtherStuff.detailEmployee 
-GET     /addedittimecardrender/{timeCardId}		OtherStuff.addEditTimeCardRender
-GET     /deleteTimeCardRender/{timeCardId}	    OtherStuff.deleteTimeCardRender
 
-GET     /usersignup                        		Register.userRegister
-GET     /usersignup2/{token}                    Register.userRegister2
+
+GET     /{OtherStuff}/setUpWizard	                        {OtherStuff}.setUpWizard
+GET     /{OtherStuff}/admin/users	                        {OtherStuff}.company
+GET     /{OtherStuff}/home	                                {OtherStuff}.home
+GET     /addedusersignup/{token}                            Register.addedUserRegister
+
+GET    /UserAddition}/addUser                    /UserAddition}.addUser
 
 
 GET     /ourpattern                   			OurPattern.listUsers

@@ -1,0 +1,32 @@
+#{extends 'main.html' /}
+#{set title:'Sign-in' /}
+
+    
+	 #{form @auth.Secure.authenticate(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
+       #{formfield 'username'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>username</label>
+            <div class="controls">
+                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+                <span class="help-block">${field.error}</span>
+            </div>
+        </div>
+        #{/formfield}
+        #{formfield 'password'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>password</label>
+            <div class="controls">
+                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+                <span class="help-block">${field.error}</span>
+            </div>
+        </div>
+        #{/formfield}
+        <div> 
+             <input type="submit" name="submit" value="LOGIN"  class="btn btn-primary" />
+        </div>
+	  #{/form}         
+                   
+
+                    <div class="offset7"><span><h4>Not have an account?</h4>  <a href="/register"><h3>REGISTER</h3></a></span>
+                  </div>
+    

@@ -23,11 +23,7 @@ public class Utility {
 	
 	public static UserDbo fetchUser() {
 		String userName = Session.current().get("username");
-		EmailToUserDbo ref = JPA.em().find(EmailToUserDbo.class, userName);
-		if(ref == null) {
-			throw new Unauthorized("bug, user not found, corrupt session");
-		}
-		UserDbo user = JPA.em().find(UserDbo.class, ref.getValue());
+		UserDbo user = UserDbo.findByEmailId(JPA.em(), userName);
 		return user;
 	}
 
@@ -53,7 +49,7 @@ public class Utility {
 			email.addTo(emailId);
 			email.setSubject("You are registered for " + company);
 			email.setMsg(" Hi,\n You have been added on www.tbd.com for "+ company + 
-					" to submit your time cards. \n Please go to "+ signupUrl +"usersignup2/"+key+"  and complete the registration. \n Best Regards");
+					" to submit your time cards. \n Please go to "+ signupUrl +"addedusersignup/"+key+"  and complete the registration. \n Best Regards");
 
 			Mail.send(email); 
 		} catch (EmailException e) {

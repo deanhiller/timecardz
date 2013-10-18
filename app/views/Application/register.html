@@ -1,0 +1,49 @@
+#{extends 'main.html' /}
+#{set title:'register' /}
+ 
+   #{form @Register.postRegister(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
+    <div class="modal-body">
+       #{formfield 'company'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>company</label>
+            <div class="controls">
+                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+                <span class="help-block">${field.error}</span>
+            </div>
+        </div>
+        #{/formfield}
+        #{formfield 'email'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>email</label>
+            <div class="controls">
+                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+                <span class="help-block">${field.error}</span>
+            </div>
+        </div>
+        #{/formfield}
+        #{formfield 'password'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>password</label>
+            <div class="controls">
+                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+                <span class="help-block">${field.error}</span>
+            </div>
+        </div>
+        #{/formfield}
+         #{formfield 'verifyPassword'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>verifyPassword</label>
+            <div class="controls">
+                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+                <span class="help-block">${field.error}</span>
+            </div>
+        </div>
+        #{/formfield}
+   </div>
+    <div>    <input type="submit" name="submit" value="REGISTER"  class="btn btn-primary" />
+       
+    </div>
+#{/form}
+
+ <div class="offset7"><span><h4>Already have an account?</h4>  <a href="/login"><h3>LOGIN</h3></a></span>
+                  </div>

@@ -20,15 +20,21 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Query;
 
+import org.hibernate.annotations.Index;
+
 import play.db.jpa.Model;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "findAllField", query = "select u from UserDbo as u"),
+	@NamedQuery(name = "findByEmailId", query = "select u from UserDbo as u where u.email=:email") })
 public class UserDbo {
 
 	@Id
 	@GeneratedValue
 	private Integer id;
 
+	@Index(name="entityIndexColumn")
 	@Column(unique = true)
 	private String email;
 
@@ -41,6 +47,35 @@ public class UserDbo {
 	private String phone;
 
 	private boolean isAdmin;
+	private String endOfWeek;
+
+	private String beginOfWeek;
+
+	private String getEmailYesOrNo;
+
+	public String getEndOfWeek() {
+		return endOfWeek;
+	}
+
+	public void setEndOfWeek(String endOfWeek) {
+		this.endOfWeek = endOfWeek;
+	}
+
+	public String getBeginOfWeek() {
+		return beginOfWeek;
+	}
+
+	public void setBeginOfWeek(String beginOfWeek) {
+		this.beginOfWeek = beginOfWeek;
+	}
+
+	public String isGetEmailYesOrNo() {
+		return getEmailYesOrNo;
+	}
+
+	public void setGetEmailYesOrNo(String getEmailYesOrNo) {
+		this.getEmailYesOrNo = getEmailYesOrNo;
+	}
 
 	@ManyToOne
 	private CompanyDbo company;
@@ -157,4 +192,18 @@ public class UserDbo {
 		this.timecards.add(timecard);
 	}
 	
+	public static List<UserDbo> findAllField(EntityManager mgr) {
+		Query query = mgr.createNamedQuery("findAll");
+		return query.getResultList();
+	}
+
+	public static UserDbo findByEmailId(EntityManager mgr, String email) {
+		Query query = mgr.createNamedQuery("findByEmailId");
+		query.setParameter("email", email);
+		try {
+			return (UserDbo) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 }
