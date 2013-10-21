@@ -47,7 +47,18 @@ public class UserDbo {
 	private String phone;
 
 	private boolean isAdmin;
+
+	private boolean isNewPasswordChange;
+
 	private String endOfWeek;
+
+	public boolean isNewPasswordChange() {
+		return isNewPasswordChange;
+	}
+
+	public void setNewPasswordChange(boolean isNewPasswordChange) {
+		this.isNewPasswordChange = isNewPasswordChange;
+	}
 
 	private String beginDayOfWeek;
 
