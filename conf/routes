@@ -8,9 +8,6 @@ GET		/login                                    Application.login
 GET     /register                                 Application.register
 GET     /contact                                  Application.contact
 GET     /about                                    Application.about
-GET     /blog                                     Application.blog
-GET     /pricing                                  Application.pricing
-
  
 GET     /{TimeCardAddition}/addedittimecardrender/{timeCardId}		{TimeCardAddition}.addEditTimeCardRender
 
