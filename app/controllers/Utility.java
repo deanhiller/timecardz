@@ -2,10 +2,10 @@ package controllers;
 
 import java.util.UUID;
 
+import models.UserDbo;
+
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +14,6 @@ import play.Play;
 import play.db.jpa.JPA;
 import play.libs.Mail;
 import play.mvc.Scope.Session;
-import play.mvc.results.Unauthorized;
-import models.EmailToUserDbo;
-import models.UserDbo;
 
 public class Utility {
 	private static final Logger log = LoggerFactory.getLogger(Utility.class);

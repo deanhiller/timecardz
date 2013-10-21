@@ -5,17 +5,13 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 
-import models.EmailToUserDbo;
 import models.UserDbo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 import play.Play;
 import play.data.validation.Required;
-import play.data.validation.Validation;
 import play.db.jpa.JPA;
 import play.libs.Crypto;
 import play.libs.Time;
@@ -23,7 +19,6 @@ import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Util;
-import play.mvc.Scope.Session;
 import play.utils.Java;
 import controllers.Application;
 import controllers.OtherStuff;

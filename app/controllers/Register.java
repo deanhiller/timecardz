@@ -1,14 +1,11 @@
 package controllers;
 
-import controllers.auth.Secure;
 import models.CompanyDbo;
-import models.EmailToUserDbo;
-import models.EntityDbo;
 import models.Token;
 import models.UserDbo;
-
 import play.db.jpa.JPA;
 import play.mvc.Controller;
+import controllers.auth.Secure;
 
 public class Register extends Controller {
 	// This is for company admin

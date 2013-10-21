@@ -4,10 +4,8 @@ import java.util.List;
 
 import models.CompanyDbo;
 import models.DayCardDbo;
-import models.EmailToUserDbo;
 import models.StatusEnum;
 import models.TimeCardDbo;
-import models.Token;
 import models.UserDbo;
 
 import org.joda.time.LocalDate;
@@ -19,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import play.db.jpa.JPA;
 import play.mvc.Controller;
 import play.mvc.With;
-import play.mvc.Scope.Session;
 import controllers.auth.Secure;
 
 @With(Secure.class)
