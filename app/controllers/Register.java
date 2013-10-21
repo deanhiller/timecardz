@@ -42,6 +42,8 @@ public class Register extends Controller {
 		user.setPassword(password);
 		user.setManager(user);
 		user.setAdmin(true);
+		user.setBeginDayOfWeek("Monday");
+		user.setGetEmailYesOrNo("Yes");
 		companyDbo.addUser(user);
 		user.setCompany(companyDbo);
 		JPA.em().persist(companyDbo);
