@@ -86,7 +86,7 @@ public class OtherStuff extends Controller {
 			else
 				readOnly = false;
 			List<DayCardDbo> dayCardDbo = timeCard.getDaycards();
-			int[] noofhours = new int[7];
+			float[] noofhours = new float[7];
 			String[] details = new String[7];
 			int i = 0;
 			for (DayCardDbo dayCard : dayCardDbo) {

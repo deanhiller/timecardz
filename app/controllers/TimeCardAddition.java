@@ -19,7 +19,7 @@ import play.mvc.With;
 public class TimeCardAddition extends Controller {
 	private static final Logger log = LoggerFactory.getLogger(TimeCardAddition.class);
 
-	public static void postTimeAddition(int[] noofhours, String[] details)
+	public static void postTimeAddition(float[] noofhours, String[] details)
 			throws Throwable {
 		Integer id = null;
 		UserDbo user = Utility.fetchUser();
@@ -34,7 +34,7 @@ public class TimeCardAddition extends Controller {
 		}
 		TimeCardDbo timeCardDbo = new TimeCardDbo();
 		timeCardDbo.setBeginOfWeek(beginOfWeek);
-		int totalhours = 0;
+		float totalhours = 0;
 		for (int i = 0; i < 7; i++) {
 			DayCardDbo dayC = new DayCardDbo();
 			dayC.setDate(beginOfWeek.plusDays(i));

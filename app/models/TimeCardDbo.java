@@ -27,7 +27,7 @@ public class TimeCardDbo {
 	private int id;
 	private LocalDate beginOfWeek;
 
-	private int numberOfHours;
+	private float numberOfHours;
 
 	private String detail;
 
@@ -68,11 +68,11 @@ public class TimeCardDbo {
 		this.beginOfWeek = beginOfWeek;
 	}
 
-	public int getNumberOfHours() {
+	public float getNumberOfHours() {
 		return numberOfHours;
 	}
 
-	public void setNumberOfHours(int numberOfHours) {
+	public void setNumberOfHours(float numberOfHours) {
 		this.numberOfHours = numberOfHours;
 	}
 

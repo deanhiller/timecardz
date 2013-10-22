@@ -26,7 +26,7 @@ public class DayCardDbo {
 	private int id;
 	private LocalDate date;
 
-	private int numberOfHours;
+	private float numberOfHours;
 
 	private String detail;
 
@@ -38,12 +38,12 @@ public class DayCardDbo {
 		this.date = date;
 	}
 
-	public int getNumberOfHours() {
+	public float getNumberOfHours() {
 		return numberOfHours;
 	}
 
-	public void setNumberOfHours(int numberOfHours) {
-		this.numberOfHours = numberOfHours;
+	public void setNumberOfHours(float noofhours) {
+		this.numberOfHours = noofhours;
 	}
 
 	public String getDetail() {
