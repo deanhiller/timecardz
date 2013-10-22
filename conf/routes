@@ -9,21 +9,21 @@ GET     /register                                 Application.register
 GET     /contact                                  Application.contact
 GET     /about                                    Application.about
  
-GET     /{TimeCardAddition}/addedittimecardrender/{timeCardId}		{TimeCardAddition}.addEditTimeCardRender
+GET    /addedittimecardrender/{timeCardId}		 TimeCardAddition.addEditTimeCardRender
 
 
 
-GET     /{OtherStuff}/setUpWizard	                        {OtherStuff}.setUpWizard
-GET     /{OtherStuff}/admin/users	                        {OtherStuff}.company
-GET     /{OtherStuff}/home	                                {OtherStuff}.home
+GET      /setup	                                            OtherStuff.setUpWizard
+GET      /admin/users	                                    OtherStuff.company
+GET      /home	                                            OtherStuff.home
 GET     /register/{token}                                    Register.addedUserRegister
 
 GET     /changePassword                                      Password.changePassword
-GET     /change                                              Password.change
-GET     /resetPassword/{key}                            Password.resetPassword
-GET     /alreadyChanged                                               /Password.alreadyChanged
+GET     /resetPassword/{key}                                 Password.resetPassword
+GET     /resetPassword                                       Password.resetPassword
+GET     /alreadyChanged                                      Password.alreadyChanged
 
-GET    /UserAddition}/addUser                    /UserAddition}.addUser
+GET     /addUser                                              UserAddition.addUser
 
 
 GET     /ourpattern                   			OurPattern.listUsers

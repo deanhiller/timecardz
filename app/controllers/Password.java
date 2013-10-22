@@ -48,13 +48,25 @@ public class Password extends Controller {
 	}
 
 	public static void resetPassword(String key) {
-		Token token=JPA.em().find(Token.class, key);
-		UserDbo otherUser = UserDbo.findByEmailId(JPA.em(), token.getEmail());
-        String emailId=otherUser.getEmail();
-		if (otherUser.isNewPasswordChange()) {
-			alreadyChanged();
+		boolean nullKey = false;
+		if (key != null) {
+			Token token = JPA.em().find(Token.class, key);
+			if (token != null) {
+				UserDbo otherUser = UserDbo.findByEmailId(JPA.em(),
+						token.getEmail());
+				String emailId = otherUser.getEmail();
+				if (otherUser.isNewPasswordChange()) {
+					alreadyChanged();
+				}
+				render(emailId, reset);
+			} else {
+				nullKey = true;
+				render(nullKey);
+			}
+		} else {
+			nullKey = true;
+			render(nullKey);
 		}
-		render(emailId, reset);
 	}
 
 	public static void change(String emailId, String password,
