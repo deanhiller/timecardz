@@ -16,7 +16,7 @@ GET     /{TimeCardAddition}/addedittimecardrender/{timeCardId}		{TimeCardAdditio
 GET     /{OtherStuff}/setUpWizard	                        {OtherStuff}.setUpWizard
 GET     /{OtherStuff}/admin/users	                        {OtherStuff}.company
 GET     /{OtherStuff}/home	                                {OtherStuff}.home
-GET     /addedusersignup/{token}                            Register.addedUserRegister
+GET     /register/{token}                                    Register.addedUserRegister
 
 GET     /changePassword                                      Password.changePassword
 GET     /change                                              Password.change

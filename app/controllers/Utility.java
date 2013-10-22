@@ -46,7 +46,7 @@ public class Utility {
 			email.addTo(emailId);
 			email.setSubject("You are registered for " + company);
 			email.setMsg(" Hi,\n You have been added on www.tbd.com for "+ company + 
-					" to submit your time cards. \n Please go to "+ signupUrl +"addedusersignup/"+key+"  and complete the registration. \n Best Regards");
+					" to submit your time cards. \n Please go to "+ signupUrl +"register/"+key+"  and complete the registration. \n Best Regards");
 
 			Mail.send(email); 
 		} catch (EmailException e) {
