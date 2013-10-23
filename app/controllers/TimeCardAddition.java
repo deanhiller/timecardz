@@ -7,6 +7,8 @@ import models.TimeCardDbo;
 import models.UserDbo;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +28,8 @@ public class TimeCardAddition extends Controller {
 		CompanyDbo company = user.getCompany();
 		UserDbo manager = user.getManager();
 		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
-		if (manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")) {
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEEEEEE");
+		if (manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturday")) {
 			beginOfWeek = beginOfWeek.minusDays(2);
 		}
 		if (manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")) {
@@ -38,6 +41,7 @@ public class TimeCardAddition extends Controller {
 		for (int i = 0; i < 7; i++) {
 			DayCardDbo dayC = new DayCardDbo();
 			dayC.setDate(beginOfWeek.plusDays(i));
+			dayC.setDay(fmt.print(beginOfWeek.plusDays(i)));
 			if (noofhours[i] > 12) {
 				validation.addError("noofhours[i]",
 						"hours should be less than 12");
@@ -77,8 +81,9 @@ public class TimeCardAddition extends Controller {
 		TimeCardDbo timeCard = null;
 		DayCardDbo dayC = null;
 		boolean readOnly = false;
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEEEEEE");
 		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
-		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")){
+		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturday")){
 			beginOfWeek=beginOfWeek.minusDays(2);
 		}
 		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
@@ -91,6 +96,7 @@ public class TimeCardAddition extends Controller {
 				dayC = new DayCardDbo();
 				timeCard.getDaycards().add(dayC);
 				dayC.setDate(beginOfWeek.plusDays(i));
+				dayC.setDay(fmt.print(beginOfWeek.plusDays(i)));
 			}
 		} else {
 			timeCard = JPA.em().find(TimeCardDbo.class, timeCardId);

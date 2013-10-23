@@ -26,6 +26,16 @@ public class DayCardDbo {
 	private int id;
 	private LocalDate date;
 
+	private String day;
+
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(String day) {
+		this.day = day;
+	}
+
 	private float numberOfHours;
 
 	private String detail;

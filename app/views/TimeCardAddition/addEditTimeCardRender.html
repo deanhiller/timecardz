@@ -15,7 +15,7 @@
 					
 					#{list timeCard?.daycards, as:'dcObj'}
 					    <tr><input type="hidden" name="dayCardsid[${dcObj_index-1}]" value="${dcObj?.id}">
-							 <td  class="span2"><input  name="dateId[${dcObj_index-1}]" value="${dcObj?.date}" readonly="true" ></td>
+							 <td  class="span2"><input  name="dateId[${dcObj_index-1}]" value="${dcObj?.day},${dcObj?.date}"  readonly="true" ></td>
 							 <td  class="span2"><div class="time"><input class="input-small" type="number"  step="any" placeholder="Hours" name="noofhours[${dcObj_index-1}]" min="0" max="12" value="${dcObj?.numberOfHours}" #{if readOnly} readonly="readonly" #{/if}></div></td>
 							 <td  class="span2"><input id="detailId_${i}" type="text" placeholder="Remark" name="details[${dcObj_index-1}]" value="${dcObj?.detail}" #{if readOnly} readonly="readonly" #{/if}></td>
 						</tr>

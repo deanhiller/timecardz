@@ -55,13 +55,13 @@ public class OtherStuff extends Controller {
 		List<UserDbo> employees = employee.getEmployees();
 		List<TimeCardDbo> timeCards = employee.getTimecards();
 		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
-		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturady")){
-			beginOfWeek=beginOfWeek.minusDays(2);
+		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturday")){
+		    beginOfWeek=beginOfWeek.minusDays(2);
 		}
 		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
 			beginOfWeek=beginOfWeek.minusDays(1);
 		}
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd");
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEEEEEE");
 		if (id == null) {
 			String email = employee.getEmail();
 			String currentWeek = fmt.print(beginOfWeek);
@@ -73,6 +73,7 @@ public class OtherStuff extends Controller {
 				details[i] = "";
 				dayCards[i] = new DayCardDbo();
 				dayCards[i].setDate(beginOfWeek.plusDays(i));
+				dayCards[i].setDay(fmt.print(beginOfWeek.plusDays(i)));
 			}
 			render(timeCards, beginOfWeek, email, currentWeek, employee,
 					dayCards, noofhours, details);
