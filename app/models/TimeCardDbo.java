@@ -36,6 +36,14 @@ public class TimeCardDbo {
 	@OneToMany
 	private List<DayCardDbo> daycards = new ArrayList<DayCardDbo>();
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public List<DayCardDbo> getDaycards() {
 		return daycards;
 	}

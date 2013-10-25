@@ -1,7 +1,7 @@
 <!--=======================================-->
 <!-- The following is the ADD/EDIT MODAL BLOCK -->
 <!--=======================================-->
-#{form @TimeCardAddition.postTimeAddition(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
+#{form @TimeCardAddition.postTimeAddition(), name: 'formModal',id:'formId',class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
 	<input id="addEditTimeCard_ID" type="hidden" name="timeCardId" value="${timeCard?.id}">
 	<input id="addEditTimeCard_ID" type="hidden"  name="date" value="${beginOfWeek}">
 	<div id="myAddEditModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
@@ -26,8 +26,43 @@
 	</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-			<input type="submit" name="submit" value="Save" class="btn434 btn-primary" />
+			<input   onclick="callModal()" value="Save" class="btn434 btn-primary" />
 		</div>
 	  </div>
 	  
 #{/form}
+<script>
+function callModal(){
+	$("#conformationModal").show();
+	$("#myAddEditModal").hide();
+}
+</script>
+ <div id="conformationModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true" >
+ 			 Do you want to submit your timecard now?
+			 <div class="input-prepend">
+			<span class="add-on"><input type="radio" name="submiTimecard" value="Yes" ></span>
+			<input type="text" value="Yes" readonly="true"></input>
+			<span class="add-on" style="margin-left:10px;"><input type="radio" name="submiTimecard" value="No"></span>
+			<input type="text" value="No" readonly="no"></input>
+		</div>
+    <div class="modal-footer">
+			
+			<input  type="submit" value="Save" id="callsubmit" class="btn434 btn-primary" />
+			
+	</div>
+	</div>
+	
+<script>
+$(document).ready(function(){
+
+	$("#callsubmit").click(function(e){
+		e.preventDefault();
+		var val2=$("#conformationModal input[name=submiTimecard]:checked").val();
+		if(val2=='Yes')
+			document.getElementById("formId").submit();
+	});
+});
+</script>
+ 
+
+	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import models.CompanyDbo;
 import models.DayCardDbo;
+import models.SecureToken;
 import models.StatusEnum;
 import models.TimeCardDbo;
 import models.UserDbo;
@@ -107,6 +108,24 @@ public class OtherStuff extends Controller {
 
 	public static void cancel() {
 		render();
+	}
+
+	public static void cardsAction(Integer timeCardId, int status) {
+
+		TimeCardDbo ref = JPA.em().find(TimeCardDbo.class, timeCardId);
+		if (ref != null) {
+			if (status == 1) {
+				ref.setStatus(StatusEnum.APPROVED);
+				ref.setApproved(true);
+			} else {
+				ref.setStatus(StatusEnum.CANCELLED);
+				ref.setApproved(false);
+			}
+
+		}
+		JPA.em().persist(ref);
+		JPA.em().flush();
+		OtherStuff.home(timeCardId);
 	}
 
 }

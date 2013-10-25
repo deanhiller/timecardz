@@ -45,8 +45,7 @@ public class Utility {
 		    email.setFrom(senderId);
 			email.addTo(emailId);
 			email.setSubject("You are registered for " + company);
-			email.setMsg(" Hi,\n You have been added on www.tbd.com for "+ company + 
-					" to submit your time cards. \n Please go to "+ signupUrl +"register/"+key+"  and complete the registration. \n Best Regards");
+			email.setMsg(" Hi,\n   Please go to "+ signupUrl +"register/"+key+"  and approve. \n Best Regards");
 
 			Mail.send(email); 
 		} catch (EmailException e) {
@@ -56,20 +55,30 @@ public class Utility {
 	
 	}
 
-	public static void sendEmailForApproval(String emailId, String company, String employee) {
+	public static void sendEmailForApproval(String emailId, String company, String employee,String key) {
 		SimpleEmail email = new SimpleEmail();
+		String mode = Play.configuration.getProperty("application.mode");
+		String port = Play.configuration.getProperty("http.port");
+		String signupUrl = "null";
+		if ("dev".equals(mode)) {
+			signupUrl = Play.configuration.getProperty("dev.signupUrl");
+			signupUrl = signupUrl + ":" + port + "/";
+		} else {
+			signupUrl = Play.configuration.getProperty("prod.signupUrl");
+		}
 		try {
 			email.setFrom("no-reply@tbd.com");
 			email.addTo(emailId);
 			email.setSubject("New time card submitted");
-			email.setMsg("The user " + employee + " who is registerdd for " + company + 
-					" has submitted his time card.\n Please log on to www.tbd.com and approve/reject the same. \n Best Regards");
-
+			
+			email.setMsg(" Hi,\n  Please go to " + signupUrl+ "approveTimecard/" + key + " "+ "and complete the registration. \n Best Regards");
+			
 			Mail.send(email); 
 		} catch (EmailException e) {
 			log.error("ERROR in sending mail to " + emailId);
 			e.printStackTrace();
 		}
+		
 	}
 
 	public static void sendEmailForPassowdReset(String emailId,String key) {

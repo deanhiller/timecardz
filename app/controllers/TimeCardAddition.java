@@ -1,11 +1,14 @@
 package controllers;
 
 import java.util.Date;
+import java.util.List;
 
 import models.CompanyDbo;
 import models.DayCardDbo;
+import models.SecureToken;
 import models.StatusEnum;
 import models.TimeCardDbo;
+import models.Token;
 import models.UserDbo;
 
 import org.joda.time.LocalDate;
@@ -69,16 +72,20 @@ public class TimeCardAddition extends Controller {
 		user.addTimecards(timeCardDbo);
 		JPA.em().persist(timeCardDbo);
 		JPA.em().persist(user);
+		String key = Utility.generateKey();
+		SecureToken secureToken = new SecureToken();
+		secureToken.setSecureToken(key);
+		secureToken.setValue(timeCardDbo.getId());
+		JPA.em().persist(secureToken);
 		JPA.em().flush();
 		if (manager.isGetEmailYesOrNo() !=null && manager.isGetEmailYesOrNo().equalsIgnoreCase("yes")) {
-			Utility.sendEmailForApproval(manager.getEmail(), company.getName(),
-					user.getEmail());
+			Utility.sendEmailForApproval(manager.getEmail(), company.getName(),	user.getEmail(),key);
 		}
 		OtherStuff.home(id);
 	}
 
 	public static void addEditTimeCardRender(String date) {
-		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+	DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 		LocalDate beginOfWeek = formatter.parseLocalDate(date);
 		UserDbo user = Utility.fetchUser();
 		UserDbo manager = user.getManager();
@@ -100,6 +107,12 @@ public class TimeCardAddition extends Controller {
 				dayC.setDay(fmt.print(beginOfWeek.plusDays(i)));
 			}
 		render(timeCard, beginOfWeek);
+	}
+	public static void timeCardApproval(String key){
+		SecureToken token =JPA.em().find(SecureToken.class, key);
+		TimeCardDbo timeCardDbo= JPA.em().find(TimeCardDbo.class, token.getValue());
+		List<DayCardDbo> dayCardDbo=timeCardDbo.getDaycards();
+		render(timeCardDbo,dayCardDbo);
 	}
 
 }
