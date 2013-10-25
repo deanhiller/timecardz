@@ -9,7 +9,7 @@ GET     /register                                 Application.register
 GET     /contact                                  Application.contact
 GET     /about                                    Application.about
  
-GET    /addedittimecardrender/{timeCardId}		 TimeCardAddition.addEditTimeCardRender
+GET    /addedittimecardrender/{date}		 TimeCardAddition.addEditTimeCardRender
 
 
 

@@ -1,5 +1,4 @@
-#{extends 'main.html' /}
-#{extends './userTemplate.html' /}
+#{extends 'main.html' /} #{extends './userTemplate.html' /}
 <div id="id1">
 	<div class="container">
 		<h4>Timecardz of ${email}</h4>
@@ -7,17 +6,10 @@
 	</div>
 	<div id="addEditModalDiv"></div>
 	<div id="deleteModalDiv"></div>
-<select>
-  <option>2007</option>
-  <option>2008</option>
-  <option>2009</option>
-  <option>2010</option>
-  <option>2011</option>
-  <option>2012</option>
-  <option>2013</option>
-  <option>2014</option>
-  <option>2015</option>
-</select>
+     <select>
+		<option>2013</option>
+		<option>2014</option>
+	</select>
 	<table class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
@@ -25,37 +17,71 @@
 				<th>No. of Hours</th>
 				<th>Status</th>
 				<th>Action</th>
-				
-								
-		 </thead>
-		 <tbody>
+		</thead>
+		<tbody>
 			#{list timeCards, as:'timeCard'}
 			<tr>
 				<td>${timeCard.beginOfWeek}</td>
 				<td>${timeCard.numberOfHours}</td>
 				<td>${timeCard.status}</td>
 				<td>dcdcdc</td>
-	  			
-	  			
+
 			</tr>
 			#{/list}
-		 </tbody>
+		</tbody>
 	</table>
-	<a href="#myAddEditModal" data-toggle="modal" class="btn btn-primary" id="myAddEditModal_add">Add new Time Card</a>
 	
-<p style="clear: both;">
-   	<script type="text/javascript">
-   	var getAddEditTimeCard= #{jsAction @TimeCardAddition.addEditTimeCardRender(':timeCardId') /}
-     	$(document).ready(function() {	
-  	$("#myAddEditModal_add").click(function(e){
-  		$('#addEditModalDiv').load(getAddEditTimeCard(),function(){
-  			$("#myAddEditModal").modal('show');	
-  		});
-  		
-  	});
-  	});
-  	
-  	</script>
-</p>
+	<div id="addpopup" class="modal hide" tabindex="-1" role="dialog"data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
+		#{form @TimeCardAddition.addEditTimeCardRender(),class:'form-horizontal',style:'min-width:500px;max-width:800px;margin: 0 auto'} 
+		<strong> <h4>What week do you want to add a timecard for?</h4></strong>
+		<div id="dbAddEditModal_content" class="modal-body"  style="height:250px;">
+			<div class="input-append date" id="datepicker"	data-date="${beginOfWeek}" data-date-format="yyyy-mm-dd">
+				<input id="dateset" class="span2" size="16" name="date" type="text"	value="${beginOfWeek}"> <span class="add-on"
+					onclick="helloModal()" class=" hide"><i class="icon-th"></i></span>
+			</div>
+			<script>$(document).ready(function helloModal() {
+			                    $('#datepicker').datepicker('hide');
+		                    });
+		    </script>
+		</div>
+
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+					<input type="submit" name="submit" value="change" class="btn btn-primary" />
+				</div>
+		#{/form}
+
+	</div>
+	
+	
+				<script>
+					$(document).ready(function(){
+						$("#addpopup input[type=submit]").click(function(e){
+							e.preventDefault();
+							var date=$("#dateset").val();
+							var getAddEditTimeCard= #{jsAction @TimeCardAddition.addEditTimeCardRender(':beginOfWeek') /}
+						 		  $("#timecardModal").load(getAddEditTimeCard({beginOfWeek:date}),function(data,status,xhr){
+					  				$("#myAddEditModal").modal('show');	
+					  			    });
+					  	
+								$("#addpopup").modal('hide');	
+			 		    	});
+					     });
+				</script>
 
 
+
+			 <a href="#" data-toggle="modal" class="btn btn-primary" id="myAddEdit">Add 	new </a>
+			                   <script type="text/javascript">
+							      	$(document).ready(function() {	
+							  	     $("#myAddEdit").click(function(e){
+							  		  			$("#addpopup").modal('show');	
+							                  });
+							  	         });
+							  	</script>
+</div>
+
+
+
+
+<div id="timecardModal">  </div>

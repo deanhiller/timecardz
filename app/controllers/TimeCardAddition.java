@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.Date;
+
 import models.CompanyDbo;
 import models.DayCardDbo;
 import models.StatusEnum;
@@ -21,13 +23,14 @@ import play.mvc.With;
 public class TimeCardAddition extends Controller {
 	private static final Logger log = LoggerFactory.getLogger(TimeCardAddition.class);
 
-	public static void postTimeAddition(float[] noofhours, String[] details)
+	public static void postTimeAddition(String date,float[] noofhours, String[] details)
 			throws Throwable {
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+		LocalDate beginOfWeek = formatter.parseLocalDate(date);
 		Integer id = null;
 		UserDbo user = Utility.fetchUser();
 		CompanyDbo company = user.getCompany();
 		UserDbo manager = user.getManager();
-		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEEEEEE");
 		if (manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturday")) {
 			beginOfWeek = beginOfWeek.minusDays(2);
@@ -74,39 +77,29 @@ public class TimeCardAddition extends Controller {
 		OtherStuff.home(id);
 	}
 
-	public static void addEditTimeCardRender(Integer timeCardId) {
+	public static void addEditTimeCardRender(String date) {
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+		LocalDate beginOfWeek = formatter.parseLocalDate(date);
 		UserDbo user = Utility.fetchUser();
 		UserDbo manager = user.getManager();
-		StatusEnum status = null;
 		TimeCardDbo timeCard = null;
 		DayCardDbo dayC = null;
-		boolean readOnly = false;
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEEEEEE");
-		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
 		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturday")){
 			beginOfWeek=beginOfWeek.minusDays(2);
 		}
 		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
 			beginOfWeek=beginOfWeek.minusDays(1);
 		}
-		if (timeCardId == null) {
 			timeCard = new TimeCardDbo();
-			timeCard.setBeginOfWeek(Utility.calculateBeginningOfTheWeek());
+			timeCard.setBeginOfWeek(beginOfWeek);
 			for (int i = 0; i < 7; i++) {
 				dayC = new DayCardDbo();
 				timeCard.getDaycards().add(dayC);
 				dayC.setDate(beginOfWeek.plusDays(i));
 				dayC.setDay(fmt.print(beginOfWeek.plusDays(i)));
 			}
-		} else {
-			timeCard = JPA.em().find(TimeCardDbo.class, timeCardId);
-			status = timeCard.getStatus();
-			if (status == StatusEnum.APPROVED)
-				readOnly = true;
-			else
-				readOnly = false;
-		}
-		render(readOnly, timeCard, beginOfWeek);
+		render(timeCard, beginOfWeek);
 	}
 
 }
