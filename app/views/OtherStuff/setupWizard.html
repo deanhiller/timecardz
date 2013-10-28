@@ -4,13 +4,18 @@
 <h3>SetUp Wizard </h3>
 
 <h4><strong>Begin of Week</strong></h4>
-<div class="input-prepend">
-<span class="add-on"><input type="radio" name="beginDayOfWeek" value="Saturday" ></span>
+<div class="input-prepend" >
+<span class="add-on"><input  onchange="Checking()" type="radio" id="id1" name="beginDayOfWeek" value="Saturday"  ></span>
 <input type="text" value="Saturady" readonly="true"></input>
-<span class="add-on" style="margin-left:10px;"><input type="radio" name="beginDayOfWeek" value="Sunday"></span>
+<span class="add-on" style="margin-left:10px;"><input onchange="Checking()" type="radio" name="beginDayOfWeek" value="Sunday" ></span>
 <input type="text" value="Sunday" readonly="true"></input>
-<span class="add-on" style="margin-left:10px;"><input type="radio" name="beginDayOfWeek" value="Monday" checked="true"></span>
+<span class="add-on" style="margin-left:10px;"><input onchange="Checking()" type="radio" name="beginDayOfWeek" value="Monday" checked="true"></span>
 <input type="text" value="Monday" readonly="true"></input>
+</div>
+
+
+<h4><strong>End of Week</strong></h4>
+<input  id="endDayOfWeekId" type="text" name="endOfWeek" value="Sunday" readonly="true"></input>
 </div>
 
 <h4><strong>Send Email reminder to fill out TimeCard</strong></h4>
@@ -23,5 +28,20 @@
 <input type="submit" name="submit" value="submit" class="btn434 btn-primary" />
 #{/form}
 
-
-
+<script>
+function Checking() {
+    var value = $("input[type='radio'][name='beginDayOfWeek']:checked").val();
+    if(value=="Monday"){
+    	$("#endDayOfWeekId").val("Sunday");
+    	
+    }
+    if(value=="Sunday"){
+    	$("#endDayOfWeekId").val("Saturday");
+    	
+    }
+    if(value=="Saturday"){
+    	$("#endDayOfWeekId").val("Friday");
+    	
+    }
+    }
+</script>
