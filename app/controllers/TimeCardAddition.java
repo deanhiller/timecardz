@@ -26,7 +26,7 @@ import play.mvc.With;
 public class TimeCardAddition extends Controller {
 	private static final Logger log = LoggerFactory.getLogger(TimeCardAddition.class);
 
-	public static void postTimeAddition(String date,float[] noofhours, String[] details)
+	public static void postTimeAddition(String date,float[] noofhours, String Description)
 			throws Throwable {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 		LocalDate beginOfWeek = formatter.parseLocalDate(date);
@@ -54,7 +54,6 @@ public class TimeCardAddition extends Controller {
 			} else {
 				dayC.setNumberOfHours(noofhours[i]);
 				totalhours = totalhours + noofhours[i];
-				dayC.setDetail(details[i]);
 				timeCardDbo.addDayCard(dayC);
 				JPA.em().persist(dayC);
 			}
@@ -67,6 +66,7 @@ public class TimeCardAddition extends Controller {
 		JPA.em().flush();
 
 		timeCardDbo.setNumberOfHours(totalhours);
+		timeCardDbo.setDetail(Description);
 		timeCardDbo.setApproved(false);
 		timeCardDbo.setStatus(StatusEnum.SUBMIT);
 		user.addTimecards(timeCardDbo);

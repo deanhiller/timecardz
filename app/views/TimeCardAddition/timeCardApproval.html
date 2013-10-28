@@ -24,7 +24,6 @@
 				          				                
 				          </td>
 			          </tr>
-			        
 		     </table>
 		 </div>
 		 </br>     		
@@ -33,25 +32,32 @@
 			             <tr>
 		                       <th>Date</th> 
 		                       <th>No. of Hours</th>
-		                       <th>Remark</th>
-		                  </tr>
+		                 </tr>
 			       </thead>
-			           <tbody>
+			           <tbody id="detailPopupModalId">
 		       		       #{list dayCardDbo, as:'dayCard'}
-		       		        <tr>
+		       		        <tr >
 		       		           <td>
 		       		            	${dayCard.date}
 		       		           </td>
 		       		           <td>
 		       		                ${dayCard.numberOfHours} 
 		       		           </td>
-		       		           <td>
-		       		               	${dayCard.detail}
-		       		           </td>
+		       		           
 		       		        </tr>
 		       		       #{/list}
 		          	   </tbody>
 		 </table> 
-		          		 
-		          		
-	 
+	  <div id="detailPopupModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true" >
+ 			<strong>Work done by the emplyee in this week!</strong>
+ 			  <div class="modal-body"> ${timeCardDbo.detail}
+ 			  </div>
+ 			<div class="modal-footer">
+		 	  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+	   </div>
+       <script>
+         $("#detailPopupModalId").hover(function(){
+       		$("#detailPopupModal").modal('show');	
+         });
+       </script>		
