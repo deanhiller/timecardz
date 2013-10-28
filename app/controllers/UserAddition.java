@@ -28,7 +28,7 @@ public class UserAddition extends Controller {
 
 	}
 
-	public static void userAddition(String useremail, String manager)
+	public static void userAddition(String useremail, String manager,String role)
 			throws Throwable {
 		Integer id = null;
 		validation.required(useremail);
@@ -47,6 +47,7 @@ public class UserAddition extends Controller {
 		CompanyDbo company = admin.getCompany();
 		UserDbo user = new UserDbo();
 		user.setEmail(useremail);
+		user.setRole(role);
 		user.setCompany(company);
 		if (manager == null) {
 			// If there is no manager, add the current user as Manager
