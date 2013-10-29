@@ -81,34 +81,6 @@ public class Utility {
 		
 	}
 
-	public static void sendEmailForPassowdReset(String emailId,String key) {
-		String mode = Play.configuration.getProperty("application.mode");
-		String port = Play.configuration.getProperty("http.port");
-		String signupUrl = "null";
-		if ("dev".equals(mode)) {
-			signupUrl = Play.configuration.getProperty("dev.signupUrl");
-			signupUrl = signupUrl + ":" + port + "/";
-		} else {
-			signupUrl = Play.configuration.getProperty("prod.signupUrl");
-		}
-		UserDbo user = UserDbo.findByEmailId(JPA.em(), emailId);
-		SimpleEmail email = new SimpleEmail();
-		try {
-			user.setNewPasswordChange(false);
-			JPA.em().persist(user);
-			JPA.em().flush();
-			email.setFrom("no-reply@tbd.com");
-			email.addTo(emailId);
-			email.setSubject("Link for Password Reset");
-			email.setMsg(" Hi,\n  Please go to " + signupUrl+ "resetPassword/" + key + " "+ "and complete the registration. \n Best Regards");
-			Mail.send(email);
-		} catch (EmailException e) {
-			log.error("ERROR in sending mail to " + emailId);
-			e.printStackTrace();
-		}
-		Application.login();
-	}
-
 	public static LocalDate calculateBeginningOfTheWeek() {
 		LocalDate time = LocalDate.now();
 		LocalDate beginOfWeek = time.dayOfWeek().withMinimumValue();
