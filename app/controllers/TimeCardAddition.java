@@ -121,7 +121,7 @@ public class TimeCardAddition extends Controller {
 			render(timeCard, beginOfWeek);
 		} else {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-		beginOfWeek = formatter.parseLocalDate(date);
+		beginOfWeek = formatter.parseLocalDate(date).dayOfWeek().withMinimumValue();
 		UserDbo user = Utility.fetchUser();
 		UserDbo manager = user.getManager();
 		TimeCardDbo timeCard = null;
