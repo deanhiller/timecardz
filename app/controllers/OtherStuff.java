@@ -52,54 +52,8 @@ public class OtherStuff extends Controller {
 
 	public static void home(Integer id) {
 		UserDbo employee = Utility.fetchUser();
-		UserDbo manager=employee.getManager();
-		List<UserDbo> employees = employee.getEmployees();
 		List<TimeCardDbo> timeCards = employee.getTimecards();
-		LocalDate beginOfWeek = Utility.calculateBeginningOfTheWeek();
-		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Saturday")){
-		    beginOfWeek=beginOfWeek.minusDays(2);
-		}
-		if(manager.getBeginDayOfWeek()!=null && manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")){
-			beginOfWeek=beginOfWeek.minusDays(1);
-		}
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEEEEEE");
-		if (id == null) {
-			String email = employee.getEmail();
-			String currentWeek = fmt.print(beginOfWeek);
-			DayCardDbo[] dayCards = new DayCardDbo[7];
-			int[] noofhours = new int[7];
-			String[] details = new String[7];
-			for (int i = 0; i < 7; i++) {
-				noofhours[i] = 0;
-				details[i] = "";
-				dayCards[i] = new DayCardDbo();
-				dayCards[i].setDate(beginOfWeek.plusDays(i));
-				dayCards[i].setDay(fmt.print(beginOfWeek.plusDays(i)));
-			}
-			render(timeCards, beginOfWeek, email, currentWeek, employee,
-					dayCards, noofhours, details);
-
-		} else {
-			TimeCardDbo timeCard = JPA.em().find(TimeCardDbo.class, id);
-			StatusEnum status = timeCard.getStatus();
-			boolean readOnly;
-			if (status == StatusEnum.APPROVED)
-				readOnly = true;
-			else
-				readOnly = false;
-			List<DayCardDbo> dayCardDbo = timeCard.getDaycards();
-			float[] noofhours = new float[7];
-			String[] details = new String[7];
-			int i = 0;
-			for (DayCardDbo dayCard : dayCardDbo) {
-				noofhours[i] = dayCard.getNumberOfHours();
-				details[i] = dayCard.getDetail();
-				i++;
-			}
-			render(timeCard, timeCards, dayCardDbo, noofhours, details,
-					beginOfWeek, readOnly, status);
-		}
-		render();
+		render(timeCards);
 	}
 
 	public static void success() {
