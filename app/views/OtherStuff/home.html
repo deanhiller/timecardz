@@ -1,7 +1,7 @@
 #{extends 'main.html' /} #{extends './userTemplate.html' /}
 <div id="id1">
 	<div class="container">
-		<h4>Timecardz of ${email}</h4>
+		<h4>Time Card of ${email}</h4>
 		</br>
 	</div>
 	<div id="addEditModalDiv"></div>
@@ -48,7 +48,7 @@
 	
 	<div id="addpopup" class="modal hide" tabindex="-1" role="dialog"data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
 		#{form @TimeCardAddition.addEditTimeCardRender(),class:'form-horizontal',style:'min-width:500px;max-width:800px;margin: 0 auto'} 
-		  <strong> <h4>What week do you want to add a timecard for?</h4></strong>
+		  <strong> <h4>What week do you want to add a Time Card for?</h4></strong>
 		    <div id="dbAddEditModal_content" class="modal-body"  style="height:250px;">
 		         <input id="dateset" class="span2" size="16" name="date" type="date" value=""> 
 		    </div>

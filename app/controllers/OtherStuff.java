@@ -52,8 +52,9 @@ public class OtherStuff extends Controller {
 
 	public static void home(Integer id) {
 		UserDbo employee = Utility.fetchUser();
+		String email=employee.getEmail();
 		List<TimeCardDbo> timeCards = employee.getTimecards();
-		render(timeCards);
+		render(timeCards,email);
 	}
 
 	public static void success() {
