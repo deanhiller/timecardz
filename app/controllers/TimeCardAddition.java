@@ -34,7 +34,6 @@ public class TimeCardAddition extends Controller {
 			DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 			LocalDate beginOfWeek = formatter.parseLocalDate(date);
 			UserDbo user = Utility.fetchUser();
-			CompanyDbo company = user.getCompany();
 			UserDbo manager = user.getManager();
 			DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEEEEEE");
 			if (manager.getBeginDayOfWeek() != null	&& manager.getBeginDayOfWeek().equalsIgnoreCase("Saturday")) {
@@ -69,20 +68,14 @@ public class TimeCardAddition extends Controller {
 			timeCardDbo.setNumberOfHours(totalhours);
 			timeCardDbo.setDetail(detail);
 			timeCardDbo.setApproved(false);
-			timeCardDbo.setStatus(StatusEnum.SUBMIT);
+			timeCardDbo.setStatus(StatusEnum.UNSUBMITED);
 			user.addTimecards(timeCardDbo);
 			JPA.em().persist(timeCardDbo);
+			int newTimeCardId=timeCardDbo.getId();
+			session.put("newTimeCardId", newTimeCardId);
 			JPA.em().persist(user);
-			String key = Utility.generateKey();
-			SecureToken secureToken = new SecureToken();
-			secureToken.setSecureToken(key);
-			secureToken.setValue(timeCardDbo.getId());
-			JPA.em().persist(secureToken);
 			JPA.em().flush();
-			if (manager.isGetEmailYesOrNo() != null	&& manager.isGetEmailYesOrNo().equalsIgnoreCase("yes")) {
-				Utility.sendEmailForApproval(manager.getEmail(),company.getName(), user.getEmail(), key);
-			}
-			OtherStuff.home(id);
+		    OtherStuff.home(id);
 		} else {
 			TimeCardDbo timeCard = JPA.em().find(TimeCardDbo.class, timeCardId);
 			int sum = 0;
@@ -104,13 +97,40 @@ public class TimeCardAddition extends Controller {
 
 			}
 			timeCard.setNumberOfHours(sum);
-			timeCard.setStatus(StatusEnum.SUBMIT);
+			timeCard.setStatus(StatusEnum.UNSUBMITED);
 			timeCard.setDetail(detail);
 			JPA.em().persist(timeCard);
 			JPA.em().flush();
 			OtherStuff.home(id);
 
 		}
+	}
+
+	public static void postMail(int id, String submitToManager) {
+		int newId = id;
+		TimeCardDbo timeCard = null;
+		if (submitToManager.equalsIgnoreCase("yes")) {
+			if (id == 0) {
+				String newTimeCardId = session.get("newTimeCardId");
+				newId = Integer.parseInt(newTimeCardId);
+				session.remove(newTimeCardId);
+				timeCard = JPA.em().find(TimeCardDbo.class, newId);
+			} else {
+				timeCard = JPA.em().find(TimeCardDbo.class, id);
+			}
+			timeCard.setStatus(StatusEnum.SUBMIT);
+			UserDbo user = Utility.fetchUser();
+			CompanyDbo company = user.getCompany();
+			UserDbo manager = user.getManager();
+			String key = Utility.generateKey();
+			SecureToken secureToken = new SecureToken();
+			secureToken.setSecureToken(key);
+			secureToken.setValue(newId);
+			JPA.em().persist(secureToken);
+			JPA.em().flush();
+			Utility.sendEmailForApproval(manager.getEmail(), company.getName(),	user.getEmail(), key);
+		}
+		OtherStuff.home(id);
 	}
 
 	public static void addEditTimeCardRender(String date,int id) {

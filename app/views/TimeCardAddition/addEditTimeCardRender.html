@@ -1,6 +1,7 @@
 <!--=======================================-->
 <!-- The following is the ADD/EDIT MODAL BLOCK -->
 <!--=======================================-->
+<div id="timeCardModalDiv">
 #{form @TimeCardAddition.postTimeAddition(), name: 'formModal',id:'formId',class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
 	<input id="addEditTimeCard_ID" type="hidden" name="timeCardId" value="${timeCard?.id}">
 	<input id="addEditTimeCard_ID" type="hidden"  name="date" value="${beginOfWeek}">
@@ -36,38 +37,49 @@
 	  </div>
 	  
 #{/form}
-<script>
-function callModal(){
-	$("#conformationModal").show();
-	$("#myAddEditModal").hide();
-}
-</script>
- <div id="conformationModal" class="modal hide" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true" >
- 			 Do you want to submit your timecard now?
-			 <div class="input-prepend">
-			<span class="add-on"><input type="radio" name="submiTimecard" value="Yes" ></span>
-			<input type="text" value="Yes" readonly="true"></input>
-			<span class="add-on" style="margin-left:10px;"><input type="radio" name="submiTimecard" value="No"></span>
-			<input type="text" value="No" readonly="no"></input>
+</div>
+
+	<div id="conformationModal" class="modal hide" tabindex="-1"role="dialog" data-backdrop="false" aria-labelledby="addEditModalLabel"	aria-hidden="true">
+		#{form @TimeCardAddition.postMail()}
+		 <strong>Your timecard has been saved but not submitted to your manager.
+		  Do you want to submit	your timecard now? </strong>
+			<div class="input-prepend">
+				<span class="add-on">
+				  <input type="radio" name="submitToManager" value="Yes" checked="true">
+				</span>
+				 <input type="text" value="Yes" readonly="true"></input>
+				<span class="add-on" style="margin-left: 10px;">
+				   <input type="radio"	name="submitToManager" value="No">
+				</span> <input type="text"	value="No" readonly="true"></input>
+			</div>
+	          <input id="id_Conform" type="hidden" name="id" value="${timeCard?.id}">
+		<div class="modal-footer">
+			<input type="submit" value="Save" class="btn434 btn-primary" />
 		</div>
-    <div class="modal-footer">
-			
-			<input  type="submit" value="Save" id="callsubmit" class="btn434 btn-primary" />
-			
+		#{/form}
 	</div>
-	</div>
-	
+
 <script>
-$(document).ready(function(){
+	$(document).ready(function() {
+		$("#myAddEditModal input[type=submit]").click(function(e) {
+			e.preventDefault();
+			var frm = $("#timeCardModalDiv form").get(0);
+			var actionurl = frm.action;
+			var postdata = $(frm).serialize();
+			$.ajax({
+				type : "POST",
+				url : actionurl,
+				data : postdata,
+				success : function(data, successtxt) {
+					if (successtxt == "success") {
+						$("#conformationModal").modal('show');
+						$("#myAddEditModal").modal('hide');
+					}
+				}
+			});
 
-	$("#callsubmit").click(function(e){
-		e.preventDefault();
-		var val2=$("#conformationModal input[name=submiTimecard]:checked").val();
-		if(val2=='Yes')
-			document.getElementById("formId").submit();
+		});
+
 	});
-});
 </script>
- 
 
-	

@@ -10,7 +10,7 @@ GET     /contact                                  Application.contact
 GET     /about                                    Application.about
  
 GET    /addedittimecardrender/{date}		          TimeCardAddition.addEditTimeCardRender
-GET    /posttimeaddition		                      TimeCardAddition.postTimeAddition
+POST    /posttimeaddition		                      TimeCardAddition.postTimeAddition
 GET     /approveTimecard/{key}                        TimeCardAddition.timeCardApproval
 GET     /deleteTimeCardRender                         TimeCardAddition.deleteTimeCardRender
 
