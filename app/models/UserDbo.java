@@ -44,6 +44,17 @@ public class UserDbo {
 
 	private String lastName;
 
+	@OneToOne(mappedBy = "user")
+	public Token token;
+
+	public Token getToken() {
+		return token;
+	}
+
+	public void setToken(Token token) {
+		this.token = token;
+	}
+
 	private String phone;
 
 	private boolean isAdmin;

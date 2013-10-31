@@ -52,7 +52,8 @@ public class Register extends Controller {
 	
 	public static void addedUserRegister(String token) {
 		Token tkn = JPA.em().find(Token.class, token);
-		String email = tkn.getEmail();
+		UserDbo user=tkn.getUser();
+		String email=user.getEmail();
 		long sendmailtime = tkn.getTime();
 		long logintime = System.currentTimeMillis();
 		long duration = (7 * 24 * 60 * 60);

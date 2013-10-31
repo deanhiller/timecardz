@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Token {
@@ -11,6 +12,17 @@ public class Token {
 	private String email;
 
 	private long time;
+
+	@OneToOne
+	private UserDbo user;
+
+	public UserDbo getUser() {
+		return user;
+	}
+
+	public void setUser(UserDbo user) {
+		this.user = user;
+	}
 
 	public String getToken() {
 		return token;

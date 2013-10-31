@@ -65,7 +65,7 @@ public class UserAddition extends Controller {
 		long timestamp = System.currentTimeMillis();
 		token.setTime(timestamp);
 		token.setToken(key);
-		token.setEmail(useremail);
+		token.setUser(user);
 		JPA.em().persist(token);
 		JPA.em().flush();
 		Utility.sendEmail(useremail, company.getName(), key);
