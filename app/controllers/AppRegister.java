@@ -8,7 +8,7 @@ import play.mvc.Controller;
 
 public class AppRegister extends Controller{
 	public static void postRegister(String company, String email,
-		String password, String verifyPassword) throws Throwable {
+		String password, String verifyPassword,String selectRadio) throws Throwable {
 		validation.required(email);
 		validation.required(company);
 		if (company == null) {
