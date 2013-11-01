@@ -8,6 +8,9 @@ GET		/login                                    Application.login
 GET     /register                                 Application.register
 GET     /contact                                  Application.contact
 GET     /about                                    Application.about
+
+GET     /contractor                                  NewApp.contact
+GET     /clockInOut                                  NewApp.clockInOut
  
 GET    /addedittimecardrender/{date}		          TimeCardAddition.addEditTimeCardRender
 POST    /posttimeaddition		                      TimeCardAddition.postTimeAddition

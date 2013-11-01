@@ -1,8 +1,12 @@
 #{extends 'main.html' /}
 #{set title:'register' /}
  
-   #{form @Register.postRegister(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
-    <div class="modal-body">
+
+   #{form @AppRegister.postRegister(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
+    <div id="inline_content" class="modal-body">
+      <input type="radio" name="selectRadio" value="Simple clock-in / clock-out timecard software"  > Simple clock-in / clock-out timecard software<br>
+      <input type="radio" name="selectRadio" value="Contractor filling out detailed minutes software" onclick=/setUp > Contractor filling out detailed minutes software<br>
+      <input type="radio" name="selectRadio" value="Company where weekly timecards are filled out and approved by managers">  Company where weekly timecards are filled out and approved by managers
        #{formfield 'company'}
         <div class="control-group ${field.errorClass}">
             <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>company</label>
@@ -39,11 +43,19 @@
             </div>
         </div>
         #{/formfield}
-   </div>
-    <div>    <input type="submit" name="submit" value="REGISTER"  class="btn btn-primary" />
+         <div>    <input type="submit" name="submit" value="REGISTER"  class="btn btn-primary" />
        
     </div>
+   </div>
+   
+     
 #{/form}
-
- <div class="offset7"><span><h4>Already have an account?</h4>  <a href="/login"><h3>LOGIN</h3></a></span>
-                  </div>
+<script>
+$("#inline_content input[name='selectRadio']").click(function(){
+	var radioValue=$('input:radio[name=selectRadio]:checked').val();
+	  if(radioValue == "Simple clock-in / clock-out timecard software"){
+        var url="http://localhost:9000/clockInOut";
+        window.open(url,'_self');
+      }
+   
+});</script>
