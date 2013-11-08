@@ -4,9 +4,6 @@
 
    #{form @AppRegister.postRegister(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
     <div id="inline_content" class="modal-body">
-      <input type="radio" name="selectRadio" value="Simple clock-in / clock-out timecard software"  > Simple clock-in / clock-out timecard software<br>
-      <input type="radio" name="selectRadio" value="Contractor filling out detailed minutes software" onclick=/setUp > Contractor filling out detailed minutes software<br>
-      <input type="radio" name="selectRadio" value="Company where weekly timecards are filled out and approved by managers">  Company where weekly timecards are filled out and approved by managers
        #{formfield 'company'}
         <div class="control-group ${field.errorClass}">
             <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>company</label>
@@ -43,19 +40,16 @@
             </div>
         </div>
         #{/formfield}
-         <div>    <input type="submit" name="submit" value="REGISTER"  class="btn btn-primary" />
+        
+        <strong><h4>Choose which software version to use below</h4> </strong>
+      <input type="radio" name="selectRadio" value="Simple clock-in / clock-out timecard software"  > Simple clock-in / clock-out timecard software<br>
+      <input type="radio" name="selectRadio" value="Contractor filling out detailed minutes software" onclick=/setUp > Contractor filling out detailed minutes software<br>
+      <input type="radio" name="selectRadio" value="Company where weekly timecards are filled out and approved by managers">  Company where weekly timecards are filled out and approved by managers
+       <br>
+       <br>
+       <div>    <input type="submit" name="submit" value="REGISTER"  class="btn btn-primary" />
        
     </div>
    </div>
-   
      
 #{/form}
-<script>
-$("#inline_content input[name='selectRadio']").click(function(){
-	var radioValue=$('input:radio[name=selectRadio]:checked').val();
-	  if(radioValue == "Simple clock-in / clock-out timecard software"){
-        var url="http://localhost:9000/clockInOut";
-        window.open(url,'_self');
-      }
-   
-});</script>
