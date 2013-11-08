@@ -3,11 +3,18 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.NoResultException;
 import javax.persistence.OneToMany;
+import javax.persistence.Query;
 
+import org.hibernate.annotations.Index;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -19,6 +26,8 @@ import play.db.jpa.Model;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "findByDate", query = "select u from TimeCardDbo as u where u.date=:date") })
 public class TimeCardDbo {
 
 	private static DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd, yyyy");
@@ -27,7 +36,37 @@ public class TimeCardDbo {
 	private int id;
 	private LocalDate beginOfWeek;
 
+	@Index(name = "entityIndexColumn")
+	@Column(unique = true)
+	private LocalDate date;
+	private String clockInTime;
+	private String clockOutTime;
+
 	private float numberOfHours;
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
+	public String getClockInTime() {
+		return clockInTime;
+	}
+
+	public void setClockInTime(String clockInTime) {
+		this.clockInTime = clockInTime;
+	}
+
+	public String getClockOutTime() {
+		return clockOutTime;
+	}
+
+	public void setClockOutTime(String clockOutTime) {
+		this.clockOutTime = clockOutTime;
+	}
 
 	private String detail;
 
@@ -111,5 +150,15 @@ public class TimeCardDbo {
 
 	public void addDayCard(DayCardDbo dayCard) {
 		this.daycards.add(dayCard);
+	}
+
+	public static TimeCardDbo findByDate(EntityManager mgr, LocalDate date) {
+		Query query = mgr.createNamedQuery("findByDate");
+		query.setParameter("date", date);
+		try {
+			return (TimeCardDbo) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 }

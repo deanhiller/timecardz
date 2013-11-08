@@ -11,7 +11,9 @@ GET     /about                                    Application.about
 
 GET     /contractor                                  NewApp.contact
 GET     /clockInOut                                  NewApp.clockInOut
- 
+GET     /companyalias                                   NewApp.companyAlias
+
+
 GET    /addedittimecardrender/{date}		          TimeCardAddition.addEditTimeCardRender
 POST    /posttimeaddition		                      TimeCardAddition.postTimeAddition
 GET     /approveTimecard/{key}                        TimeCardAddition.timeCardApproval

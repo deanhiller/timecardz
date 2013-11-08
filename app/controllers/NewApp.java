@@ -11,5 +11,8 @@ public class NewApp extends Controller {
 	public static void contractor() {
 		render();
 	}
+	public static void companyAlias() {
+		render();
+	}
 	
 }
