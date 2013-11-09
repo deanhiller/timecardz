@@ -1,0 +1,70 @@
+#{extends 'main.html' /}
+
+<div id="addEditPatternModal" class="modal hide #{if showPopup}in#{/if}" tabindex="-1" 
+     role="dialog" data-backdrop="true" aria-labelledby="addEditModalLabel" 
+     aria-hidden="#{if showPopup}false#{/if}#{else}true#{/else}"
+     #{if showPopup}style="display: block;"#{/if}>
+    #{if showPopup}
+        #{include './ajaxAddEdit.html'/}
+        <script type="text/javascript">
+           $(document).ready(function() { 
+               $("#addEditPatternModal").modal('show');   
+           });
+        </script>
+    #{/if}
+</div>
+
+<h3> Employees of ${company?.name}</h3>
+<table class="table table-striped table-bordered table-condensed">
+<thead>
+     <tr>
+           <th>email </th>
+           <th> FirstName</th>
+           <th> lastName </th>
+           <th>admin</th>
+           <th>manager</th>
+           <th>actions</th>
+     </tr>
+   </thead>  
+   <tbody>
+   #{list users, as:'user'}
+      <tr>
+           <td>${user.email}</td>
+           <td>${user.firstName}</td>
+           <td> ${user.lastName}</td>
+           <td>${user.isAdmin}</td>
+           <td>${user.manager.email}</td>
+           <td>
+            <a href="#" data-toggle="modal" class="btn" id="edit_${user_index-1}">
+                            Edit
+                        </a>
+                           <script type="text/javascript"> 
+                            var getAddEditPattern= #{jsAction @ajaxAddEdit(':id') /}
+                             $(document).ready(function() {	
+                                 $("#edit_${user_index-1}").click(function(e){
+                                     $('#addEditPatternModal').load(getAddEditPattern({id:${user.id}}),function(){
+                                         $("#addEditPatternModal").modal('show');	
+                                      });
+                                 });
+                       	    });
+                            </script>
+           
+           </td>
+           
+     </tr>
+     #{/list}
+     </tbody>
+</table>
+<a href="#" class="btn btn-primary" id="add">Add User</a>
+<p style="clear: both;">
+    <script type="text/javascript">
+    var getAddEditPattern= #{jsAction @ajaxAddEdit(':id') /}
+    $(document).ready(function() {	
+        $("#add").click(function(e){
+            $('#addEditPatternModal').load(getAddEditPattern(),function(){
+                 $("#addEditPatternModal").modal('show');	
+            });
+        });
+  	});
+  	</script>
+</p>

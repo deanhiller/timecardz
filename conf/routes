@@ -5,7 +5,7 @@
 # Home page
 GET     /                                         Application.index
 GET		/login                                    Application.login
-GET     /register                                 Application.register
+GET     /logout									  auth.Secure.logout
 GET     /contact                                  Application.contact
 GET     /about                                    Application.about
  
@@ -17,8 +17,8 @@ GET     /deleteTimeCardRender                         TimeCardAddition.deleteTim
 
 
 GET      /setup	                                            OtherStuff.setUpWizard
-GET      /admin/users	                                    OtherStuff.company
 GET      /home	                                            OtherStuff.home
+GET     /register                                 			Register.register
 GET     /register/{token}                                   Register.addedUserRegister
 
 
@@ -27,7 +27,8 @@ GET     /resetPassword/{key}                                 Password.resetPassw
 GET     /resetPassword                                       Password.resetPassword
 GET     /alreadyChanged                                      Password.alreadyChanged
 
-GET     /addUser                                              UserAddition.addUser
+GET     /addUser                                              UserAddition.ajaxAddEdit
+GET     /admin/users	                                      UserAddition.listUsers
 
 
 GET     /ourpattern                   			OurPattern.listUsers
@@ -43,4 +44,4 @@ GET     /{controller}/ajaxAddEdit/{id}          {controller}.ajaxAddEdit
 GET     /{controller}/ajaxDelete/{id}           {controller}.ajaxDelete
 
 # Catch all
-*       /{controller}/{action}                  {controller}.{action}
+*       /{controller}/{action}                  {controller}.post{action}

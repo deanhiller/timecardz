@@ -1,6 +1,7 @@
 package controllers;
 
 import models.CompanyDbo;
+import models.EntityDbo;
 import models.Token;
 import models.UserDbo;
 import play.db.jpa.JPA;
@@ -9,34 +10,35 @@ import controllers.auth.Secure;
 
 public class Register extends Controller {
 	// This is for company admin
-	public static void postRegister(String company, String email,
-			String password, String verifyPassword) throws Throwable {
-		validation.required(email);
+	public static void postRegister(UserDbo user, String company)
+			throws Throwable {
+
+		validation.required(user.getEmail());
 		validation.required(company);
 		if (company == null) {
 			validation.addError("company", "company must be supplied");
 		}
-		if (password == null) {
+		if (user.getPassword() == null) {
 			validation.addError("password", "Password must be supplied");
 		}
-		if (!password.equals(verifyPassword)) {
-			validation.addError("verifyPassword", "Passwords did not match");
-		}
-		if (!email.contains("@"))
+		if (!user.getEmail().contains("@"))
 			validation.addError("email", "This is not a valid email");
-		if (emailAlreadyExists(email)) {
+		if (emailAlreadyExists(user.getEmail())) {
 			validation.addError("user.email", "This email is already in use");
 		}
 		if (validation.hasErrors()) {
 			params.flash(); // add http parameters to the flash scope
 			validation.keep(); // keep the errors for the next request
-			Application.register();
+			Register.register();
 		}
 		CompanyDbo companyDbo = new CompanyDbo();
 		companyDbo.setName(company);
-		UserDbo user = new UserDbo();
-		user.setEmail(email);
-		user.setPassword(password);
+
+		/*
+		 * UserDbo user = new UserDbo(); user.setEmail(email);
+		 * user.setPassword(password);
+		 */
+
 		user.setManager(user);
 		user.setAdmin(true);
 		user.setBeginDayOfWeek("Monday");
@@ -49,18 +51,19 @@ public class Register extends Controller {
 		Secure.addUserToSession(user.getEmail());
 		OtherStuff.setupWizard();
 	}
-	
+
 	public static void addedUserRegister(String token) {
 		Token tkn = JPA.em().find(Token.class, token);
-		UserDbo user=tkn.getUser();
-		String email=user.getEmail();
+		UserDbo user = tkn.getUser();
+		String email = user.getEmail();
 		long sendmailtime = tkn.getTime();
 		long logintime = System.currentTimeMillis();
 		long duration = (7 * 24 * 60 * 60);
 		long interval = logintime - sendmailtime;
 		validation.required(interval);
 		if (interval > duration) {
-			validation.addError("interval","Plese request the admin to send the message again");
+			validation.addError("interval",
+					"Plese request the admin to send the message again");
 
 		} else {
 			render(email);
@@ -71,48 +74,49 @@ public class Register extends Controller {
 			Application.index();
 		}
 	}
-	
-	public static void postUserRegister(String email, String password,
-			String verifyPassword, String firstName, String lastName,
-			String phone) {
-		Integer id=null;
-		validation.required(email);
-		if (password == null) {
+
+	public static void postUserRegister(UserDbo user) {
+		Integer id = null;
+		validation.required(user.getEmail());
+		if (user.getPassword() == null) {
 			validation.addError("password", "Password must be supplied");
 		}
-		if (!password.equals(verifyPassword)) {
-			validation.addError("verifyPassword", "Passwords did not match");
-		}
-		if (!email.contains("@"))
+		if (!user.getEmail().contains("@"))
 			validation.addError("email", "This is not a valid email");
-		Boolean existing = Register.emailAlreadyExists(email);
-		if (!existing ) {
-			validation.addError("email", "This email is not registered with us");
+		Boolean existing = Register.emailAlreadyExists(user.getEmail());
+		if (!existing) {
+			validation
+					.addError("email", "This email is not registered with us");
 		}
 
 		if (validation.hasErrors()) {
 			params.flash(); // add http parameters to the flash scope
 			validation.keep(); // keep the errors for the next request
-			//postUserRegister();
+			// postUserRegister();
 		}
-		UserDbo user=UserDbo.findByEmailId(JPA.em(), email);
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setPhone(phone);
+		/*
+		 * // don't think these are needed user=UserDbo.findByEmailId(JPA.em(),
+		 * user.getEmail()); user.setEmail(user.getEmail());
+		 * user.setPassword(user.getPassword()); user.setFirstName();
+		 * user.setLastName(lastName); user.setPhone(phone);
+		 */
 		user.setAdmin(false);
 		JPA.em().persist(user);
 		JPA.em().flush();
 		Secure.addUserToSession(user.getEmail());
 		OtherStuff.home(id);
+
 	}
-	public static boolean emailAlreadyExists(String  email) {
+
+	public static boolean emailAlreadyExists(String email) {
 		UserDbo otherUser = UserDbo.findByEmailId(JPA.em(), email);
-		if(otherUser == null)
+		if (otherUser == null)
 			return false;
 		return true;
 	}
 
-	
+	public static void register() {
+		render();
+	}
+
 }

@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.List;
 
-import models.CompanyDbo;
 import models.DayCardDbo;
 import models.SecureToken;
 import models.StatusEnum;
@@ -23,7 +22,7 @@ import controllers.auth.Secure;
 @With(Secure.class)
 public class OtherStuff extends Controller {
 
-	private static final Logger log = LoggerFactory.getLogger(OtherStuff.class);
+	static final Logger log = LoggerFactory.getLogger(OtherStuff.class);
 
 	public static void setupWizard() {
 		render();
@@ -37,17 +36,8 @@ public class OtherStuff extends Controller {
 		admin.setGetEmailYesOrNo(emailSend);
 		JPA.em().persist(admin);
 		JPA.em().flush();
-		company();
+		UserAddition.listUsers();
 
-	}
-
-	public static void company() {
-		UserDbo admin = Utility.fetchUser();
-		CompanyDbo company = admin.getCompany();
-		log.info("Adding users by Admin = " + admin.getEmail()
-				+ " and Company = " + company.getName());
-		List<UserDbo> users = company.getUsers();
-		render(admin, company, users);
 	}
 
 	public static void home(Integer id) {

@@ -18,7 +18,7 @@ import play.mvc.With;
 public class UserAddition extends Controller {
 	private static final Logger log = LoggerFactory.getLogger(UserAddition.class);
 
-	public static void addUser() {
+	public static void ajaxAddEdit(Integer id) {
 		UserDbo admin = Utility.fetchUser();
 		CompanyDbo company = admin.getCompany();
 		log.info("Adding users by Admin = " + admin.getEmail()
@@ -28,9 +28,8 @@ public class UserAddition extends Controller {
 
 	}
 
-	public static void userAddition(String useremail, String manager,String role)
+	public static void postUserAddition(String useremail, String manager,String role)
 			throws Throwable {
-		Integer id = null;
 		validation.required(useremail);
 		if (!useremail.contains("@"))
 			validation.addError("useremail", "This is not a valid email");
@@ -38,10 +37,12 @@ public class UserAddition extends Controller {
 		if (existing) {
 			validation.addError("useremail", "This email already exists");
 		}
-		if (validation.hasErrors()) {
+		if(validation.hasErrors()) {
 			params.flash(); // add http parameters to the flash scope
-			validation.keep(); // keep the errors for the next request
-			addUser();
+			validation.keep();
+			flash.error("Your form has errors");
+			flash.put("showPopup", "true");
+			listUsers();
 		}
 		UserDbo admin = Utility.fetchUser();
 		CompanyDbo company = admin.getCompany();
@@ -69,7 +70,7 @@ public class UserAddition extends Controller {
 		JPA.em().persist(token);
 		JPA.em().flush();
 		Utility.sendEmail(useremail, company.getName(), key);
-		OtherStuff.company();
+		UserAddition.listUsers();
 	}
 
 	public static void postAddition(String name, String address, String phone,
@@ -94,5 +95,14 @@ public class UserAddition extends Controller {
 		JPA.em().persist(user);
 		JPA.em().flush();
 		OtherStuff.home(id);
+	}
+
+	public static void listUsers() {
+		UserDbo admin = Utility.fetchUser();
+		CompanyDbo company = admin.getCompany();
+		OtherStuff.log.info("Adding users by Admin = " + admin.getEmail()
+				+ " and Company = " + company.getName());
+		List<UserDbo> users = company.getUsers();
+		render(admin, company, users);
 	}
 }

@@ -21,10 +21,6 @@ public class Application extends Controller {
 		render();
 	}
 
-	public static void register() {
-		render();
-	}
-
 	public static void pricing() {
 		render();
 	}
