@@ -104,8 +104,9 @@ public class Register extends Controller {
 		JPA.em().persist(user);
 		JPA.em().flush();
 		Secure.addUserToSession(user.getEmail());
-		OtherStuff.home(id);
-
+		
+                //OtherStuff.home(id);
+		NewApp.companyAlias();
 	}
 
 	public static boolean emailAlreadyExists(String email) {

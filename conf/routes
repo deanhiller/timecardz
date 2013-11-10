@@ -8,7 +8,14 @@ GET		/login                                    Application.login
 GET     /logout									  auth.Secure.logout
 GET     /contact                                  Application.contact
 GET     /about                                    Application.about
- 
+GET     /oldindex                                 Application.oldIndex
+
+
+GET     /contractor                                  NewApp.contact
+GET     /clockInOut                                  NewApp.clockInOut
+GET     /companyalias                                   NewApp.companyAlias
+
+
 GET    /addedittimecardrender/{date}		          TimeCardAddition.addEditTimeCardRender
 POST    /posttimeaddition		                      TimeCardAddition.postTimeAddition
 GET     /approveTimecard/{key}                        TimeCardAddition.timeCardApproval

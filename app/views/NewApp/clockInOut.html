@@ -1,0 +1,18 @@
+#{extends 'main.html' /}
+<div id="addUserModalDiv"></div>
+
+<h4><strong>Hello,Now you can add Employee! Click <a href="#"  id="addUser">Add User</a> for adding employee.</strong></h4>
+<p style="clear: both;">
+    <script type="text/javascript">
+    var getUser= #{jsAction @UserAddition.AddUser() /}
+    $(document).ready(function() {	
+        $("#addUser").click(function(e){
+            $('#addUserModalDiv').load(getUser(),function(){
+                 $("#addUserModal").modal('show');	
+            });
+        });
+  	});
+  	</script>
+</p>
+
+<h4><strong>Go to <a href="/companyalias">companyalias</a>  for Clock-In & Clock-Out.</strong></h4>
