@@ -13,6 +13,10 @@ public class Application extends Controller {
 		render();
 	}
 
+	public static void oldIndex() {
+		render();
+	}
+
 	public static void contact() {
 		render();
 	}

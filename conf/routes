@@ -8,6 +8,8 @@ GET		/login                                    Application.login
 GET     /register                                 Application.register
 GET     /contact                                  Application.contact
 GET     /about                                    Application.about
+GET     /oldindex                                 Application.oldIndex
+
 
 GET     /contractor                                  NewApp.contact
 GET     /clockInOut                                  NewApp.clockInOut
