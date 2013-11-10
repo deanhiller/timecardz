@@ -41,7 +41,7 @@ public class AppRegister extends Controller{
 		if (validation.hasErrors()) {
 			params.flash(); // add http parameters to the flash scope
 			validation.keep(); // keep the errors for the next request
-			Application.register();
+			Register.register();
 		}
 		CompanyDbo companyDbo = new CompanyDbo();
 		companyDbo.setName(company);
