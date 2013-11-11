@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{form @AppRegister.postclockIn(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
+#{form @AppRegister.postClockIn(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
 	   <Strong><h4>Enter your mail-id and and press Clock-In </h4></Strong>
 	    #{formfield 'useremail'}
 		        <div class="control-group ${field.errorClass}">
@@ -22,7 +22,7 @@
 <br>
 
 
-#{form @AppRegister.postclockOut(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
+#{form @AppRegister.postClockOut(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
 	    <Strong><h4>Enter your mail-id and and press Clock-out </h4></Strong>
 	    #{formfield 'useremail1'}
 		        <div class="control-group ${field.errorClass}">
