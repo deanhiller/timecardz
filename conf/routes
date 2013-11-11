@@ -16,10 +16,9 @@ GET     /clockInOut                                  NewApp.clockInOut
 GET     /companyalias                                   NewApp.companyAlias
 
 
-GET    /addedittimecardrender/{date}		          TimeCardAddition.addEditTimeCardRender
-POST    /posttimeaddition		                      TimeCardAddition.postTimeAddition
+
 GET     /approveTimecard/{key}                        TimeCardAddition.timeCardApproval
-GET     /deleteTimeCardRender                         TimeCardAddition.deleteTimeCardRender
+
 
 
 

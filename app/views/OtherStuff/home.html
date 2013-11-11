@@ -26,8 +26,8 @@
 				<td>${timeCard.status}</td>
 			    <td><a id="myaddEdit_${timeCard_index-1}" class="btn1" href="#" >edit</a>&nbsp |&nbsp <a id="myDelete_${timeCard_index-1}" class="btn1" href="#" >delete</a>
 				  <script type="text/javascript">
-				     var getAddEditTimeCard1= #{jsAction @TimeCardAddition.addEditTimeCardRender(':beginOfWeek',':id') /}
-				     var getDeleteTimeCard= #{jsAction @TimeCardAddition.deleteTimeCardRender(':timeCardId') /} 
+				     var getAddEditTimeCard1= #{jsAction @TimeCardAddition.postAddEditTimeCardRender(':beginOfWeek',':id') /}
+				     var getDeleteTimeCard= #{jsAction @TimeCardAddition.postDeleteTimeCardRender(':timeCardId') /} 
 				     $('#myaddEdit_${timeCard_index-1}').click(function (e) {
 			               e.preventDefault();
 			                 $('#addEditModalDiv').load(getAddEditTimeCard1({beginOfWeek:${timeCard.beginOfWeek},id:${timeCard.id}}),function(){
@@ -47,7 +47,7 @@
 	</table>
 	
 	<div id="addpopup" class="modal hide" tabindex="-1" role="dialog"data-backdrop="false" aria-labelledby="addEditModalLabel" aria-hidden="true">
-		#{form @TimeCardAddition.addEditTimeCardRender(),class:'form-horizontal',style:'min-width:500px;max-width:800px;margin: 0 auto'} 
+		#{form @TimeCardAddition.postAddEditTimeCardRender(),class:'form-horizontal',style:'min-width:500px;max-width:800px;margin: 0 auto'} 
 		  <strong> <h4>What week do you want to add a Time Card for?</h4></strong>
 		    <div id="dbAddEditModal_content" class="modal-body"  style="height:250px;">
 		         <input id="dateset" class="span2" size="16" name="date" type="date" value=""> 
@@ -64,9 +64,9 @@
 		$("#addpopup input[type=submit]").click(function(e){
 			e.preventDefault();
 			var date=$("#dateset").val();
-			var getAddEditTimeCard= #{jsAction @TimeCardAddition.addEditTimeCardRender(':beginOfWeek',':id') /}
-		 		  $("#timecardModal").load(getAddEditTimeCard({beginOfWeek:date,id:'id'}),function(data,status,xhr){
-	  				$("#myAddEditModal").modal('show');	
+			var getAddEditTimeCard= #{jsAction @TimeCardAddition.postAddEditTimeCardRender(':beginOfWeek',':id') /}
+				  $("#timecardModal").load(getAddEditTimeCard({beginOfWeek:date,id:'id'}),function(data,status,xhr){
+	  				  $("#myAddEditModal").modal('show');	
 	  			    });
 	  	
 				$("#addpopup").modal('hide');	

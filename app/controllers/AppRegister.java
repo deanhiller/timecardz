@@ -74,7 +74,7 @@ public class AppRegister extends Controller{
 
 	}
 
-	public static void clockIn(String useremail) {
+	public static void postclockIn(String useremail) {
 		UserDbo user = UserDbo.findByEmailId(JPA.em(), useremail);
 		if (user != null) {
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -94,7 +94,7 @@ public class AppRegister extends Controller{
 
 	}
 
-	public static void clockOut(String useremail1) {
+	public static void postclockOut(String useremail1) {
 		UserDbo user = UserDbo.findByEmailId(JPA.em(), useremail1);
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		LocalDate date = LocalDate.now();

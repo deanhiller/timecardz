@@ -34,7 +34,7 @@ public class UserDbo {
 	@GeneratedValue
 	private Integer id;
 
-	@Index(name="entityIndexColumn")
+	@Index(name="entityIndexCol")
 	@Column(unique = true)
 	private String email;
 
