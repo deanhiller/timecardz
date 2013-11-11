@@ -133,7 +133,7 @@ public class TimeCardAddition extends Controller {
 		OtherStuff.home(id);
 	}
 
-	public static void addEditTimeCardRender(String date,int id) {
+	public static void postAddEditTimeCardRender(String date,int id) {
 		LocalDate beginOfWeek=null;
 		if (!(id == 0)) {
 			TimeCardDbo timeCard = JPA.em().find(TimeCardDbo.class, id);
@@ -165,7 +165,7 @@ public class TimeCardAddition extends Controller {
 		}
 	}
 
-	public static void deleteTimeCardRender(Integer timeCardId) {
+	public static void postDeleteTimeCardRender(Integer timeCardId) {
 		Integer id = timeCardId;
 		render(id);
 	}

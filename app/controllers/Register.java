@@ -66,7 +66,7 @@ public class Register extends Controller {
 					"Plese request the admin to send the message again");
 
 		} else {
-			render(email);
+			render(user);
 		}
 		if (validation.hasErrors()) {
 			params.flash(); // add http parameters to the flash scope
@@ -101,12 +101,10 @@ public class Register extends Controller {
 		 * user.setLastName(lastName); user.setPhone(phone);
 		 */
 		user.setAdmin(false);
-		JPA.em().persist(user);
 		JPA.em().flush();
 		Secure.addUserToSession(user.getEmail());
-		
-                //OtherStuff.home(id);
-		NewApp.companyAlias();
+		OtherStuff.home(id);
+		//NewApp.companyAlias();
 	}
 
 	public static boolean emailAlreadyExists(String email) {

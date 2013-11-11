@@ -6,7 +6,7 @@
         <div class="container">
 		<br/>
             <div class="row login">
-                <div class="span5 left_box">
+                <div class="span4 left_box">
                    <p><strong>Register to submit your time cards quickly</strong></p>
 
                     <div class="perk_box">
@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="span6 signin_box">
+                <div class="span8 signin_box">
                     <div class="box">
                         <div class="box_cont">
                                <div class="division">
@@ -34,15 +34,55 @@
                                 <div class="line r"></div>
                             </div>
                             <div class="form">
-                            
-				    			#{form @Register.postUserRegister()}
-				    					<input type="text" placeholder="email" name="email" value = "${email}" readonly="readonly" />
-                        				<input type="password" placeholder="Password" name="password" value = "" />
-                        				<input type="password" placeholder="Confirm Password" name= "verifyPassword" value="" />
-				                 		<input type="text" placeholder="First Name" name="firstName" value=""/>
-				                 		<input type="text" placeholder="Last Name" name="lastName" value=""/>
-				                 		<input type="text" placeholder="Phone" name="phone" value=""/>
-				                        <input type="submit" value="Sign Up"/>
+				    			#{form @Register.postUserRegister(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
+				    			   #{formfield 'user.email'}
+								        <div class="control-group ${field.errorClass}">
+								            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>email</label>
+								            <div class="controls">
+								                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+								                <span class="help-block">${field.error}</span>
+								            </div>
+								        </div>
+							        #{/formfield}
+								   #{formfield 'user.Password'}
+								        <div class="control-group ${field.errorClass}">
+								            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>Password</label>
+								            <div class="controls">
+								                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+								                <span class="help-block">${field.error}</span>
+								            </div>
+								        </div>
+							        #{/formfield}
+							       
+								   #{formfield 'user.firstName'}
+								        <div class="control-group ${field.errorClass}">
+								            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>FirstName</label>
+								            <div class="controls">
+								                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+								                <span class="help-block">${field.error}</span>
+								            </div>
+								        </div>
+							        #{/formfield}
+							        
+								   #{formfield 'user.lastName'}
+								        <div class="control-group ${field.errorClass}">
+								            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>lastName</label>
+								            <div class="controls">
+								                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+								                <span class="help-block">${field.error}</span>
+								            </div>
+								        </div>
+								        #{/formfield}
+								        #{formfield 'user.phone'}
+								        <div class="control-group ${field.errorClass}">
+								            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>phone</label>
+								            <div class="controls">
+								                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
+								                <span class="help-block">${field.error}</span>
+								            </div>
+								        </div>
+							       #{/formfield}
+							      <input type="submit" name="submit" value="Save" class="btn434 btn-primary" />  
 				                #{/form}
                             </div>
 

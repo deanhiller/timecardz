@@ -28,7 +28,7 @@ public class OtherStuff extends Controller {
 		render();
 	}
 
-	public static void adminSetup(String beginDayOfWeek, String endOfWeek,
+	public static void postAdminSetup(String beginDayOfWeek, String endOfWeek,
 			String emailSend) {
 		UserDbo admin = Utility.fetchUser();
 		admin.setBeginDayOfWeek(beginDayOfWeek);
