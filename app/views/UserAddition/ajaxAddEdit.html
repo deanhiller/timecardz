@@ -1,3 +1,5 @@
+   <div>
+   #{form @UserAddition.postUserAddition(), class:'form-horizontal',style:'min-width:500px;max-width:800px;margin: 0 auto'}
    <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
          <h4 id="myModalLabel"> ${user?.firstName} </h4>
@@ -13,33 +15,28 @@
         #{/} 
     
         <input type="hidden" name="user.id" value="${user?.id}"/>  
-        
-*{	     #{formfield 'useremail'}
-		        <div class="control-group ${field.errorClass}">
-		            <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>useremail</label>
-		            <div class="controls">
-		                <input id="entityTable" type="text" name="${field.name}" value="${field.value}" class="input-xlarge">
-		                <span class="help-block">${field.error}</span>
-		            </div>
-		        </div>
-         #{/formfield} 
-               <div>
+               <div align="right"> 
+                 useremail: <input type="text" name="useremail"><br>
+               </div>
+               <div align="right">
                  Manager:  #{select 'manager', items:users, valueProperty:'email', labelProperty:'email', placeholder:"Manager" , id:'manager' /}	
-	          </div>
-	         <div> Role <select name="role">
-                   <option value="admin">Admin</option>
-                   <option value="user">User</option>
-             </div> 
-            </select>
-            }*
+	           </div>
+	           <div align="right"> 
+	             Role <select name="role">
+                       <option value="admin">Admin</option>
+                       <option value="user">User</option>
+                      </select>
+               </div> 
+           
 	</div>       
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close2222</button>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 			<input type="submit" name="submit" value="Save" class="btn434 btn-primary" />
 		</div>
+	#{/form}	
 	  </div>
 	  
-*{  #{/form} }
+
 
 
 
