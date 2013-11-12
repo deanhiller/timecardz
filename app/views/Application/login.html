@@ -2,7 +2,7 @@
 #{set title:'Sign-in' /}
 
     
-	 #{form @auth.Secure.authenticate(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
+	 #{form @auth.Secure.postAuthenticate(), class:'form-horizontal', style:'min-width:500px;max-width:800px;margin: 0 auto'}
        #{formfield 'username'}
         <div class="control-group ${field.errorClass}">
             <label class="control-label"><a href="#" rel="tooltip" title="Some help message for schema name"><i class="icon-info-sign"></i></a>username</label>

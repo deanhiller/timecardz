@@ -28,13 +28,7 @@ public class Secure extends Controller {
 	
     @Before(unless={"login", "authenticate", "logout"})
     static void checkAccess() throws Throwable {
-        // Authent
-        if(!session.contains("username")) {
-            flash.put("url", "GET".equals(request.method) ? request.url : Play.ctxPath + "/"); // seems a good default
-            login();
-        }
-        log.info("user is already authenticated");
-        // Checks
+    	log.info("user is already authenticated");
         Check check = getActionAnnotation(Check.class);
         if(check != null) {
             check(check);
@@ -44,7 +38,6 @@ public class Secure extends Controller {
             check(check);
         }
 
-    	//String username = session.get("username");
     }
 
     private static void check(Check check) throws Throwable {
@@ -86,7 +79,7 @@ public class Secure extends Controller {
         Application.login();
     }
 
-    public static void authenticate(@Required String username, String password, boolean remember) throws Throwable {
+    public static void postAuthenticate(@Required String username, String password, boolean remember) throws Throwable {
 		log.info("trying to login with username=" + username);
 		// Check tokens
 		Integer id = null;
