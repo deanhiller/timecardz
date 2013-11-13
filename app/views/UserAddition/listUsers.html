@@ -19,11 +19,11 @@
 <thead>
      <tr>
            <th>email </th>
-           <th> FirstName</th>
-           <th> lastName </th>
-           <th>admin</th>
-           <th>manager</th>
-           <th>actions</th>
+           <th> First Name</th>
+           <th> Last Name </th>
+           <th>Admin</th>
+           <th>Manager</th>
+           <th>Actions</th>
      </tr>
    </thead>  
    <tbody>
@@ -32,7 +32,9 @@
            <td><a class="btn1" href="@{NewApp.timeCardDetail(user.id)}">${user.email} </a></td>
            <td>${user.firstName}</td>
            <td> ${user.lastName}</td>
-           <td>${user.isAdmin}</td>
+           <td>${user.role}
+         
+			</td>
            <td>${user.manager.email}</td>
            <td>
             <a href="#" data-toggle="modal" class="btn" id="edit_${user_index-1}">

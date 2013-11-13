@@ -20,6 +20,7 @@ public class UserAddition extends Controller {
 
 	public static void ajaxAddEdit(Integer id) {
 		UserDbo admin = Utility.fetchUser();
+		admin.setRole("admin");
 		CompanyDbo company = admin.getCompany();
 		log.info("Adding users by Admin = " + admin.getEmail()
 				+ " and Company = " + company.getName());
@@ -27,8 +28,8 @@ public class UserAddition extends Controller {
 		render(admin, company, users);
 
 	}
-
-	public static void postUserAddition(String useremail, String manager,String role)
+	public static void postUserAddition(String firstName, String lastName, String useremail, String manager,String role)
+//	public static void postUserAddition(String useremail, String manager,String role)
 			throws Throwable {
 		validation.required(useremail);
 		if (!useremail.contains("@"))
@@ -50,6 +51,8 @@ public class UserAddition extends Controller {
 		user.setEmail(useremail);
 		user.setRole(role);
 		user.setCompany(company);
+		user.setFirstName(firstName);;
+		user.setLastName(lastName);
 		if (manager == null) {
 			// If there is no manager, add the current user as Manager
 			user.setManager(admin);
@@ -102,7 +105,7 @@ public class UserAddition extends Controller {
 		CompanyDbo company = admin.getCompany();
 		OtherStuff.log.info("Adding users by Admin = " + admin.getEmail()
 				+ " and Company = " + company.getName());
-		List<UserDbo> users = company.getUsers();
+		List<UserDbo> users = company.getUsers();	
 		render(admin, company, users);
 	}
 }
