@@ -52,6 +52,43 @@ public class Register extends Controller {
 		OtherStuff.setupWizard();
 	}
 
+	public static void postNewAppRegister(UserDbo user,String selectRadio,String company) throws Throwable {
+			validation.required(user.getEmail());
+			validation.required(company);
+			if (company == null) {
+				validation.addError("company", "company must be supplied");
+			}
+			if (user.getPassword() == null) {
+				validation.addError("password", "Password must be supplied");
+			}
+			if (!(user.getEmail().contains("@")))
+				validation.addError("email", "This is not a valid email");
+			if (Register.emailAlreadyExists(user.getEmail())) {
+				validation.addError("user.email", "This email is already in use");
+			}
+			if (validation.hasErrors()) {
+				params.flash(); // add http parameters to the flash scope
+				validation.keep(); // keep the errors for the next request
+				Register.register();
+			}
+			
+			CompanyDbo companyDbo = new CompanyDbo();
+			companyDbo.setName(company);
+			user.setManager(user);
+			user.setAdmin(true);
+			user.setBeginDayOfWeek("Monday");
+			user.setGetEmailYesOrNo("Yes");
+			companyDbo.addUser(user);
+			user.setCompany(companyDbo);
+			JPA.em().persist(companyDbo);
+			JPA.em().persist(user);
+			JPA.em().flush();
+			Secure.addUserToSession(user.getEmail());
+			if(selectRadio.equalsIgnoreCase("Simple clock-in / clock-out timecard software")){
+				NewApp.clockInOut();
+			}
+			NewApp.contractor();
+		}
 	public static void addedUserRegister(String token) {
 		Token tkn = JPA.em().find(Token.class, token);
 		UserDbo user = tkn.getUser();

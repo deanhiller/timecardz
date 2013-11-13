@@ -11,9 +11,10 @@ GET     /templates                                Application.templates
 GET     /oldindex                                 Application.oldIndex
 
 
-GET     /contractor                                  NewApp.contact
+GET     /contractor                                  NewApp.contractor
 GET     /clockInOut                                  NewApp.clockInOut
 GET     /companyalias                                   NewApp.companyAlias
+GET     /timeCardDetail                                  NewApp.timeCardDetail
 
 
 

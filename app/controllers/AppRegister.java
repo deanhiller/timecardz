@@ -1,6 +1,7 @@
 package controllers;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,59 +21,7 @@ import sun.net.www.content.image.jpeg;
 
 public class AppRegister extends Controller{
 	private static final Logger log = LoggerFactory.getLogger(UserAddition.class);
-	public static void postRegister(String company, String email,
-		String password, String verifyPassword,String selectRadio) throws Throwable {
-		validation.required(email);
-		validation.required(company);
-		if (company == null) {
-			validation.addError("company", "company must be supplied");
-		}
-		if (password == null) {
-			validation.addError("password", "Password must be supplied");
-		}
-		if (!password.equals(verifyPassword)) {
-			validation.addError("verifyPassword", "Passwords did not match");
-		}
-		if (!email.contains("@"))
-			validation.addError("email", "This is not a valid email");
-		if (Register.emailAlreadyExists(email)) {
-			validation.addError("user.email", "This email is already in use");
-		}
-		if (validation.hasErrors()) {
-			params.flash(); // add http parameters to the flash scope
-			validation.keep(); // keep the errors for the next request
-			Register.register();
-		}
-		CompanyDbo companyDbo = new CompanyDbo();
-		companyDbo.setName(company);
-		UserDbo user = new UserDbo();
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setManager(user);
-		user.setAdmin(true);
-		user.setBeginDayOfWeek("Monday");
-		user.setGetEmailYesOrNo("Yes");
-		companyDbo.addUser(user);
-		user.setCompany(companyDbo);
-		JPA.em().persist(companyDbo);
-		JPA.em().persist(user);
-		JPA.em().flush();
-		Secure.addUserToSession(user.getEmail());
-		if(selectRadio.equalsIgnoreCase("Simple clock-in / clock-out timecard software")){
-			NewApp.clockInOut();
-		}
-		NewApp.contractor();
-	}
 	
-	public static void addUser() {
-		UserDbo admin = Utility.fetchUser();
-		CompanyDbo company = admin.getCompany();
-		log.info("Adding users by Admin = " + admin.getEmail()
-				+ " and Company = " + company.getName());
-		List<UserDbo> users = company.getUsers();
-		render(admin, company, users);
-
-	}
 
 	public static void postClockIn(String useremail) {
 		UserDbo user = UserDbo.findByEmailId(JPA.em(), useremail);
@@ -95,6 +44,7 @@ public class AppRegister extends Controller{
 	}
 
 	public static void postClockOut(String useremail1) {
+		String totalWorkHrs=null;
 		UserDbo user = UserDbo.findByEmailId(JPA.em(), useremail1);
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		LocalDate date = LocalDate.now();
@@ -103,9 +53,27 @@ public class AppRegister extends Controller{
 		TimeCardDbo timeCardDbo = TimeCardDbo.findByDate(JPA.em(), date);
 		timeCardDbo.setClockOutTime(time);
 		timeCardDbo.getClockInTime();
+		long diffTime = 0;
+		try {
+			 Date clockOut = dateFormat.parse(time);
+			 Date clockIn = dateFormat.parse(timeCardDbo.getClockInTime());
+		     diffTime = clockOut.getTime() - clockIn.getTime();
+		     long timeInSeconds = diffTime / 1000;
+		     long hours, minutes, seconds;
+		     hours = timeInSeconds / 3600;
+		     timeInSeconds = timeInSeconds - (hours * 3600);
+		     minutes = timeInSeconds / 60;
+		     timeInSeconds = timeInSeconds - (minutes * 60);
+		     seconds = timeInSeconds;
+		     totalWorkHrs = (hours<10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds) + " h";
+		    } catch (ParseException e) {
+		  e.printStackTrace();
+		}
+		timeCardDbo.setTotalWrkTime(totalWorkHrs);  	
 		JPA.em().persist(timeCardDbo);
 		JPA.em().persist(timeCardDbo);
 		JPA.em().flush();
 		render(date, time, timeCardDbo);
 	}
+	
 }

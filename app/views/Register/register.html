@@ -1,7 +1,7 @@
 #{extends 'main.html' /} 
 #{set title:'register' /} 
 #{form
-@Register.postRegister(), class:'form-horizontal',
+@Register.postNewAppRegister(), class:'form-horizontal',
 style:'min-width:500px;max-width:800px;margin: 0 auto'}
 <div class="modal-body">
 	#{formfield 'company'}
@@ -49,6 +49,12 @@ style:'min-width:500px;max-width:800px;margin: 0 auto'}
 		</div>
 	</div>
 	#{/formfield}
+	 <strong><h4>Choose which software version to use below</h4> </strong>
+       <input type="radio" name="selectRadio" value="Simple clock-in / clock-out timecard software"  > Simple clock-in / clock-out timecard software<br>
+       <input type="radio" name="selectRadio" value="Contractor filling out detailed minutes software" onclick=/setUp > Contractor filling out detailed minutes software<br>
+       <input type="radio" name="selectRadio" value="Company where weekly timecards are filled out and approved by managers">  Company where weekly timecards are filled out and approved by managers
+        <br>
+        <br>
 </div>
 <div>
 	<input type="submit" name="submit" value="REGISTER"

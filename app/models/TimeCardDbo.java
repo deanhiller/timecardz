@@ -41,6 +41,15 @@ public class TimeCardDbo {
 	private LocalDate date;
 	private String clockInTime;
 	private String clockOutTime;
+	private String totalWrkTime;
+
+	public String getTotalWrkTime() {
+		return totalWrkTime;
+	}
+
+	public void setTotalWrkTime(String totalWrkTime) {
+		this.totalWrkTime = totalWrkTime;
+	}
 
 	private float numberOfHours;
 
