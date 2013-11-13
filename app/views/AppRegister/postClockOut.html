@@ -1,6 +1,6 @@
 #{extends 'main.html' /}
 
-<strong><h4> Hello,you have successfully clocked-in </h4></strong>
+<strong><h4> Hello,you have successfully clocked-out</h4></strong>
 
 <table class="table table-striped table-bordered table-condensed">
 		<thead>
@@ -14,11 +14,11 @@
 		<tbody>
 			
 			<tr>
-				<td>${timeCardDbo.id}</td>
-				<td>${timeCardDbo.date}</td>
-				<td>${timeCardDbo.clockInTime}</td>
-				<td>${timeCardDbo.clockOutTime}</td>
-			    <td></td>
+				<td>${timeCardDbo?.id}</td>
+				<td>${timeCardDbo?.date}</td>
+				<td>${timeCardDbo?.clockInTime}</td>
+				<td>${timeCardDbo?.clockOutTime}</td>
+				<td>${timeCardDbo?.totalWrkTime}</td>
 			 </tr>
 			
 		</tbody>

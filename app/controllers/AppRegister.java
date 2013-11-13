@@ -1,6 +1,7 @@
 package controllers;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +44,7 @@ public class AppRegister extends Controller{
 	}
 
 	public static void postClockOut(String useremail1) {
+		String totalWorkHrs=null;
 		UserDbo user = UserDbo.findByEmailId(JPA.em(), useremail1);
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		LocalDate date = LocalDate.now();
@@ -51,9 +53,27 @@ public class AppRegister extends Controller{
 		TimeCardDbo timeCardDbo = TimeCardDbo.findByDate(JPA.em(), date);
 		timeCardDbo.setClockOutTime(time);
 		timeCardDbo.getClockInTime();
+		long diffTime = 0;
+		try {
+			 Date clockOut = dateFormat.parse(time);
+			 Date clockIn = dateFormat.parse(timeCardDbo.getClockInTime());
+		     diffTime = clockOut.getTime() - clockIn.getTime();
+		     long timeInSeconds = diffTime / 1000;
+		     long hours, minutes, seconds;
+		     hours = timeInSeconds / 3600;
+		     timeInSeconds = timeInSeconds - (hours * 3600);
+		     minutes = timeInSeconds / 60;
+		     timeInSeconds = timeInSeconds - (minutes * 60);
+		     seconds = timeInSeconds;
+		     totalWorkHrs = (hours<10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds) + " h";
+		    } catch (ParseException e) {
+		  e.printStackTrace();
+		}
+		timeCardDbo.setTotalWrkTime(totalWorkHrs);  	
 		JPA.em().persist(timeCardDbo);
 		JPA.em().persist(timeCardDbo);
 		JPA.em().flush();
 		render(date, time, timeCardDbo);
 	}
+	
 }

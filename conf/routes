@@ -14,6 +14,7 @@ GET     /oldindex                                 Application.oldIndex
 GET     /contractor                                  NewApp.contractor
 GET     /clockInOut                                  NewApp.clockInOut
 GET     /companyalias                                   NewApp.companyAlias
+GET     /timeCardDetail                                  NewApp.timeCardDetail
 
 
 
