@@ -37,9 +37,9 @@
             </a>
             <div class="nav-collapse collapse">
                 <ul class="nav pull-right">
-                    <li><a href="@{Application.index()}" class="active">HOME</a></li>
+                    <li id="tab_index"><a href="@{Application.index()}">HOME</a></li>
                    	#{if session.get('username') != null}
-            		<li class="dropdown"><a href="@{Application.index()}" class="dropdown-toggle" id="pages-drop" data-toggle="dropdown">TIMECARDZ</a>   
+            		<li id="tab_timecard" class="dropdown"><a href="@{Application.index()}" class="dropdown-toggle" id="pages-drop" data-toggle="dropdown">TIMECARDZ</a>   
 						  <!-- Dropdown Menu -->
 			              <ul class="dropdown-menu">
 			                <li><a href="@{Application.index()}">MY DASHBOARD</a></li>
@@ -48,7 +48,7 @@
 			              </ul>
 			        </li>
 			        #{/if}		
-                    <li><a href="@{Application.templates()}">TEMPLATES</a></li>
+                    <li id="tab_templates"><a href="@{Application.templates()}">TEMPLATES</a></li>
  <!--                   <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             PAGES
@@ -68,7 +68,7 @@
 			
                     <li><a href="/pricing">PRICING</a></li>
              -->
-      *{              <li><a href="@{Application.contact()}">CONTACT US</a></li> }*
+      *{              <li id="tab_contact"><a href="@{Application.contact()}">CONTACT US</a></li> }*
                     #{if session.get('username')}
                         <li><div>logged in as: ${session.get('username')}</div>
                         <div id="custom_logoutbtn">
@@ -78,14 +78,19 @@
             		#{/if}
             		#{else}
 <!--                     	<li><a class="btn-header" href="/signup">Sign up</a></li> -->        	
-					<li><a class="btn-header" href="@{Register.register()}">REGISTER</a></li>
-                    <li><a class="btn-header" href="@{Application.login()}">LOGIN</a></li>
+					<li id="tab_register"><a class="btn-header" href="@{Register.register()}">REGISTER</a></li>
+                    <li id="tab_login"><a class="btn-header" href="@{Application.login()}">LOGIN</a></li>
                     #{/else}	
                 </ul>
             </div>
         </div>
       </div>
     </div>
+
+		<script type="text/javascript" language="JavaScript">
+       		$("li#tab_#{get 'tab'/} > a").addClass("active");
+  		</script>
+  		
 
 	#{if flash.success}
 		<div class="row-fluid">
