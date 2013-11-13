@@ -102,10 +102,20 @@ public class UserAddition extends Controller {
 
 	public static void listUsers() {
 		UserDbo admin = Utility.fetchUser();
-		CompanyDbo company = admin.getCompany();
-		OtherStuff.log.info("Adding users by Admin = " + admin.getEmail()
-				+ " and Company = " + company.getName());
-		List<UserDbo> users = company.getUsers();	
-		render(admin, company, users);
+		if (admin != null) {
+			boolean checkAdmin = admin.isAdmin();
+			if (checkAdmin) {
+				CompanyDbo company = admin.getCompany();
+				OtherStuff.log.info("Adding users by Admin = "
+						+ admin.getEmail() + " and Company = "
+						+ company.getName());
+				List<UserDbo> users = company.getUsers();
+				render(admin, company, users);
+			}
+			flash.success("Oops! You are not manager.Sign-in as manager for accessing Time Card and adding the users");
+			Application.login();
+		}
+		flash.success("Oops! No User is Signed-In.Sign-in for accessing Time Card and adding the users");
+		Application.login();
 	}
 }
