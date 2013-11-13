@@ -32,23 +32,23 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="/">
+            <a class="brand" href="@{Application.index()}">
                 <strong>Free Time Card</strong>
             </a>
             <div class="nav-collapse collapse">
                 <ul class="nav pull-right">
-                    <li><a href="/" class="active">HOME</a></li>
+                    <li><a href="@{Application.index()}" class="active">HOME</a></li>
                    	#{if session.get('username') != null}
-            		<li class="dropdown"><a href="/company" class="dropdown-toggle" id="pages-drop" data-toggle="dropdown">TIMECARDZ</a> 
-            		#{/if}		  
+            		<li class="dropdown"><a href="@{Application.index()}" class="dropdown-toggle" id="pages-drop" data-toggle="dropdown">TIMECARDZ</a>   
 						  <!-- Dropdown Menu -->
 			              <ul class="dropdown-menu">
-			                <li><a href="/dashboard">MY DASHBOARD</a></li>
-			                 <li><a href="/employee">MY TIMECARDS</a></li>
+			                <li><a href="@{Application.index()}">MY DASHBOARD</a></li>
+			                 <li><a href="@{Application.index()}">MY TIMECARDS</a></li>
 			                <!-- 			                <li><a href="/companydetails">Users</a></li> -->
 			              </ul>
 			        </li>
-                    <li><a href="/about">TEMPLATES</a></li>
+			        #{/if}		
+                    <li><a href="@{Application.templates()}">TEMPLATES</a></li>
  <!--                   <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             PAGES
@@ -68,7 +68,7 @@
 			
                     <li><a href="/pricing">PRICING</a></li>
              -->
-                    <li><a href="/contact">CONTACT US</a></li>
+                    <li><a href="@{Application.contact()}">CONTACT US</a></li>
                     #{if session.get('username')}
                         <li><div>logged in as: ${session.get('username')}</div>
                         <div id="custom_logoutbtn">
@@ -79,7 +79,7 @@
             		#{else}
 <!--                     	<li><a class="btn-header" href="/signup">Sign up</a></li> -->        	
 					<li><a class="btn-header" href="@{Register.register()}">REGISTER</a></li>
-                    <li><a class="btn-header" href="/login">LOGIN</a></li>
+                    <li><a class="btn-header" href="@{Application.login()}">LOGIN</a></li>
                     #{/else}	
                 </ul>
             </div>
@@ -143,12 +143,15 @@
                     <h3 class="footer_header">
                         Contact
                     </h3>
-                    <form action="#" method="post">
+                    <div style="text-align: left">
+                    support@buffalosw.com
+                    </div>
+                    *{ <form action="#" method="post">
                         <input type="text" placeholder="Your name" />
                         <input type="text" placeholder="Your email" />
                         <textarea rows="3" placeholder="Message"></textarea>
                         <input type="submit" value="Send" />
-                    </form>
+                    </form> }*
                 </div>
             </div>
             <div class="row credits">

@@ -7,7 +7,7 @@ GET     /                                         Application.index
 GET		/login                                    Application.login
 GET     /logout									  auth.Secure.logout
 GET     /contact                                  Application.contact
-GET     /about                                    Application.about
+GET     /templates                                Application.templates
 GET     /oldindex                                 Application.oldIndex
 
 
@@ -50,4 +50,4 @@ GET     /{controller}/ajaxAddEdit/{id}          {controller}.ajaxAddEdit
 GET     /{controller}/ajaxDelete/{id}           {controller}.ajaxDelete
 
 # Catch all
-*       /{controller}/{action}                  {controller}.post{action}
+POST       /{controller}/{action}                  {controller}.post{action}

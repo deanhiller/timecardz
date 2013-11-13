@@ -33,7 +33,7 @@ public class Application extends Controller {
 		render();
 	}
 
-	public static void about() {
+	public static void templates() {
 		render();
 	}
 }
