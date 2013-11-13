@@ -68,7 +68,7 @@
 			
                     <li><a href="/pricing">PRICING</a></li>
              -->
-                    <li><a href="@{Application.contact()}">CONTACT US</a></li>
+      *{              <li><a href="@{Application.contact()}">CONTACT US</a></li> }*
                     #{if session.get('username')}
                         <li><div>logged in as: ${session.get('username')}</div>
                         <div id="custom_logoutbtn">
