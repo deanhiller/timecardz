@@ -20,7 +20,7 @@ public class Password extends Controller {
 	private static final Logger log = LoggerFactory.getLogger(Password.class);
 	static boolean reset = false;
 
-	public static void changePass(String email) {
+	public static void postChangePass(String email) {
 		validation.required(email);
 		if(email==null){
 			validation.addError("email", "email must be supplied");
@@ -35,7 +35,7 @@ public class Password extends Controller {
 		JPA.em().flush();
 		boolean existing=Register.emailAlreadyExists(email);
 		if (existing) {
-			sendEmailForPassowdReset(email, key);
+			sendEmailForPasswordReset(email, key);
 		} else{
 			validation.addError("email", "email does not exists");
 		}
@@ -45,7 +45,7 @@ public class Password extends Controller {
 			changePassword();
 		}
  }
-	public static void sendEmailForPassowdReset(String emailId,String key) {
+	public static void sendEmailForPasswordReset(String emailId,String key) {
 		String mode = Play.configuration.getProperty("application.mode");
 		String port = Play.configuration.getProperty("http.port");
 		String signupUrl = "null";
@@ -64,7 +64,7 @@ public class Password extends Controller {
 			email.setFrom("no-reply@tbd.com");
 			email.addTo(emailId);
 			email.setSubject("Link for Password Reset");
-			email.setMsg(" Hi,\n  Please go to " + signupUrl+ "resetPassword/" + key + " "+ "and reset the password. \n Best Regards");
+			email.setMsg(" Hi,\n  Please Click  " + signupUrl+ "resetPassword/" + key + " "+ " for reseting the password of "+ " email-id  "+""+emailId+". \n Best Regards");
 			Mail.send(email);
 		    flash.success("We sent you an email to change your password");
 		} catch (EmailException e) {
@@ -99,7 +99,7 @@ public class Password extends Controller {
 		}
 	}
 
-	public static void change(String emailId, String password,
+	public static void postChange(String emailId, String password,
 			String verifyPassword) {
 		validation.required(emailId);
 		Boolean existing = Register.emailAlreadyExists(emailId);
