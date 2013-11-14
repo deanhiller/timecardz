@@ -5,7 +5,9 @@
 #{form
 @Register.postNewAppRegister(), class:'form-horizontal',
 style:'min-width:500px;max-width:800px;margin: 0 auto'}
-<div class="modal-body">
+
+<legend>Registration for free software</legend>
+
 	#{formfield 'company'}
 	<div class="control-group ${field.errorClass}">
 		<label class="control-label"><a href="#" rel="tooltip"
@@ -57,7 +59,7 @@ style:'min-width:500px;max-width:800px;margin: 0 auto'}
        <input type="radio" name="selectRadio" value="Company where weekly timecards are filled out and approved by managers">  Company where weekly timecards are filled out and approved by managers
         <br>
         <br>
-</div>
+
 <div>
 	<input type="submit" name="submit" value="REGISTER"
 		class="btn btn-primary" />

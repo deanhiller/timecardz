@@ -1,6 +1,31 @@
 #{extends 'main.html' /}
 #{set title:'About Us' /}
 #{set tab:'templates'/}
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">Free Time Card Software</h3>
+    </div>
+    <div class="modal-body">
+        <p>
+        Instead of using our time card templates, you can use our free web software, save some trees and save time.  Or if you
+        still just want some free time card templates, click Continue To Free Templates below.  We highly encourage you to
+        at least try our free software and see if it works for you.
+        </p>
+    </div>
+    <div class="modal-footer">
+    	<a href="@{Register.register()}" class="btn btn-primary">Try Free Software</a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Continue To Free Templates</button>
+    </div>
+</div>
+
+	<script type="text/javascript">
+    $(document).ready(function() {
+		$("#myModal").modal('show') 
+    });
+    </script>
+    
     <div id="aboutus" style="margin-top: 10px">
         <div class="container">
             <div class="section_header" style="margin-bottom: 20px">
@@ -68,20 +93,25 @@
             <div class="row services_circles">
                 <div class="span4 description">
                     <div class="text active">
-                        <h4>Plan what you need.</h4>
+                        <h4>Software is better</h4>
                         <p>
-                            There are many variations of passages of  this suffered alteration in some form, by injected look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to making this the first true generator  Internet.</p>
+                            Instead of using time card templates, go completely electronic with our software and have a unique url for every time card that you can just easily send to someone.
+                            You can easily grant access to other users to view time cards as well. 
+                        </p>
                     </div>
                     <div class="text">
-                        <h4>Develop your product or service.</h4>
+                        <h4>Software is better</h4>
                         <p>
-                            There are many variations of passages of  this suffered alteration in some form, by injected look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to 
-                            making this the first true generator  Internet.</p>
+                            Instead of using time card templates, go completely electronic with our software and have a unique url for every time card that you can just easily send to someone.
+                            You can easily grant access to other users to view time cards as well. 
+                        </p>
                     </div>
                     <div class="text">
-                        <h4>Design this theme to your needs.</h4>
+                        <h4>Software is better</h4>
                         <p>
-                            There are many variations of passages of  this suffered alteration in some form, by injected look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to making this the first true generator  Internet.</p>
+                            Instead of using time card templates, go completely electronic with our software and have a unique url for every time card that you can just easily send to someone.
+                            You can easily grant access to other users to view time cards as well. 
+                        </p>
                     </div>
                 </div>
 

@@ -163,11 +163,17 @@
 .slide .info a:hover {
     opacity: .8;
 }
-.asset,
-.fade {
+
+/*
+NOTE: Take fade out as it conflicts with twitter bootstrap's modal panels and their fade class
+.fade,
+*/
+.fade2,
+.asset {
     position: absolute;
     display: none;
 }
+
 #slide-left,
 #slide-right {
     width: 31px;
