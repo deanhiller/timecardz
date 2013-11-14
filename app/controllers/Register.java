@@ -6,54 +6,52 @@ import models.Role;
 import models.SoftwareType;
 import models.Token;
 import models.UserDbo;
+import play.data.validation.Valid;
+import play.data.validation.Validation;
 import play.db.jpa.JPA;
 import play.mvc.Controller;
 import controllers.auth.Secure;
 
 public class Register extends Controller {
 
-	public static void postNewAppRegister(UserDbo user,String type,String company) throws Throwable {
-			validation.required(user.getEmail());
-			validation.required(company);
-			if (company == null) {
-				validation.addError("company", "company must be supplied");
-			}
-			if (user.getPassword() == null) {
-				validation.addError("user.password", "Password must be supplied");
-			}
-			if (!(user.getEmail().contains("@")))
-				validation.addError("user.email", "This is not a valid email");
-			if (Register.emailAlreadyExists(user.getEmail())) {
-				validation.addError("user.email", "This email is already in use");
-			}
-			if (validation.hasErrors()) {
-				params.flash(); // add http parameters to the flash scope
-				validation.keep(); // keep the errors for the next request
-				Register.register();
-			}
-			
-			SoftwareType softwareType = SoftwareType.translate(type);
-			
-			CompanyDbo companyDbo = new CompanyDbo();
-			companyDbo.setName(company);
-			companyDbo.setSoftwareType(softwareType);
-			user.setManager(user);
-			user.setRole(Role.ADMIN);
-			user.setCompany(companyDbo);			
-			companyDbo.addUser(user);
-			
-			JPA.em().persist(companyDbo);
-			JPA.em().persist(user);
-			JPA.em().flush();
-			
-			if(user.getEmail().endsWith("@deanstest.com")) {
-				Secure.addUserToSession(user.getEmail());
-				NewApp.clockInOut();
-			}
-			
-			Application.overloaded();
+	public static void postNewAppRegister(@Valid UserDbo user, String type)
+			throws Throwable {
+		validation.required(type);
+		if (!(user.getEmail().contains("@")))
+			validation.addError("user.email", "This is not a valid email");
+		if (Register.emailAlreadyExists(user.getEmail())) {
+			validation.addError("user.email", "This email is already in use");
 		}
-	
+		if (type == null)
+			validation.addError("type", "A software type must be specified");
+
+		if (validation.hasErrors()) {
+			params.flash(); // add http parameters to the flash scope
+			validation.keep(); // keep the errors for the next request
+			Register.register();
+		}
+
+		SoftwareType softwareType = SoftwareType.translate(type);
+
+		CompanyDbo companyDbo = new CompanyDbo();
+		companyDbo.setSoftwareType(softwareType);
+		user.setManager(user);
+		user.setRole(Role.ADMIN);
+		user.setCompany(companyDbo);
+		companyDbo.addUser(user);
+
+		JPA.em().persist(companyDbo);
+		JPA.em().persist(user);
+		JPA.em().flush();
+
+		if (user.getEmail().endsWith("@deanstest.com")) {
+			Secure.addUserToSession(user.getEmail());
+			NewApp.clockInOut();
+		}
+
+		Application.overloaded();
+	}
+
 	public static void addedUserRegister(String token) {
 		Token tkn = JPA.em().find(Token.class, token);
 		UserDbo user = tkn.getUser();
@@ -101,13 +99,13 @@ public class Register extends Controller {
 		 * user.getEmail()); user.setEmail(user.getEmail());
 		 * user.setPassword(user.getPassword()); user.setFirstName();
 		 * user.setLastName(lastName); user.setPhone(phone);
-  		 * user.setAdmin(false);
-  		 */
-		
+		 * user.setAdmin(false);
+		 */
+
 		JPA.em().flush();
 		Secure.addUserToSession(user.getEmail());
 		OtherStuff.home(id);
-		//NewApp.companyAlias();
+		// NewApp.companyAlias();
 	}
 
 	public static boolean emailAlreadyExists(String email) {

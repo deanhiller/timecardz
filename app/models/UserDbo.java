@@ -23,6 +23,7 @@ import javax.persistence.Query;
 import org.hibernate.annotations.Index;
 
 
+import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
@@ -35,14 +36,20 @@ public class UserDbo {
 	@GeneratedValue
 	private Integer id;
 
+	@Required
 	@Index(name="entityIndexCol")
 	@Column(unique = true)
 	private String email;
 
+	@Required
 	private String phone;
 	
+	@Required
 	private String password;
 
+	@Required
+	private String name;
+	
 	private String firstName;
 
 	private String lastName;
@@ -66,7 +73,7 @@ public class UserDbo {
 
 	@OneToMany
 	private List<TimeCardDbo> timecards = new ArrayList<TimeCardDbo>();
-	
+
 	public Token getToken() {
 		return token;
 	}
@@ -206,5 +213,12 @@ public class UserDbo {
 		if(r == Role.ADMIN)
 			return true;
 		return false;
+	}
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }
