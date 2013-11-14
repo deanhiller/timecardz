@@ -35,7 +35,7 @@ public class Password extends Controller {
 		JPA.em().flush();
 		boolean existing=Register.emailAlreadyExists(email);
 		if (existing) {
-			sendEmailForPassowdReset(email, key);
+			sendEmailForPasswordReset(email, key);
 		} else{
 			validation.addError("email", "email does not exists");
 		}
@@ -45,7 +45,7 @@ public class Password extends Controller {
 			changePassword();
 		}
  }
-	public static void sendEmailForPassowdReset(String emailId,String key) {
+	public static void sendEmailForPasswordReset(String emailId,String key) {
 		String mode = Play.configuration.getProperty("application.mode");
 		String port = Play.configuration.getProperty("http.port");
 		String signupUrl = "null";

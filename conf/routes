@@ -19,6 +19,8 @@ GET     /timeCardDetail                                  NewApp.timeCardDetail
 
 
 GET     /approveTimecard/{key}                        TimeCardAddition.timeCardApproval
+GET     /addEditTimeCardRender                     TimeCardAddition.addEditTimeCardRender
+GET     /deleteTimeCardRender                     TimeCardAddition.deleteTimeCardRender
 
 
 
@@ -33,7 +35,7 @@ GET     /changePassword                                      Password.changePass
 GET     /resetPassword/{key}                                 Password.resetPassword
 GET     /resetPassword                                       Password.resetPassword
 GET     /alreadyChanged                                      Password.alreadyChanged
-GET     /sendEmailForPassowdReset                            Password.sendEmailForPassowdReset
+GET     /sendEmailForPasswordReset                            Password.sendEmailForPasswordReset
 
 GET     /addUser                                              UserAddition.ajaxAddEdit
 GET     /admin/users	                                      UserAddition.listUsers
