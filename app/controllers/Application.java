@@ -36,4 +36,8 @@ public class Application extends Controller {
 	public static void templates() {
 		render();
 	}
+
+	public static void overloaded() {
+		render();
+	}
 }

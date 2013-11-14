@@ -22,6 +22,7 @@ import javax.persistence.Query;
 
 import org.hibernate.annotations.Index;
 
+
 import play.db.jpa.Model;
 
 @Entity
@@ -38,6 +39,8 @@ public class UserDbo {
 	@Column(unique = true)
 	private String email;
 
+	private String phone;
+	
 	private String password;
 
 	private String firstName;
@@ -47,6 +50,23 @@ public class UserDbo {
 	@OneToOne(mappedBy = "user")
 	public Token token;
 
+	@ManyToOne
+	@JoinColumn(nullable=false)
+	private CompanyDbo company;
+
+	@ManyToOne
+	private UserDbo manager;
+	
+	@OneToMany(mappedBy = "manager")
+	private List<UserDbo> employees = new ArrayList<UserDbo>();
+
+	private String role = Role.USER.getDatabaseCode();
+	
+	private boolean isNewPasswordChange;
+
+	@OneToMany
+	private List<TimeCardDbo> timecards = new ArrayList<TimeCardDbo>();
+	
 	public Token getToken() {
 		return token;
 	}
@@ -55,23 +75,13 @@ public class UserDbo {
 		this.token = token;
 	}
 
-	private String phone;
-
-	private boolean isAdmin;
-
-	private String role;;
-
-	public String getRole() {
-		return role;
+	public Role getRole() {
+		return Role.translate(role);
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole(Role role) {
+		this.role = role.getDatabaseCode();
 	}
-
-	private boolean isNewPasswordChange;
-
-	private String endOfWeek;
 
 	public boolean isNewPasswordChange() {
 		return isNewPasswordChange;
@@ -81,40 +91,6 @@ public class UserDbo {
 		this.isNewPasswordChange = isNewPasswordChange;
 	}
 
-	private String beginDayOfWeek;
-
-	private String getEmailYesOrNo;
-
-	public String getEndOfWeek() {
-		return endOfWeek;
-	}
-
-	public void setEndOfWeek(String endOfWeek) {
-		this.endOfWeek = endOfWeek;
-	}
-
-	public String getBeginDayOfWeek() {
-		return beginDayOfWeek;
-	}
-
-	public void setBeginDayOfWeek(String beginDayOfWeek) {
-		this.beginDayOfWeek = beginDayOfWeek;
-	}
-
-	public String isGetEmailYesOrNo() {
-		return getEmailYesOrNo;
-	}
-
-	public void setGetEmailYesOrNo(String getEmailYesOrNo) {
-		this.getEmailYesOrNo = getEmailYesOrNo;
-	}
-
-	@ManyToOne
-	private CompanyDbo company;
-
-	@ManyToOne
-	private UserDbo manager;
-
 	public List<TimeCardDbo> getTimecards() {
 		return timecards;
 	}
@@ -122,12 +98,6 @@ public class UserDbo {
 	public void setTimecards(List<TimeCardDbo> timecards) {
 		this.timecards = timecards;
 	}
-
-	@OneToMany(mappedBy = "manager")
-	private List<UserDbo> employees = new ArrayList<UserDbo>();
-
-	@OneToMany
-	private List<TimeCardDbo> timecards = new ArrayList<TimeCardDbo>();
 
 	public Integer getId() {
 		return id;
@@ -212,14 +182,6 @@ public class UserDbo {
 		this.manager = manager;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-
 	public void addTimecards(TimeCardDbo timecard) {
 		this.timecards.add(timecard);
 	}
@@ -237,5 +199,12 @@ public class UserDbo {
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	public boolean isAdmin() {
+		Role r = Role.translate(role);
+		if(r == Role.ADMIN)
+			return true;
+		return false;
 	}
 }

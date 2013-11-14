@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,25 +17,28 @@ import play.db.jpa.Model;
 public class CompanyDbo {
 	@Id
 	@GeneratedValue
-	private int key;
+	private Integer id;
 
-	@OneToMany
+	@OneToMany(mappedBy="company")
 	private List<UserDbo> users = new ArrayList<UserDbo>();
-
-	private String phoneNumber;
-
-	private String address;
 
 	private String name;
 
 	private String description;
 
-	public int getKey() {
-		return key;
+	@Column(nullable=false)
+	private String softwareType;
+	
+	private String beginDayOfWeek;
+
+	private String getEmailYesOrNo;
+	
+	public int getId() {
+		return id;
 	}
 
-	public void setKey(int key) {
-		this.key = key;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -57,22 +61,6 @@ public class CompanyDbo {
 		this.users.add(userDbo);
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -80,4 +68,29 @@ public class CompanyDbo {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public void setSoftwareType(SoftwareType type) {
+		this.softwareType = type.getDatabaseCode();
+	}
+	
+	public SoftwareType getSoftwareType() {
+		return SoftwareType.translate(softwareType);
+	}
+
+	public String getBeginDayOfWeek() {
+		return beginDayOfWeek;
+	}
+
+	public void setBeginDayOfWeek(String beginDayOfWeek) {
+		this.beginDayOfWeek = beginDayOfWeek;
+	}
+
+	public String getGetEmailYesOrNo() {
+		return getEmailYesOrNo;
+	}
+
+	public void setGetEmailYesOrNo(String getEmailYesOrNo) {
+		this.getEmailYesOrNo = getEmailYesOrNo;
+	}
+
 }

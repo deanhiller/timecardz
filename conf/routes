@@ -7,9 +7,9 @@ GET     /                                         Application.index
 GET		/login                                    Application.login
 GET     /logout									  auth.Secure.logout
 GET     /contact                                  Application.contact
-GET     /templates                                Application.templates
+GET     /free-timecard-templates                  Application.templates
 GET     /oldindex                                 Application.oldIndex
-
+GET     /overloaded                               Application.overloaded
 
 GET     /contractor                                  NewApp.contractor
 GET     /clockInOut                                  NewApp.clockInOut

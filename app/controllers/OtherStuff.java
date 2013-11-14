@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.List;
 
+import models.CompanyDbo;
 import models.DayCardDbo;
 import models.SecureToken;
 import models.StatusEnum;
@@ -31,9 +32,9 @@ public class OtherStuff extends Controller {
 	public static void postAdminSetup(String beginDayOfWeek, String endOfWeek,
 			String emailSend) {
 		UserDbo admin = Utility.fetchUser();
-		admin.setBeginDayOfWeek(beginDayOfWeek);
-		admin.setEndOfWeek(endOfWeek);
-		admin.setGetEmailYesOrNo(emailSend);
+		CompanyDbo company = admin.getCompany();
+		company.setBeginDayOfWeek(beginDayOfWeek);
+		company.setGetEmailYesOrNo(emailSend);
 		JPA.em().persist(admin);
 		JPA.em().flush();
 		UserAddition.listUsers();

@@ -34,12 +34,12 @@ public class TimeCardAddition extends Controller {
 			DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 			LocalDate beginOfWeek = formatter.parseLocalDate(date);
 			UserDbo user = Utility.fetchUser();
-			UserDbo manager = user.getManager();
+			CompanyDbo company = user.getCompany();
 			DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEEEEEE");
-			if (manager.getBeginDayOfWeek() != null	&& manager.getBeginDayOfWeek().equalsIgnoreCase("Saturday")) {
+			if (company.getBeginDayOfWeek() != null	&& company.getBeginDayOfWeek().equalsIgnoreCase("Saturday")) {
 				beginOfWeek = beginOfWeek.minusDays(2);
 			}
-			if (manager.getBeginDayOfWeek() != null	&& manager.getBeginDayOfWeek().equalsIgnoreCase("Sunday")) {
+			if (company.getBeginDayOfWeek() != null	&& company.getBeginDayOfWeek().equalsIgnoreCase("Sunday")) {
 				beginOfWeek = beginOfWeek.minusDays(1);
 			}
 			TimeCardDbo timeCardDbo = new TimeCardDbo();
@@ -143,7 +143,7 @@ public class TimeCardAddition extends Controller {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 		beginOfWeek = formatter.parseLocalDate(date).dayOfWeek().withMinimumValue();
 		UserDbo user = Utility.fetchUser();
-		UserDbo manager = user.getManager();
+		CompanyDbo manager = user.getCompany();
 		TimeCardDbo timeCard = null;
 		DayCardDbo dayC = null;
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEEEEEE");

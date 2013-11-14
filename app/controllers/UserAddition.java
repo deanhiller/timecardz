@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.CompanyDbo;
+import models.Role;
 import models.Token;
 import models.UserDbo;
 
@@ -20,7 +21,7 @@ public class UserAddition extends Controller {
 
 	public static void ajaxAddEdit(Integer id) {
 		UserDbo admin = Utility.fetchUser();
-		admin.setRole("admin");
+		admin.setRole(Role.ADMIN);
 		CompanyDbo company = admin.getCompany();
 		log.info("Adding users by Admin = " + admin.getEmail()
 				+ " and Company = " + company.getName());
@@ -49,7 +50,8 @@ public class UserAddition extends Controller {
 		CompanyDbo company = admin.getCompany();
 		UserDbo user = new UserDbo();
 		user.setEmail(useremail);
-		user.setRole(role);
+		Role r = Role.translate(role);
+		user.setRole(r);
 		user.setCompany(company);
 		user.setFirstName(firstName);;
 		user.setLastName(lastName);
@@ -89,8 +91,6 @@ public class UserAddition extends Controller {
 		}
 		CompanyDbo company = new CompanyDbo();
 		company.setName(name);
-		company.setAddress(address);
-		company.setPhoneNumber(phone);
 		company.setDescription(detail);
 		company.addUser(user);
 		user.setCompany(company);

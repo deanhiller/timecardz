@@ -2,6 +2,8 @@ package controllers;
 
 import models.CompanyDbo;
 import models.EntityDbo;
+import models.Role;
+import models.SoftwareType;
 import models.Token;
 import models.UserDbo;
 import play.db.jpa.JPA;
@@ -9,60 +11,18 @@ import play.mvc.Controller;
 import controllers.auth.Secure;
 
 public class Register extends Controller {
-	// This is for company admin
-	public static void postRegister(UserDbo user, String company)
-			throws Throwable {
 
-		validation.required(user.getEmail());
-		validation.required(company);
-		if (company == null) {
-			validation.addError("company", "company must be supplied");
-		}
-		if (user.getPassword() == null) {
-			validation.addError("password", "Password must be supplied");
-		}
-		if (!user.getEmail().contains("@"))
-			validation.addError("email", "This is not a valid email");
-		if (emailAlreadyExists(user.getEmail())) {
-			validation.addError("user.email", "This email is already in use");
-		}
-		if (validation.hasErrors()) {
-			params.flash(); // add http parameters to the flash scope
-			validation.keep(); // keep the errors for the next request
-			Register.register();
-		}
-		CompanyDbo companyDbo = new CompanyDbo();
-		companyDbo.setName(company);
-
-		/*
-		 * UserDbo user = new UserDbo(); user.setEmail(email);
-		 * user.setPassword(password);
-		 */
-
-		user.setManager(user);
-		user.setAdmin(true);
-		user.setBeginDayOfWeek("Monday");
-		user.setGetEmailYesOrNo("Yes");
-		companyDbo.addUser(user);
-		user.setCompany(companyDbo);
-		JPA.em().persist(companyDbo);
-		JPA.em().persist(user);
-		JPA.em().flush();
-		Secure.addUserToSession(user.getEmail());
-		OtherStuff.setupWizard();
-	}
-
-	public static void postNewAppRegister(UserDbo user,String selectRadio,String company) throws Throwable {
+	public static void postNewAppRegister(UserDbo user,String type,String company) throws Throwable {
 			validation.required(user.getEmail());
 			validation.required(company);
 			if (company == null) {
 				validation.addError("company", "company must be supplied");
 			}
 			if (user.getPassword() == null) {
-				validation.addError("password", "Password must be supplied");
+				validation.addError("user.password", "Password must be supplied");
 			}
 			if (!(user.getEmail().contains("@")))
-				validation.addError("email", "This is not a valid email");
+				validation.addError("user.email", "This is not a valid email");
 			if (Register.emailAlreadyExists(user.getEmail())) {
 				validation.addError("user.email", "This email is already in use");
 			}
@@ -72,23 +32,28 @@ public class Register extends Controller {
 				Register.register();
 			}
 			
+			SoftwareType softwareType = SoftwareType.translate(type);
+			
 			CompanyDbo companyDbo = new CompanyDbo();
 			companyDbo.setName(company);
+			companyDbo.setSoftwareType(softwareType);
 			user.setManager(user);
-			user.setAdmin(true);
-			user.setBeginDayOfWeek("Monday");
-			user.setGetEmailYesOrNo("Yes");
+			user.setRole(Role.ADMIN);
+			user.setCompany(companyDbo);			
 			companyDbo.addUser(user);
-			user.setCompany(companyDbo);
+			
 			JPA.em().persist(companyDbo);
 			JPA.em().persist(user);
 			JPA.em().flush();
-			Secure.addUserToSession(user.getEmail());
-			if(selectRadio.equalsIgnoreCase("Simple clock-in / clock-out timecard software")){
+			
+			if(user.getEmail().endsWith("@deanstest.com")) {
+				Secure.addUserToSession(user.getEmail());
 				NewApp.clockInOut();
 			}
-			NewApp.contractor();
+			
+			Application.overloaded();
 		}
+	
 	public static void addedUserRegister(String token) {
 		Token tkn = JPA.em().find(Token.class, token);
 		UserDbo user = tkn.getUser();
@@ -136,8 +101,9 @@ public class Register extends Controller {
 		 * user.getEmail()); user.setEmail(user.getEmail());
 		 * user.setPassword(user.getPassword()); user.setFirstName();
 		 * user.setLastName(lastName); user.setPhone(phone);
-		 */
-		user.setAdmin(false);
+  		 * user.setAdmin(false);
+  		 */
+		
 		JPA.em().flush();
 		Secure.addUserToSession(user.getEmail());
 		OtherStuff.home(id);
