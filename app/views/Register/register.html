@@ -6,7 +6,7 @@
 style:'min-width:500px;max-width:800px;margin: 0 auto'}
 
 <legend>Registration for free software</legend>
-
+			
 #{formfield 'user.name'}
 <div class="control-group ${field.errorClass}">
 	<label class="control-label"><a href="#" rel="tooltip"
@@ -59,11 +59,11 @@ style:'min-width:500px;max-width:800px;margin: 0 auto'}
 		title="Some help message for schema name"><i
 			class="icon-info-sign"></i></a>Software Type</label>
 	<div class="controls">
-		<input type="radio" name="type" value="clockin">
+		<input type="radio" name="type" value="clockin" #{if field.value=='clockin'}checked="checked"#{/if}>
 			Simple clock-in / clock-out timecard software<br>
-		<input type="radio" name="type" value="contractor">
+		<input type="radio" name="type" value="contractor" #{if field.value=='contractor'}checked="checked"#{/if}>
 			Contractor filling out detailed minutes software<br>
-		<input type="radio" name="type" value="approval">
+		<input type="radio" name="type" value="approval" #{if field.value=='approval'}checked="checked"#{/if}>
 			Company where weekly timecards are filled out and approved by managers
 		<span class="help-block">${field.error}</span>
 	</div>
