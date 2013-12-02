@@ -1,5 +1,8 @@
 package controllers;
 
+import org.hibernate.FlushMode;
+import org.hibernate.Session;
+
 import models.CompanyDbo;
 import models.EntityDbo;
 import models.Role;
@@ -16,6 +19,9 @@ public class Register extends Controller {
 
 	public static void postNewAppRegister(@Valid UserDbo user, String type)
 			throws Throwable {
+		Session session = (Session) JPA.em().getDelegate();
+		session.setFlushMode(FlushMode.MANUAL);
+		
 		validation.required(type);
 		if (!(user.getEmail().contains("@")))
 			validation.addError("user.email", "This is not a valid email");
