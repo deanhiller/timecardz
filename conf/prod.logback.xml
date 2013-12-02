@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration scan="true" scanPeriod="30 seconds">
-
-    <!-- If MDC contains user=__postdata__ then that dude is getting a huge amount of traffic
-         that we do not want to log.. -->
-    <turboFilter class="com.alvazan.play.logging.MDCLevelFilter">
-       <MDCKey>filter</MDCKey>
-       <Value>true</Value>
-       <ThisLevelOrBelow>INFO</ThisLevelOrBelow>
-       <OnMatch>DENY</OnMatch>
-    </turboFilter>
 
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -33,11 +23,9 @@
 		<appender-ref ref="FILE"/>
 	</appender-->
 	
-	<logger name="controllers.ApiPostDataPoints" level="INFO"/>
-	<logger name="controllers" level="WARN"/>
-	<logger name="com.alvazan.orm" level="WARN"/>
-    <logger name="org.playorm.cron" level="WARN"/>
-    <logger name="play.server" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="java.sql" level="WARN"/>
+    <logger name="bytecodeparser.analysis" level="INFO"/> 
 
     <root>
         <level value="INFO" />
