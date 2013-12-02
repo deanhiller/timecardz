@@ -33,7 +33,7 @@ import play.db.jpa.Model;
 public class UserDbo {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Integer id;
 
 	@Required

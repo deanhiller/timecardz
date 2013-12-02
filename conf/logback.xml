@@ -27,13 +27,6 @@
 		<target>System.err</target>
 	</appender>
 	
-    <turboFilter class="com.alvazan.play.logging.MDCLevelFilter">
-       <MDCKey>filter</MDCKey>
-       <Value>true</Value>
-       <ThisLevelOrBelow>INFO</ThisLevelOrBelow>
-       <OnMatch>DENY</OnMatch>
-    </turboFilter>
-  
     <!--  these can effect performance greatly, if doing any performance testing uncomment these lines! -->
     <!--  hierarchical entries left on purpose to make it easier to get just what you want  -->
     <!--  com.alvazan.orm.logging is particularly brutal for performance, always set to at least WARN except in dev env -->
@@ -60,7 +53,7 @@
     <!-- logger name="com.alvazan.orm.layer9z.spi.db.cassandra.CassandraSession" level="TRACE"/ -->
   
 	<root>
-		<level value="INFO" />
+		<level value="DEBUG" />
 		<appender-ref ref="STDOUT"/>
 		<appender-ref ref="STDERR"/>
 	</root>

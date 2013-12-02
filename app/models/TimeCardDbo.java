@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,8 +33,8 @@ public class TimeCardDbo {
 
 	private static DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd, yyyy");
 	@Id
-	@GeneratedValue
-	private int id;
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	private Integer id;
 	private LocalDate beginOfWeek;
 
 	@Index(name = "entityIndexColumn")

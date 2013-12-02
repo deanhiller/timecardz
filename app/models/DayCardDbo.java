@@ -22,8 +22,8 @@ public class DayCardDbo {
 	private static DateTimeFormatter fmt = DateTimeFormat
 			.forPattern("MMM dd, yyyy");
 	@Id
-	@GeneratedValue
-	private int id;
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	private Integer id;
 	private LocalDate date;
 
 	private String day;
