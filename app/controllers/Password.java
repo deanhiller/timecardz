@@ -20,31 +20,7 @@ public class Password extends Controller {
 	private static final Logger log = LoggerFactory.getLogger(Password.class);
 	static boolean reset = false;
 
-	public static void postChangePass(String email) {
-		validation.required(email);
-		if(email==null){
-			validation.addError("email", "email must be supplied");
-		}
-		String key = Utility.generateKey();
-		Token token = new Token();
-		long timestamp = System.currentTimeMillis();
-		token.setTime(timestamp);
-		token.setToken(key);
-		token.setEmail(email);
-		JPA.em().persist(token);
-		JPA.em().flush();
-		boolean existing=Register.emailAlreadyExists(email);
-		if (existing) {
-			sendEmailForPasswordReset(email, key);
-		} else{
-			validation.addError("email", "email does not exists");
-		}
-		if (validation.hasErrors()) {
-			params.flash(); // add http parameters to the flash scope
-			validation.keep(); // keep the errors for the next request
-			changePassword();
-		}
- }
+	
 	public static void sendEmailForPasswordReset(String emailId,String key) {
 		String mode = Play.configuration.getProperty("application.mode");
 		String port = Play.configuration.getProperty("http.port");
@@ -97,28 +73,6 @@ public class Password extends Controller {
 			nullKey = true;
 			render(nullKey);
 		}
-	}
-
-	public static void postChange(String emailId, String password,
-			String verifyPassword) {
-		validation.required(emailId);
-		Boolean existing = Register.emailAlreadyExists(emailId);
-		if (!existing) {
-			validation.addError("email", "This email is not registered with us");
-		}
-		if (password == null) {
-			validation.addError("password", "Password must be supplied");
-		}
-		if (!password.equals(verifyPassword)) {
-			validation.addError("verifyPassword", "Passwords did not match");
-		}
-		UserDbo otherUser = UserDbo.findByEmailId(JPA.em(), emailId);
-		otherUser.setPassword(password);
-		otherUser.setNewPasswordChange(true);
-		JPA.em().persist(otherUser);
-		JPA.em().flush();
-		render();
-
 	}
 
 	public static void alreadyChanged() {
