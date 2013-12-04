@@ -56,7 +56,7 @@ public class OtherStuff extends Controller {
 		render();
 	}
 
-	public static void cardsAction(Integer timeCardId, int status) {
+	public static void postCardsAction(Integer timeCardId, int status) {
 
 		TimeCardDbo ref = JPA.em().find(TimeCardDbo.class, timeCardId);
 		if (ref != null) {
