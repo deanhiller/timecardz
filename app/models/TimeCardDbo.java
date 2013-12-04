@@ -85,11 +85,11 @@ public class TimeCardDbo {
 	@OneToMany
 	private List<DayCardDbo> daycards = new ArrayList<DayCardDbo>();
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

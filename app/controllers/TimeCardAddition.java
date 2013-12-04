@@ -30,7 +30,7 @@ public class TimeCardAddition extends Controller {
 	public static void postTimeAddition(Integer timeCardId,Integer[] dayCardsid, String date, float[] noofhours, String detail)
 			throws Throwable {
 		Integer id = null;
-		if (timeCardId == null || timeCardId == 0) {
+		if (timeCardId == null) {
 			DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 			LocalDate beginOfWeek = formatter.parseLocalDate(date);
 			UserDbo user = Utility.fetchUser();
@@ -71,7 +71,7 @@ public class TimeCardAddition extends Controller {
 			timeCardDbo.setStatus(StatusEnum.UNSUBMITED);
 			user.addTimecards(timeCardDbo);
 			JPA.em().persist(timeCardDbo);
-			int newTimeCardId=timeCardDbo.getId();
+			Integer newTimeCardId=timeCardDbo.getId();
 			session.put("newTimeCardId", newTimeCardId);
 			JPA.em().persist(user);
 			JPA.em().flush();
@@ -106,11 +106,11 @@ public class TimeCardAddition extends Controller {
 		}
 	}
 
-	public static void postMail(int id, String submitToManager) {
-		int newId = id;
+	public static void postMail(Integer id, String submitToManager) {
+		Integer newId = id;
 		TimeCardDbo timeCard = null;
 		if (submitToManager.equalsIgnoreCase("yes")) {
-			if (id == 0) {
+			if (id == null) {
 				String newTimeCardId = session.get("newTimeCardId");
 				newId = Integer.parseInt(newTimeCardId);
 				session.remove(newTimeCardId);
@@ -133,9 +133,9 @@ public class TimeCardAddition extends Controller {
 		OtherStuff.home(id);
 	}
 
-	public static void addEditTimeCardRender(String date,int id) {
+	public static void addEditTimeCardRender(String date,Integer id) {
 		LocalDate beginOfWeek=null;
-		if (!(id == 0)) {
+		if (id != null) {
 			TimeCardDbo timeCard = JPA.em().find(TimeCardDbo.class, id);
 			beginOfWeek = timeCard.getBeginOfWeek();
 			render(timeCard, beginOfWeek);

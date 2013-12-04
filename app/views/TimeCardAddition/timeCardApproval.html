@@ -9,7 +9,7 @@
 				           <td >	
 				          	 <div class="dropdown"> <a href="#" class="btn btn-primary dropdown-toggle login" id="action-drop" data-toggle="dropdown">Action</a>
 	            				<div class="dropdown-menu" role="menu" aria-labelledby="action-drop">              
-									   #{form @OtherStuff.cardsAction(), class:'form-inline'}
+									   #{form @OtherStuff.postCardsAction(), class:'form-inline'}
 						                <div align="center">
 											<input type="hidden" name="timeCardId" value=${timeCardDbo.id}></input>
 											#{select "status", class:'span2', value:1, id:'status'}
