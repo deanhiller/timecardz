@@ -81,8 +81,8 @@ public class Register extends Controller {
 		}
 	}
 
-	public static void postUserRegister(UserDbo user) {
-		Integer id = null;
+	public static void postUserRegister(UserDbo user,Integer id) {
+		UserDbo userDbo=JPA.em().find(UserDbo.class, id);
 		validation.required(user.getEmail());
 		if (user.getPassword() == null) {
 			validation.addError("password", "Password must be supplied");
@@ -107,7 +107,9 @@ public class Register extends Controller {
 		 * user.setLastName(lastName); user.setPhone(phone);
 		 * user.setAdmin(false);
 		 */
-
+		userDbo.setPassword(user.getPassword());
+		userDbo.setPhone(user.getPhone());
+		JPA.em().persist(userDbo);
 		JPA.em().flush();
 		Secure.addUserToSession(user.getEmail());
 		OtherStuff.home(id);
