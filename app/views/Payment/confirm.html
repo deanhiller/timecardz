@@ -1,0 +1,19 @@
+#{extends 'main.html' /} 
+#{set title:'register' /} 
+#{set tab:'register'/} 
+
+#{form @postConfirmPayment(), class:'form-horizontal',style:'min-width:500px;max-width:800px;margin: 0 auto'}
+
+<legend>Confirm Payment</legend>
+
+	You will pay 240RMB as soon as you hit the purchase button below and will be billed 80RMB every month starting next month but you
+	can cancel at any time.
+	<br/><br/>
+	<input type="hidden" name="token" value="${token}"/>
+	<input type="hidden" name="payerId" value="${payerId}"/>
+	
+	<br/><br/>
+<div>
+	<input type="submit" name="submit" value="Purchase" class="btn btn-primary" />
+</div>	
+#{/form}

@@ -2,6 +2,10 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+GET     /payment                                 Payment.payment
+GET     /confirm                                 Payment.confirm
+GET     /finished                                Payment.finished
+
 # Home page
 GET     /                                         Application.index
 GET		/login                                    Application.login
