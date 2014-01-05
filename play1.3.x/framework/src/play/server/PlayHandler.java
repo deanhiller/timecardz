@@ -811,6 +811,9 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
         }
         try {
             VirtualFile file = Play.getVirtualFile(renderStatic.file);
+            if(file == null) //we should try the path as it may be absolute
+            	file = VirtualFile.fromAbsolutePath(renderStatic.file); 
+            
             if (file != null && file.exists() && file.isDirectory()) {
                 file = file.child("index.html");
                 if (file != null) {

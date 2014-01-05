@@ -219,6 +219,10 @@ public class VirtualFile {
         return null;
     }
 
+    public static VirtualFile fromAbsolutePath(String absPath) {
+    	return new VirtualFile(new File(absPath));
+    }
+    
     public static VirtualFile fromRelativePath(String relativePath) {
         Pattern pattern = Pattern.compile("^(\\{(.+?)\\})?(.*)$");
         Matcher matcher = pattern.matcher(relativePath);

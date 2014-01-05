@@ -1,0 +1,102 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+buildDir = file('output')
+project.ext.fixedLibDir = file('app/lib')
+project.ext.allLibsDir = file('lib')
+
+sourceSets.main {
+    java.srcDirs = ['app', 'test']
+    resources.srcDirs = ['app']
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+    compile 'org.imgscalr:imgscalr-lib:4.2'
+
+    //These are needed as the dnsimple jar depends on them
+    compile 'org.apache.httpcomponents:httpclient:4.3.1'
+    compile 'com.google.code.gson:gson:2.2.1'
+
+    compile 'joda-time:joda-time:2.3'
+    
+	compile 'com.paypal.sdk:rest-api-sdk:0.7.1'
+	compile 'com.paypal.sdk:merchantsdk:2.5.106'
+
+    //no longer needed since compileJava just calls plays compile
+    //compile fileTree(dir: 'lib', include: '*.jar')
+}
+
+//let's at least copy all jars to a single directory to use in creating an application...
+task syncJars(type: Sync) {
+    from(configurations.compile) {}
+    from(fixedLibDir) {}
+    into allLibsDir
+}
+
+
+//task precompile(type: Exec) {
+//    // Since this task already has a task action, we only
+//    // need to configure it.
+//    commandLine = ["./play1.3.x/play", "precompile"] 
+//}
+
+import org.apache.tools.ant.taskdefs.condition.Os
+
+task eclipse(dependsOn: 'syncJars', overwrite: true) {
+    doLast {
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            println "*** WINDOWS "
+    	    exec { commandLine = ["cmd", "/c", "play1.3.x\\play.bat", "eclipsify", "-f"] }
+        } else {
+            println "*** NOT windows"
+    	    exec { commandLine = ["./play1.3.x/play", "eclipsify", "-f"] }
+        }
+    }
+}
+
+task compileJava(dependsOn: 'syncJars', overwrite: true) {
+    doLast {
+        // `doLast` adds a so-called *task action* to the task.
+        // The code inside the task action(s) defines the task's behavior.
+        // It will only get evaluated if and when Gradle decides to 
+        // execute the task.
+
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            println "*** WINDOWS "
+            javaHome = "C:\\ABROOT\\Java\\jdk1.7.0_45"
+            println "JAVA_HOME="+javaHome
+    	    exec { 
+    	    	commandLine = ["cmd", "/c", "play1.3.x\\play.bat", "precompile"]
+    	    	environment = [JAVA_HOME:javaHome]
+    	    }
+        } else {
+            println "*** NOT windows"
+    	    exec { commandLine = ["./play1.3.x/play", "precompile"] }
+        }
+    }
+}
+
+task deleteDirs(type: Delete) {
+    delete 'precompiled', 'tmp'
+}
+
+clean.dependsOn('deleteDirs')
+
+task myZip(type: Zip) {
+    archiveName "store.zip"
+       from('..') {
+           exclude 'store/conf/application.conf'
+           exclude 'store/conf/logback.xml'
+           include 'store/conf/**'
+           include 'store/lib/**'
+           include 'store/precompiled/**'
+           include 'store/public/**'
+       }
+       rename '(.*)prodx.(.*)', '$1$2'
+    }
+
+assemble.dependsOn('myZip')

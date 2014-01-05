@@ -15,6 +15,8 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+
+import play.Play;
 import play.cache.Cache;
 import play.data.validation.Error;
 import play.data.validation.Validation;
@@ -22,6 +24,7 @@ import play.exceptions.TagInternalException;
 import play.exceptions.TemplateExecutionException;
 import play.exceptions.TemplateNotFoundException;
 import play.libs.Codec;
+import play.libs.Crypto;
 import play.mvc.Http;
 import play.mvc.Mailer;
 import play.mvc.Router.ActionDefinition;
@@ -36,6 +39,14 @@ import play.utils.HTML;
  */
 public class FastTags {
 
+	private static String errorClass = "hasError";
+	  
+	static {
+		String errorCls = Play.configuration.getProperty("error.class");
+		if(!StringUtils.isEmpty(errorCls))
+			errorClass = errorCls;
+	}
+	 
     public static void _cache(Map<?, ?> args, Closure body, PrintWriter out, ExecutableTemplate template, int fromLine) {
         String key = args.get("arg").toString();
         String duration = null;
@@ -142,6 +153,13 @@ public class FastTags {
             actionDef.url += separator + "x-http-method-override=" + actionDef.method.toUpperCase();
             actionDef.method = "POST";
         }
+        
+        //we set the postUrl so that any #{input} tags can hash the 
+        //url, input name attribute and value attribute so the hashed value can't be stuck in another form to
+        //perform a hack.  (ie. #{input} makes the input field readonly when hidden or readonly is set and someone could
+        //reuse the hash if we didn't include the url as they could use it in another form
+        template.setProperty("postUrl", actionDef.url);
+        
         String encoding = Http.Response.current().encoding;
         out.print("<form action=\"" + actionDef.url + "\" method=\"" + actionDef.method.toLowerCase() + "\" accept-charset=\""+encoding+"\" enctype=\"" + enctype + "\" " + serialize(args, "action", "method", "accept-charset", "enctype") + (name != null?"name=\"" + name + "\"":"") +  ">");
         if (!("GET".equals(actionDef.method))) {
@@ -149,6 +167,80 @@ public class FastTags {
         }
         out.println(JavaExtensions.toString(body));
         out.print("</form>");
+    }
+    
+    /**
+     * Generates a special read-only input field so if a hacker modifies the field, it will throw a 500 back at the hacker
+     * 
+     * Typically, this should be used for the id of an entity so a hacker can't modify the id thereby accessing a completely
+     * different row in the database.
+     * 
+     * @param args tag attributes
+     * @param body tag inner body
+     * @param out the output writer
+     * @param template enclosing template
+     * @param fromLine template line number where the tag is defined
+     */
+    public static void _input(Map<?, ?> args, Closure body, PrintWriter out, ExecutableTemplate template, int fromLine) {
+    	//for type="hidden" or readonly="readonly" fields, we make them readonly by doing a hash and verifying hash on the post
+        String readonly = (String) args.get("readonly");
+        String type = (String) args.get("type");
+        
+        boolean isReadonly = false;
+        if("hidden".equals(type) || readonly != null) 
+        	isReadonly = true;
+        
+        if(!isReadonly) {
+        	out.println("<input ");
+        	for(Object key : args.keySet()) {
+        		Object value = args.get(key);
+        		out.println(key+"=\""+value+"\" ");
+        	}
+        	
+        	out.println(">");
+        	if(body != null)
+        		out.println(JavaExtensions.toString(body));
+        	out.println("</input>");
+        	return;
+        }
+
+    	String postUrl = (String) template.getProperty("postUrl");
+    	String name = (String) args.get("name");
+    	Object realValue = args.get("value");
+    	if(realValue == null)
+    		realValue = "";
+    	
+    	//without this, someone could just modify the id.  Hashing only value is not enough as that hash could be used
+    	//on another field in the same form.  Hashing name+value is not enough because that hash could be put into a form
+    	//on another page so we hash
+    	//1. url of the POST
+    	//2. name of the input element
+    	//3. value of the input element
+    	//4. secretKey that acts as a SALT making it harder to hack since users won't know the secret key while they will
+    	//know the postUrl, name and value
+    	String hash = Crypto.sign(postUrl+name+realValue+Play.secretKey);
+    	
+    	if(name == null)
+    		throw new IllegalArgumentException("Since this is a readonly input, name must be included");
+    	else if(name.contains("_"))
+    		throw new IllegalArgumentException("input tag name cannot contain the '_' character");
+    	
+    	//mark the name with _play. so we know on POST the value is encrypted and that we need to decrypt the value
+    	String newName = "_play_"+name+"_"+hash;
+    	out.println("<input ");
+    	out.println("name=\""+newName+"\" ");
+    	out.println("value=\""+realValue+"\" ");
+
+    	for(Object key : args.keySet()) {
+    		Object value = args.get(key);
+    		if(!"name".equals(key) && !"value".equals(key))
+    			out.println(key+"=\""+value+"\" ");
+    	}
+    	
+    	out.println(">");
+    	if(body != null)
+    		out.println(JavaExtensions.toString(body));
+    	out.println("</input>");
     }
     
     /**
@@ -161,13 +253,18 @@ public class FastTags {
      */
     public static void _field(Map<?, ?> args, Closure body, PrintWriter out, ExecutableTemplate template, int fromLine) {
         Map<String,Object> field = new HashMap<String,Object>();
-        String _arg = args.get("arg").toString();
+        Object objId = args.get("arg");
+        if(objId == null)
+        	throw new IllegalArgumentException("'arg' param must be supplied to tag field");
+        String _arg = objId.toString();
+        
         field.put("name", _arg);
         field.put("id", _arg.replace('.','_'));
-        field.put("flash", Flash.current().get(_arg));
+        Object flashObj = Flash.current().get(_arg);
+        field.put("flash", flashObj);
         field.put("flashArray", field.get("flash") != null && !StringUtils.isEmpty(field.get("flash").toString()) ? field.get("flash").toString().split(",") : new String[0]);
         field.put("error", Validation.error(_arg));
-        field.put("errorClass", field.get("error") != null ? "hasError" : "");
+        field.put("errorClass", field.get("error") != null ? errorClass : "");
         String[] pieces = _arg.split("\\.");
         Object obj = body.getProperty(pieces[0]);
         if(obj != null){
@@ -182,7 +279,11 @@ public class FastTags {
             }else{
                 field.put("value", obj);
             }
+            //finally, we may have an object in flash that needs to be repeated(luckily passwords don't get put in flash)...
+        } else if(flashObj != null) {
+        	field.put("value", flashObj);
         }
+
         body.setProperty("field", field);
         body.call();
     }
@@ -246,7 +347,7 @@ public class FastTags {
             throw new TemplateExecutionException(template.template, fromLine, "Please specify the error key", new TagInternalException("Please specify the error key"));
         }
         if (Validation.hasError(args.get("arg").toString())) {
-            out.print("hasError");
+            out.print(errorClass);
         }
     }
 
