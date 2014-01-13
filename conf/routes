@@ -3,8 +3,9 @@
 # ~~~~
 
 GET     /payment                                 Payment.payment
-GET     /confirm                                 Payment.confirm
-GET     /finished                                Payment.finished
+GET     /purchase                                Payment.purchase
+GET     /callback/{txId}                         Payment.callback
+GET     /finished/{txId}                         Payment.finished
 
 # Home page
 GET     /                                         Application.index
