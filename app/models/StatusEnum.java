@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum StatusEnum {
-	SUBMIT("submit"), APPROVED("approved"), CANCELLED("cancelled"),UNSUBMITED("unsubmitted");
+	SUBMIT("submit"), APPROVED("approved"), SENT_GOODS("sent_goods"), CANCELLED("cancelled"),UNSUBMITED("unsubmitted");
 
 	public static Map<String, StatusEnum> mapForConversion = new HashMap<String, StatusEnum>();
 
