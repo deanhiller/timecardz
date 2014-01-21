@@ -55,7 +55,8 @@ public class Register extends Controller {
 			NewApp.clockInOut();
 		}
 
-		Application.overloaded();
+		Payment.payment();
+		//Application.overloaded();
 	}
 
 	public static void addedUserRegister(String token) {
