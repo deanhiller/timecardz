@@ -4,8 +4,8 @@
 
 GET     /payment                                 Payment.payment
 GET     /purchase                                Payment.purchase
-GET     /callback/{txId}                         Payment.callback
-GET     /finished/{txId}                         Payment.finished
+POST     /callback		                         Payment.callback
+GET     /finished		                         Payment.finished
 
 # Home page
 GET     /                                         Application.index
