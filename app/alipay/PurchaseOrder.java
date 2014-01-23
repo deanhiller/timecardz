@@ -10,7 +10,7 @@ public class PurchaseOrder {
 	private String description;
 	private BigDecimal amount;
 	private String id;
-	private StatusEnum status;
+	private OrderStatus status;
 	
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
@@ -46,10 +46,10 @@ public class PurchaseOrder {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public StatusEnum getStatus() {
+	public OrderStatus getStatus() {
 		return status;
 	}
-	public void setStatus(StatusEnum status) {
+	public void setStatus(OrderStatus status) {
 		this.status = status;
 	}
 

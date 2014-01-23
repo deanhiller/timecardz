@@ -1,10 +1,15 @@
 package app.alipay;
 
+import java.io.IOException;
+
 import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import alipay.PaymentGatewayConfig;
 import alipay.SendGoodsResult;
+import alipay.signature.MD5Signature;
+import alipay.util.SignatureUtil;
 
 public class SendGoodsResultTest {
 	

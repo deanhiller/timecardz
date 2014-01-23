@@ -21,8 +21,8 @@ public class PaymentGatewayConfig {
 		//TODO: please populate with real credentials and server urls.
 		setMerchantId("2088002007018916");
 		setMerchantKey("secret");
-		setReturnUrl("http://aaa");
-		setNotifyUrl("http://bbb");
+		setReturnUrl(null);
+		setNotifyUrl(null);
 	}
 
 	public String getReturnUrl() {
