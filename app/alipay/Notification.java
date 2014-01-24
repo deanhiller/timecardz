@@ -19,6 +19,7 @@ public class Notification {
 	private static final String P_OUT_TRADE_NO ="out_trade_no";
 	private static final String P_TRADE_NO ="trade_no";
 	private static final String P_TRADE_STATUS ="trade_status";
+	private static final String P_REFUND_STATUS ="refund_status";
 	private static final String P_NOTIFY_ID ="notify_id";
 	private static final String P_TOTAL_FEE ="total_fee";
 	
@@ -27,6 +28,19 @@ public class Notification {
 	public Notification(String query) throws IOException{
 		logger.debug("Receive notification:" + query);
 		params = HttpUtil.urlDecode(query);
+	}
+	
+	public String toString(){
+		StringBuffer sb = new StringBuffer();
+		sb.append("[")
+		.append("tradeStatus=").append(params.get(P_TRADE_STATUS))
+		.append("&refundStatus=").append(params.get(P_REFUND_STATUS))
+		.append("&orderId=").append(getOrderId())
+		.append("&ipAddr=").append(getIpAddr())
+		.append("&notificationId=").append(getNotificationId())
+		.append("&alipayOrderId=").append(getAlipayOrderId())
+		.append("]");
+		return sb.toString();
 	}
 	
 	public String getIpAddr() {
@@ -57,4 +71,28 @@ public class Notification {
 	public boolean isWaitingForGoods(){
 		return StringUtil.equals(params.get(P_TRADE_STATUS), "WAIT_SELLER_SEND_GOODS");
 	}
+	
+	public boolean isClosed(){
+		return StringUtil.equals(params.get(P_TRADE_STATUS), "TRADE_CLOSED");
+	}
+	
+	/*
+	 * Once customer has confirmed receiving goods, money is sent to merchant's account,
+	 * customer no longer able to do refund.
+	 * The only time window when customer can do a refund, is in between merchant has sent goods
+	 * and customer no confirm receiving goods.
+	 * 
+	 * Since the case here enable timecard only when customer has confirm goods. Therefore
+	 * we don't case refund notifications.
+	 */
+//	public boolean isRefundRequest(){
+//		//Generally we don't need to care these message. Because there is no real money withdraw.
+//		return StringUtil.equals(params.get(P_REFUND_STATUS), "WAIT_SELLER_AGREE") || // no goods is received.
+//				StringUtil.equals(params.get(P_REFUND_STATUS), "WAIT_BUYER_RETURN_GOODS") || //goods received, buyer want return.
+//				StringUtil.equals(params.get(P_REFUND_STATUS), "WAIT_SELLER_CONFIRM_GOODS"); //goods received, buyer has sent back.
+//	}
+//	public boolean isRefunded(){
+//		//When this message is seen. then it is real refunded.
+//		return StringUtil.equals(params.get(P_REFUND_STATUS), "REFUND_SUCCESS");
+//	}
 }

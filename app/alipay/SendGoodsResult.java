@@ -45,6 +45,8 @@ public class SendGoodsResult {
 					Node child = children.item(i);
 					params.put(child.getNodeName(), child.getTextContent());
 				}
+				String sign = getNodeValue("//*[local-name()='sign']");
+				params.put("sign", sign);
 			}else{
 				//set error message.
 				errorMsg = getNodeValue("//*[local-name()='error']");
@@ -56,7 +58,7 @@ public class SendGoodsResult {
 	}
 
 	public boolean isTranSuccessful() {
-		return this.success.equalsIgnoreCase("T");
+		return success.equalsIgnoreCase("T");
 	}
 
 	public boolean isCompleted() {

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.StatusEnum;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,16 +27,15 @@ public class PaymentGateway {
 		if(! validateIpAddr(notification.getIpAddr())){
 			throw new IllegalArgumentException("IP addr check faield. Incoming IP:"+notification.getIpAddr());
 		}
-		
 		//check from alipay see if the notification real.
 		if(! verifyNotification(notification.getNotificationId())){
-			throw new IllegalArgumentException("Verify notification failed.");
+			throw new IllegalArgumentException("Verify notification against Alipay failed.");
 		}
 		
 		if(notification.isSuccessful()){
-			order.setStatus(StatusEnum.APPROVED);
-			logger.info("Order has been approved.");
-		}else if(notification.isWaitingForGoods() && order.getStatus() == StatusEnum.SUBMIT){
+			order.setStatus(OrderStatus.CHARGED);
+			logger.debug("The order is charged.");
+		}else if(notification.isWaitingForGoods() && order.getStatus() == OrderStatus.SUBMITTED){
 			//send goods
 			SendGoodsResult result = sendGoods(notification.getAlipayOrderId());
 			if(result.isTranSuccessful()){
@@ -47,17 +44,19 @@ public class PaymentGateway {
 				}
 				if(result.isCompleted()){
 					//send goods ok, update po to sent_goods.
-					order.setStatus(StatusEnum.SENT_GOODS);
-					logger.info("Goods has been sent, wait customer to confirm.");
+					order.setStatus(OrderStatus.SENT_GOODS);
+					logger.debug("Goods has been sent, wait customer to confirm.");
 				}else{
-					logger.error("Failed to send goods");
+					logger.error("Fail to send goods");
 				}
+			}else{
+				logger.error("Fail to call send-goods API. " + result.getErrorMessage());
 			}
-			else{
-				logger.error(result.getErrorMessage());
-			}
+		}else if(notification.isClosed()){
+			order.setStatus(OrderStatus.CLOSED);
+			logger.debug("Order is closed.");
 		}else{
-			logger.info("Skip purchase notification.");
+			logger.info("Skip purchase notification." + notification);
 		}
 	}
 	
@@ -76,6 +75,7 @@ public class PaymentGateway {
 		request.put(P_SIGN, authSign);
 		
 		String url = ALIPAY_HOST + "?" + HttpUtil.urlEncode(request);
+		logger.debug("Send goods request:"+url);
 		String result = HttpUtil.doGet(url);
 		logger.debug("Send goods result:"+result);
 		return new SendGoodsResult(result);
@@ -99,7 +99,7 @@ public class PaymentGateway {
 		sb.append(ALIPAY_HOST).append("?").append(HttpUtil.urlEncode(request));
 		String url = sb.toString();
 		logger.debug("Generated URL:" + url);
-		order.setStatus(StatusEnum.SUBMIT);
+		order.setStatus(OrderStatus.SUBMITTED);
 		return url;
 	}
 	
@@ -115,7 +115,7 @@ public class PaymentGateway {
 		request.put(P_OUT_TRADE_NO, order.getId());
 		request.put(P_SUBJECT, order.getSubject());
 		request.put(P_PAYMENT_TYPE, "1");// 1 -- general purchase.
-		request.put(P_LOGISTICS_TYPE, "EXPRESS"); // hardcode to express, compare to POST, it has shorter payment period, which is 10d.
+		request.put(P_LOGISTICS_TYPE, "DIRECT"); // hardcode to express, compare to POST, it has shorter payment period, which is 10d.
 		request.put(P_LOGISTICS_FEE, "0.00"); //hardcode to 0.00 as there is no express fee.
 		request.put(P_LOGISTICS_PAYMENT, "SELLER_PAY");
 		request.put(P_SELLER_ID, config.getMerchantId());
@@ -137,7 +137,7 @@ public class PaymentGateway {
 		request.put(P_NOTIFY_ID, nId);
 		
 		String verifyUrl = ALIPAY_HOST +"?"+ HttpUtil.urlEncode(request);
-		
+		logger.debug("Verify url:"+verifyUrl);
     	String responseTxt = "true";
 		if(nId != null) {
 			responseTxt = HttpUtil.doGet(verifyUrl);

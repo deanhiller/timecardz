@@ -3,7 +3,7 @@
 # ~~~~
 
 GET     /payment                                 Payment.payment
-GET     /purchase                                Payment.purchase
+GET     /purchase/{txnId}                         Payment.purchase
 POST     /callback		                         Payment.callback
 GET     /finished		                         Payment.finished
 
